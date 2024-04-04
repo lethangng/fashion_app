@@ -8,7 +8,7 @@ import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 import '../../utils/color_app.dart';
 import '../../view_models/tab_view_models/home_tab_view_model.dart';
 import '../../view_models/tab_view_models/tab_view_model.dart';
-import 'bar_tab_view.dart';
+import 'bag_tab_views/bag_tab_view.dart';
 import 'favorites_tab_view.dart';
 import 'home_tab_view.dart';
 import 'profile_tab_view.dart';
@@ -31,8 +31,8 @@ class MainWrapper extends StatelessWidget {
         children: [
           HomeTabView(),
           ShopTabView(),
-          const BarTabView(),
-          const FavoritesTabView(),
+          BagTabView(),
+          FavoritesTabView(),
           const ProfileTabView(),
         ],
       ),

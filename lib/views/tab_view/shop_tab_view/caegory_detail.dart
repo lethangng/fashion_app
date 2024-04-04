@@ -4,17 +4,21 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '../../../app/routes.dart';
+import '../../../view_models/home_view_model.dart';
 import '../../../view_models/tab_view_models/shop_tab_models/category_detail_view_model.dart';
+import '../../widgets/product_container.dart';
 // import '../../widgets/product_container.dart';
 
 class CaegoryDetail extends StatelessWidget {
   CaegoryDetail({super.key});
   final CategoryDetailViewModel categoryDetailViewModel =
       Get.put(CategoryDetailViewModel());
+  final HomeViewModel homeViewModel = Get.find<HomeViewModel>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFF9F9F9),
       appBar: AppBar(
         title: const Text(
           'Quần áo nữ',
@@ -127,10 +131,23 @@ class CaegoryDetail extends StatelessWidget {
               crossAxisCount: 2,
               crossAxisSpacing: 12,
               mainAxisSpacing: 16,
-              itemCount: 6,
+              itemCount: homeViewModel.listProductNew.length,
               itemBuilder: (context, index) {
-                return const SizedBox();
-                // const ProductContainer();
+                return ProductContainer(
+                  id: homeViewModel.listProductNew[index].id,
+                  image: homeViewModel.listProductNew[index].image,
+                  name: homeViewModel.listProductNew[index].name,
+                  star: homeViewModel.listProductNew[index].star,
+                  evaluate: homeViewModel.listProductNew[index].evaluate,
+                  typeProduct: homeViewModel.listProductNew[index].typeProduct,
+                  price: homeViewModel.listProductNew[index].price,
+                  percent: homeViewModel.listProductNew[index].percent,
+                  salePrice: homeViewModel.listProductNew[index].salePrice,
+                  isNew: homeViewModel.listProductNew[index].isNew,
+                  isOutOfStock:
+                      homeViewModel.listProductNew[index].isOutOfStock,
+                  typeContainer: '',
+                );
               },
             ),
           ),
