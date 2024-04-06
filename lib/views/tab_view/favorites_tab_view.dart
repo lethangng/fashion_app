@@ -19,8 +19,10 @@ class FavoritesTabView extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFF9F9F9),
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        scrolledUnderElevation: 0,
         title: const Text(
-          'Quần áo nữ',
+          'Yêu thích',
           style: TextStyle(
             fontSize: 18,
             color: Color(0xFF222222),

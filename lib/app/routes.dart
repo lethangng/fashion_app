@@ -9,7 +9,10 @@ import '../views/tab_view/bag_tab_views/edit_address_view.dart';
 import '../views/tab_view/bag_tab_views/pay_success_view.dart';
 import '../views/tab_view/bag_tab_views/pay_view.dart';
 import '../views/tab_view/main_wrapper.dart';
+import '../views/tab_view/profile_tab_views/change_info_view.dart';
 import '../views/tab_view/profile_tab_views/history_view.dart';
+import '../views/tab_view/profile_tab_views/order_detail_view.dart';
+import '../views/tab_view/profile_tab_views/setting_view.dart';
 import '../views/tab_view/shop_tab_view/brand_screen.dart';
 import '../views/tab_view/shop_tab_view/caegory_detail.dart';
 import '../views/tab_view/shop_tab_view/filters_screen.dart';
@@ -31,9 +34,12 @@ class Routes {
   static const pay = '/pay';
   static const paySuccess = '/pay-success';
   static const historyView = '/history-screen';
+  static const orderDetail = '/order-detail';
+  static const setting = '/setting';
+  static const changeInfo = '/changeInfo';
 
   static final routes = [
-    // GetPage(name: splashScreen, page: () => const HistoryView()),
+    // GetPage(name: splashScreen, page: () => const OrderDetailView()),
     GetPage(name: splashScreen, page: () => SplashScreen()),
     GetPage(name: home, page: () => MainWrapper()),
     GetPage(name: signup, page: () => SignUpScreen()),
@@ -47,6 +53,9 @@ class Routes {
     GetPage(name: addAddress, page: () => const EditAddressView()),
     GetPage(name: pay, page: () => PayView()),
     GetPage(name: paySuccess, page: () => const PaySuccessView()),
-    GetPage(name: historyView, page: () => const HistoryView()),
+    GetPage(name: historyView, page: () => HistoryView()),
+    GetPage(name: orderDetail, page: () => OrderDetailView()),
+    GetPage(name: setting, page: () => const SettingView()),
+    GetPage(name: changeInfo, page: () => const ChangeInfoView()),
   ];
 }

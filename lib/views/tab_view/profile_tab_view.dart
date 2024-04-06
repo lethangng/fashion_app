@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 import '../../app/routes.dart';
 import '../../utils/color_app.dart';
+import '../../utils/text_themes.dart';
 
 class ProfileTabView extends StatelessWidget {
   const ProfileTabView({super.key});
@@ -59,13 +60,78 @@ class ProfileTabView extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 28),
+          Container(
+            height: 1,
+            width: double.infinity,
+            color: ColorApp.gray,
+          ),
           rowInfo(
-            title: 'Lịch sử mua hàng',
+            title: 'Đơn hàng',
             desc: 'Đã có ${12} đơn hàng',
             event: () => Get.toNamed(Routes.historyView),
           ),
+          Container(
+            height: 1,
+            width: double.infinity,
+            color: ColorApp.gray,
+          ),
           rowInfo(title: 'Địa chỉ giao hàng', desc: '${3} địa chỉ'),
-          rowInfo(title: 'Cài đặt', desc: 'Thông tin cá nhân, mật khẩu'),
+          Container(
+            height: 1,
+            width: double.infinity,
+            color: ColorApp.gray,
+          ),
+          rowInfo(
+            title: 'Cài đặt',
+            desc: 'Thông tin cá nhân, mật khẩu',
+            event: () => Get.toNamed(Routes.setting),
+          ),
+          Container(
+            height: 1,
+            width: double.infinity,
+            color: ColorApp.gray,
+          ),
+          const SizedBox(height: 24),
+          SizedBox(
+            width: double.infinity,
+            child: OutlinedButton(
+              onPressed: () {},
+              style: OutlinedButton.styleFrom(
+                side: const BorderSide(
+                  color: ColorApp.black,
+                  width: 1,
+                ),
+                minimumSize: Size.zero,
+                padding: const EdgeInsets.symmetric(
+                  vertical: 14,
+                ),
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              ),
+              child: Text(
+                'Đổi mật khẩu',
+                style: TextThemes.text_14_500.copyWith(color: ColorApp.black),
+              ),
+            ),
+          ),
+          const SizedBox(height: 24),
+          SizedBox(
+            width: double.infinity,
+            child: FilledButton(
+              onPressed: () {},
+              style: FilledButton.styleFrom(
+                backgroundColor: ColorApp.primary,
+                minimumSize: Size.zero,
+                padding: const EdgeInsets.symmetric(
+                  vertical: 14,
+                ),
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              ),
+              child: Text(
+                'Đăng xuất',
+                style: TextThemes.text_14_500.copyWith(color: Colors.white),
+              ),
+            ),
+          ),
         ],
       ),
     );

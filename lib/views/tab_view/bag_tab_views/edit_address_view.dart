@@ -95,6 +95,7 @@ class EditAddressView extends StatelessWidget {
         textAlign: TextAlign.left,
         decoration: InputDecoration(
           labelText: textHind,
+
           labelStyle: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w500,

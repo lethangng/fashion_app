@@ -39,6 +39,7 @@ class AddressView extends StatelessWidget {
           backgroundColor: ColorApp.black,
           child: SvgPicture.asset(
             'assets/icons/add.svg',
+            colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
             width: 20,
           ),
         ),

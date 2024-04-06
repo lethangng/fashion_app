@@ -57,30 +57,35 @@ class MainWrapper extends StatelessWidget {
                 _bottomAppBarItem(
                   context,
                   icon: 'assets/icons/home.svg',
+                  iconSelect: 'assets/icons/home-select.svg',
                   page: 0,
                   lable: 'Trang chủ',
                 ),
                 _bottomAppBarItem(
                   context,
                   icon: 'assets/icons/shop.svg',
+                  iconSelect: 'assets/icons/shop-select.svg',
                   page: 1,
                   lable: 'Cửa hàng',
                 ),
                 _bottomAppBarItem(
                   context,
-                  icon: 'assets/icons/bar.svg',
+                  icon: 'assets/icons/bag.svg',
+                  iconSelect: 'assets/icons/bag-select.svg',
                   page: 2,
                   lable: 'Giỏ hàng',
                 ),
                 _bottomAppBarItem(
                   context,
                   icon: 'assets/icons/favorites.svg',
+                  iconSelect: 'assets/icons/favorites-select.svg',
                   page: 3,
                   lable: 'Yêu thích',
                 ),
                 _bottomAppBarItem(
                   context,
                   icon: 'assets/icons/profile.svg',
+                  iconSelect: 'assets/icons/profile-select.svg',
                   page: 4,
                   lable: 'Cá nhân',
                 ),
@@ -92,8 +97,13 @@ class MainWrapper extends StatelessWidget {
     );
   }
 
-  Widget _bottomAppBarItem(BuildContext context,
-      {required icon, required page, required lable}) {
+  Widget _bottomAppBarItem(
+    BuildContext context, {
+    required String icon,
+    required String iconSelect,
+    required int page,
+    required String lable,
+  }) {
     return Expanded(
       child: ZoomTapAnimation(
         onTap: () => tabViewModel.goToTab(page),
@@ -107,11 +117,11 @@ class MainWrapper extends StatelessWidget {
                 width: 24,
                 height: 24,
                 child: SvgPicture.asset(
-                  icon,
+                  tabViewModel.currentPage.value == page ? iconSelect : icon,
                   colorFilter: ColorFilter.mode(
                     tabViewModel.currentPage.value == page
                         ? const Color(0xFFDB3022)
-                        : ColorApp.colorGrey,
+                        : ColorApp.black,
                     BlendMode.srcIn,
                   ),
                 ),
@@ -126,7 +136,7 @@ class MainWrapper extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                   color: tabViewModel.currentPage.value == page
                       ? const Color(0xFFDB3022)
-                      : ColorApp.colorGrey,
+                      : ColorApp.black,
                 ),
               ),
             ],
