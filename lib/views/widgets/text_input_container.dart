@@ -12,8 +12,8 @@ class TextInputContainer extends StatelessWidget {
     required this.des,
     required this.errorString,
     required this.isTrue,
-    required this.isPassword,
-    this.showPassword,
+    this.isPassword = false,
+    this.showPassword = false,
     this.event,
   });
 
@@ -23,7 +23,7 @@ class TextInputContainer extends StatelessWidget {
   final String errorString;
   final bool isTrue;
   final bool isPassword;
-  final bool? showPassword;
+  final bool showPassword;
   final void Function()? event;
 
   @override
@@ -65,7 +65,7 @@ class TextInputContainer extends StatelessWidget {
                         Expanded(
                           child: TextField(
                             controller: textController,
-                            obscureText: isPassword && showPassword == true,
+                            obscureText: isPassword && showPassword == false,
                             cursorColor: ColorApp.colorGrey2,
                             style: const TextStyle(color: Colors.black),
                             textAlignVertical: TextAlignVertical.center,

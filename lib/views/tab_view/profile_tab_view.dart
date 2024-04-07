@@ -75,7 +75,10 @@ class ProfileTabView extends StatelessWidget {
             width: double.infinity,
             color: ColorApp.gray,
           ),
-          rowInfo(title: 'Địa chỉ giao hàng', desc: '${3} địa chỉ'),
+          rowInfo(
+              title: 'Địa chỉ giao hàng',
+              desc: '${3} địa chỉ',
+              event: () => Get.toNamed(Routes.address)),
           Container(
             height: 1,
             width: double.infinity,
@@ -95,7 +98,7 @@ class ProfileTabView extends StatelessWidget {
           SizedBox(
             width: double.infinity,
             child: OutlinedButton(
-              onPressed: () {},
+              onPressed: () => Get.toNamed(Routes.changePassword),
               style: OutlinedButton.styleFrom(
                 side: const BorderSide(
                   color: ColorApp.black,
@@ -142,43 +145,47 @@ class ProfileTabView extends StatelessWidget {
     required String desc,
     void Function()? event,
   }) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  color: ColorApp.black,
+    return InkWell(
+      onTap: event,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: ColorApp.black,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 6),
-              Text(
-                desc,
-                style: const TextStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w400,
-                  color: ColorApp.gray,
+                const SizedBox(height: 6),
+                Text(
+                  desc,
+                  style: const TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w400,
+                    color: ColorApp.gray,
+                  ),
                 ),
-              ),
-            ],
-          ),
-          IconButton(
-            onPressed: event,
-            style: IconButton.styleFrom(
-              minimumSize: Size.zero,
-              padding: EdgeInsets.zero,
-              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              ],
             ),
-            icon: SvgPicture.asset('assets/icons/arrow-right-2.svg'),
-          )
-        ],
+            // IconButton(
+            //   onPressed: event,
+            //   style: IconButton.styleFrom(
+            //     minimumSize: Size.zero,
+            //     padding: EdgeInsets.zero,
+            //     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            //   ),
+            //   icon: ,
+            // )
+            SvgPicture.asset('assets/icons/arrow-right-2.svg')
+          ],
+        ),
       ),
     );
   }

@@ -10,6 +10,7 @@ import '../views/tab_view/bag_tab_views/pay_success_view.dart';
 import '../views/tab_view/bag_tab_views/pay_view.dart';
 import '../views/tab_view/main_wrapper.dart';
 import '../views/tab_view/profile_tab_views/change_info_view.dart';
+import '../views/tab_view/profile_tab_views/change_password_view.dart';
 import '../views/tab_view/profile_tab_views/history_view.dart';
 import '../views/tab_view/profile_tab_views/order_detail_view.dart';
 import '../views/tab_view/profile_tab_views/setting_view.dart';
@@ -36,7 +37,8 @@ class Routes {
   static const historyView = '/history-screen';
   static const orderDetail = '/order-detail';
   static const setting = '/setting';
-  static const changeInfo = '/changeInfo';
+  static const changeInfo = '/change-info';
+  static const changePassword = '/change-password';
 
   static final routes = [
     // GetPage(name: splashScreen, page: () => const OrderDetailView()),
@@ -57,5 +59,6 @@ class Routes {
     GetPage(name: orderDetail, page: () => OrderDetailView()),
     GetPage(name: setting, page: () => const SettingView()),
     GetPage(name: changeInfo, page: () => const ChangeInfoView()),
+    GetPage(name: changePassword, page: () => ChangePasswordView()),
   ];
 }

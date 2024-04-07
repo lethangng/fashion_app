@@ -1,12 +1,25 @@
-class Validate {
-  static bool validateEmail(String email) {
-    final RegExp emailRegex =
-        RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$');
+enum PasswordError {
+  long,
+  sort,
+  format,
+  isNull,
+}
 
-    return emailRegex.hasMatch(email);
+class Validate {
+  static PasswordError validatePassword(String password) {
+    if (password.length < 6) {
+      return PasswordError.sort;
+    } else if (password.length > 20) {
+      return PasswordError.long;
+    } else if (!RegExp(r'^(?=.*[A-Z])(?=.*[^\w\d\s]).{6,20}$')
+        .hasMatch(password)) {
+      return PasswordError.format;
+    } else {
+      return PasswordError.isNull;
+    }
   }
 
-  static bool validatePassword(String password) {
-    return password.length >= 6;
+  static bool validateConfirmPassword(String password, String confirmPassword) {
+    return password == confirmPassword;
   }
 }
