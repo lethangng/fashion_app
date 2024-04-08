@@ -4,8 +4,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '../../../app/routes.dart';
+import '../../../utils/color_app.dart';
 import '../../../view_models/home_view_model.dart';
 import '../../../view_models/tab_view_models/shop_tab_models/product_detail_view_model.dart';
+import '../../widgets/button_primary.dart';
+import '../../widgets/button_second.dart';
 import '../../widgets/product_container.dart';
 import '../../widgets/select_size.dart';
 
@@ -21,6 +24,8 @@ class ProductDetailScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFF9F9F9),
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        scrolledUnderElevation: 0,
         title: const Text(
           'Váy ngắn',
           style: TextStyle(
@@ -381,36 +386,39 @@ class ProductDetailScreen extends StatelessWidget {
             alignment: Alignment.bottomCenter,
             child: Container(
               width: Get.width,
-              color: Colors.white,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                border: Border(
+                  top: BorderSide(width: 1, color: ColorApp.black),
+                ),
+              ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const SizedBox(height: 20),
-                  SizedBox(
-                    width: Get.width * 0.9,
-                    child: OutlinedButton(
-                      onPressed: () {},
-                      style: OutlinedButton.styleFrom(
-                        side: const BorderSide(
-                          width: 0,
+                  const SizedBox(height: 10),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: ButtonSecond(
+                            title: 'Thêm vào giỏ hàng',
+                            isUpperCase: true,
+                            event: () {},
+                          ),
                         ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: ButtonPrimary(
+                            title: 'Mua ngay',
+                            isUpperCase: true,
+                            event: () {},
+                          ),
                         ),
-                        foregroundColor: Colors.white,
-                        backgroundColor: const Color(0xFFDB3022),
-                        padding: const EdgeInsets.symmetric(vertical: 15),
-                      ),
-                      child: const Text(
-                        'Mua ngay',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                      ],
                     ),
                   ),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 10),
                 ],
               ),
             ),

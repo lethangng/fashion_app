@@ -15,16 +15,13 @@ class ChangePasswordViewModel extends GetxController {
     newPassword: '',
     confirmPassword: '',
   ).obs;
+  final RxBool isLast = true.obs;
 
   final RxMap<String, dynamic> passwordShow = {
     'oldPassword': false,
     'newPassword': false,
     'confirmPassword': false,
   }.obs;
-
-  final RxBool showOldPassword = false.obs;
-  final RxBool showNewPassword = false.obs;
-  final RxBool showConfirmPassword = false.obs;
 
   void handleShowPassword({required PasswordType passwordType}) {
     if (passwordType == PasswordType.oldPassword) {
@@ -42,6 +39,7 @@ class ChangePasswordViewModel extends GetxController {
     String newPassword,
     String confirmPassword,
   ) {
+    isLast.value = false;
     if (oldPassword.isEmpty) {
       formError.value.oldPassword = 'Mật khẩu không được để trống';
     } else if (true) {
@@ -61,7 +59,10 @@ class ChangePasswordViewModel extends GetxController {
       formError.value.newPassword = '';
     }
 
-    if (!Validate.validateConfirmPassword(newPassword, confirmPassword)) {
+    if (confirmPassword.isEmpty) {
+      formError.value.confirmPassword = 'Mật khẩu nhập lại không được để trống';
+    } else if (!Validate.validateConfirmPassword(
+        newPassword, confirmPassword)) {
       formError.value.confirmPassword = 'Mật khẩu nhập lại không đúng';
     }
 

@@ -4,18 +4,20 @@ import 'package:flutter/material.dart';
 import '../../utils/color_app.dart';
 import '../../utils/text_themes.dart';
 
-class ButtonPrimary extends StatelessWidget {
-  const ButtonPrimary({
+class ButtonSecond extends StatelessWidget {
+  const ButtonSecond({
     super.key,
     required this.title,
-    this.background = ColorApp.primary,
+    this.borderColor = ColorApp.black,
+    this.borderSize = 1.5,
     this.isUpperCase = false,
     this.size = double.infinity,
     this.event,
   });
 
   final String title;
-  final Color background;
+  final Color borderColor;
+  final double borderSize;
   final bool isUpperCase;
   final double size;
   final void Function()? event;
@@ -24,10 +26,14 @@ class ButtonPrimary extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: size,
-      child: FilledButton(
+      child: OutlinedButton(
         onPressed: event,
-        style: FilledButton.styleFrom(
-          backgroundColor: background,
+        style: OutlinedButton.styleFrom(
+          // backgroundColor: background,
+          side: BorderSide(
+            color: borderColor,
+            width: borderSize,
+          ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(25),
           ),
@@ -39,7 +45,7 @@ class ButtonPrimary extends StatelessWidget {
         ),
         child: Text(
           isUpperCase ? title.toUpperCase() : title,
-          style: TextThemes.text_14_500.copyWith(color: Colors.white),
+          style: TextThemes.text_14_500.copyWith(color: borderColor),
         ),
       ),
     );

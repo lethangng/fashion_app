@@ -18,7 +18,9 @@ import '../views/tab_view/shop_tab_view/brand_screen.dart';
 import '../views/tab_view/shop_tab_view/caegory_detail.dart';
 import '../views/tab_view/shop_tab_view/filters_screen.dart';
 // import '../views/tab_view/shop_tab_view/product_detail_screen.dart';
+import '../views/tab_view/shop_tab_view/product_detail_screen.dart';
 import '../views/tab_view/shop_tab_view/reviews_view.dart';
+import '../views/tab_view/shop_tab_view/search_screen.dart';
 
 class Routes {
   static const splashScreen = '/';
@@ -39,9 +41,11 @@ class Routes {
   static const setting = '/setting';
   static const changeInfo = '/change-info';
   static const changePassword = '/change-password';
+  static const search = '/search';
+  static const productDetail = '/product-detail';
 
   static final routes = [
-    // GetPage(name: splashScreen, page: () => const OrderDetailView()),
+    // GetPage(name: splashScreen, page: () => SearchScreen()),
     GetPage(name: splashScreen, page: () => SplashScreen()),
     GetPage(name: home, page: () => MainWrapper()),
     GetPage(name: signup, page: () => SignUpScreen()),
@@ -60,5 +64,7 @@ class Routes {
     GetPage(name: setting, page: () => const SettingView()),
     GetPage(name: changeInfo, page: () => const ChangeInfoView()),
     GetPage(name: changePassword, page: () => ChangePasswordView()),
+    GetPage(name: search, page: () => SearchScreen()),
+    GetPage(name: productDetail, page: () => ProductDetailScreen()),
   ];
 }

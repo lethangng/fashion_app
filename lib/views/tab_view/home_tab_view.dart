@@ -40,7 +40,7 @@ class HomeTabView extends StatelessWidget {
                               fontSize: 48,
                               fontWeight: FontWeight.w700,
                             ),
-                            children: [TextSpan(text: 'sale')],
+                            children: [TextSpan(text: 'khuyễn mãi')],
                           ),
                         ),
                         SizedBox(

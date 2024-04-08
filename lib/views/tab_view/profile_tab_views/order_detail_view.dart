@@ -27,12 +27,6 @@ class OrderDetailView extends StatelessWidget {
           ),
         ),
         centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: SvgPicture.asset('assets/icons/search.svg'),
-          ),
-        ],
         leading: IconButton(
           onPressed: () => Get.back(),
           icon: SvgPicture.asset('assets/icons/arrow-back.svg'),
@@ -45,20 +39,6 @@ class OrderDetailView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 20),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(
-                    '05-12-2019',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: ColorApp.gray,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 13),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -112,6 +92,12 @@ class OrderDetailView extends StatelessWidget {
               ),
               const SizedBox(height: 24),
               rowInfoDetail(title: 'Giảm giá: ', value: '10%'),
+              const SizedBox(height: 24),
+              rowInfoDetail(
+                  title: 'Thời gian đặt hàng: ', value: '04-03-2024 10:20'),
+              const SizedBox(height: 24),
+              rowInfoDetail(
+                  title: 'Thời gian thanh toán: ', value: '06-03-2024 16:20'),
               const SizedBox(height: 24),
               rowInfoDetail(title: 'Tổng: ', value: '113\$'),
               const SizedBox(height: 30),

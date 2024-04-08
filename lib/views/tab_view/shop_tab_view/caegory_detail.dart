@@ -4,37 +4,74 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '../../../app/routes.dart';
+import '../../../utils/color_app.dart';
 import '../../../view_models/home_view_model.dart';
 import '../../../view_models/tab_view_models/shop_tab_models/category_detail_view_model.dart';
+import '../../../view_models/tab_view_models/shop_tab_models/search_view_model.dart';
 import '../../widgets/product_container.dart';
-// import '../../widgets/product_container.dart';
 
 class CaegoryDetail extends StatelessWidget {
   CaegoryDetail({super.key});
   final CategoryDetailViewModel categoryDetailViewModel =
       Get.put(CategoryDetailViewModel());
   final HomeViewModel homeViewModel = Get.find<HomeViewModel>();
+  final SearchViewModel searchViewModel = Get.find<SearchViewModel>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF9F9F9),
       appBar: AppBar(
-        title: const Text(
-          'Quần áo nữ',
-          style: TextStyle(
-            fontSize: 18,
-            color: Color(0xFF222222),
-            fontWeight: FontWeight.bold,
+        elevation: 0,
+        titleSpacing: 0,
+        backgroundColor: Colors.transparent,
+        scrolledUnderElevation: 0,
+        title: Container(
+          margin: const EdgeInsets.only(right: 16),
+          padding: EdgeInsets.only(left: Get.width * 0.05, right: 10),
+          // padding: EdgeInsets.zero,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(57),
+            boxShadow: [
+              BoxShadow(
+                blurRadius: 8,
+                offset: const Offset(0, 4),
+                color: const Color(0xFF000000).withOpacity(0.08),
+              )
+            ],
+          ),
+          child: TextField(
+            readOnly: true,
+            onTap: () => Get.toNamed(Routes.search),
+            controller: searchViewModel.searchController,
+            // focusNode: searchViewViewModel.focus,
+            cursorColor: ColorApp.black,
+            style: const TextStyle(color: ColorApp.black),
+            textAlignVertical: TextAlignVertical.center,
+            textAlign: TextAlign.left,
+            decoration: InputDecoration(
+              isDense: true, // Cho chu can giua theo chieu doc
+              hintText: 'Tìm kiếm',
+              hintStyle: const TextStyle(
+                color: ColorApp.colorGrey2,
+                fontSize: 15,
+                fontWeight: FontWeight.w400,
+              ),
+              border: InputBorder.none,
+              suffixIcon: Container(
+                width: 24,
+                alignment: Alignment.center,
+                child: SvgPicture.asset(
+                  'assets/icons/search-icon.svg',
+                  width: 24,
+                ),
+              ),
+            ),
+            onSubmitted: (_) {},
+            // => Get.toNamed(Routes.resultSearch),
           ),
         ),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: SvgPicture.asset('assets/icons/search.svg'),
-          ),
-        ],
         leading: IconButton(
           onPressed: () => Get.back(),
           icon: SvgPicture.asset('assets/icons/arrow-back.svg'),
@@ -59,21 +96,21 @@ class CaegoryDetail extends StatelessWidget {
             ),
             child: Column(
               children: [
-                const SizedBox(height: 10),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: categoryDetailViewModel.listData
-                        .map(
-                          (item) => Padding(
-                            padding: const EdgeInsets.only(right: 10),
-                            child: chip(title: item.title, event: item.event),
-                          ),
-                        )
-                        .toList(),
-                  ),
-                ),
-                const SizedBox(height: 18),
+                // const SizedBox(height: 10),
+                // SingleChildScrollView(
+                //   scrollDirection: Axis.horizontal,
+                //   child: Row(
+                //     children: categoryDetailViewModel.listData
+                //         .map(
+                //           (item) => Padding(
+                //             padding: const EdgeInsets.only(right: 10),
+                //             child: chip(title: item.title, event: item.event),
+                //           ),
+                //         )
+                //         .toList(),
+                //   ),
+                // ),
+                // const SizedBox(height: 18),
                 Container(
                   decoration: const BoxDecoration(color: Color(0xFFF9F9F9)),
                   child: Row(

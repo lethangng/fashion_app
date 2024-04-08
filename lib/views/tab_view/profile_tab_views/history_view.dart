@@ -79,15 +79,33 @@ class HistoryView extends StatelessWidget {
                     );
                   },
                 ),
-                Container(
-                  child: const Center(
-                    child: Text('OK 2'),
+                ListView.builder(
+                  itemCount: 4,
+                  padding: const EdgeInsets.only(
+                    left: 14,
+                    right: 14,
+                    top: 16,
                   ),
+                  itemBuilder: (BuildContext context, int index) {
+                    return const Padding(
+                      padding: EdgeInsets.only(bottom: 24),
+                      child: HistoryContainerItem(),
+                    );
+                  },
                 ),
-                Container(
-                  child: const Center(
-                    child: Text('OK 3'),
+                ListView.builder(
+                  itemCount: 4,
+                  padding: const EdgeInsets.only(
+                    left: 14,
+                    right: 14,
+                    top: 16,
                   ),
+                  itemBuilder: (BuildContext context, int index) {
+                    return const Padding(
+                      padding: EdgeInsets.only(bottom: 24),
+                      child: HistoryContainerItem(),
+                    );
+                  },
                 ),
               ],
             ),

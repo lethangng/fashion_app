@@ -11,7 +11,7 @@ class TextInputContainer extends StatelessWidget {
     required this.title,
     required this.des,
     required this.errorString,
-    required this.isTrue,
+    required this.isLast,
     this.isPassword = false,
     this.showPassword = false,
     this.event,
@@ -21,7 +21,7 @@ class TextInputContainer extends StatelessWidget {
   final String title;
   final String des;
   final String errorString;
-  final bool isTrue;
+  final bool isLast;
   final bool isPassword;
   final bool showPassword;
   final void Function()? event;
@@ -38,9 +38,12 @@ class TextInputContainer extends StatelessWidget {
             color: Colors.white,
             borderRadius: BorderRadius.circular(4),
             border: Border.all(
-              width: errorString.isEmpty ? 0 : 1,
-              color:
-                  errorString.isEmpty ? Colors.white : const Color(0xFFF01F0E),
+              width: isLast ? 0 : 1,
+              color: isLast
+                  ? Colors.transparent
+                  : errorString.isEmpty
+                      ? ColorApp.success
+                      : const Color(0xFFF01F0E),
             ),
           ),
           child: Row(
@@ -52,9 +55,11 @@ class TextInputContainer extends StatelessWidget {
                     Text(
                       title,
                       style: TextStyle(
-                        color: errorString.isEmpty
+                        color: isLast
                             ? const Color(0xFFD9D9D9)
-                            : const Color(0xFFF01F0E),
+                            : errorString.isEmpty
+                                ? ColorApp.success
+                                : const Color(0xFFF01F0E),
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
                       ),
@@ -109,9 +114,12 @@ class TextInputContainer extends StatelessWidget {
                 ),
               ),
               Visibility(
-                visible: isPassword == false &&
-                    isTrue == false &&
-                    errorString.isEmpty == false,
+                visible: isLast == false,
+                child: SizedBox(width: isPassword ? 15 : 0),
+              ),
+              Visibility(
+                visible: isLast == false,
+                maintainSize: false,
                 child: SvgPicture.asset(
                     'assets/icons/${(errorString.isEmpty) ? 'success' : 'error'}.svg'),
               ),

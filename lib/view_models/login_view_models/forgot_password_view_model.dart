@@ -7,9 +7,13 @@ class ForgotPasswordViewModel extends GetxController {
     name: '',
     email: '',
     password: '',
+    confirmPassword: '',
   ).obs;
 
+  final RxBool isLast = true.obs;
+
   void validate(String email) {
+    isLast.value = false;
     if (email.isEmpty) {
       formError.value.email = 'Email không được để trống';
     } else if (!email.isEmail) {
@@ -23,6 +27,7 @@ class ForgotPasswordViewModel extends GetxController {
           name: '',
           email: '',
           password: '',
+          confirmPassword: '',
         )) {
       //
     }

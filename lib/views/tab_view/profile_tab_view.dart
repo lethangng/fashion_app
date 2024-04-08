@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import '../../app/routes.dart';
 import '../../utils/color_app.dart';
 import '../../utils/text_themes.dart';
+import '../widgets/button_primary.dart';
 
 class ProfileTabView extends StatelessWidget {
   const ProfileTabView({super.key});
@@ -117,23 +118,10 @@ class ProfileTabView extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 24),
-          SizedBox(
-            width: double.infinity,
-            child: FilledButton(
-              onPressed: () {},
-              style: FilledButton.styleFrom(
-                backgroundColor: ColorApp.primary,
-                minimumSize: Size.zero,
-                padding: const EdgeInsets.symmetric(
-                  vertical: 14,
-                ),
-                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              ),
-              child: Text(
-                'Đăng xuất',
-                style: TextThemes.text_14_500.copyWith(color: Colors.white),
-              ),
-            ),
+          ButtonPrimary(
+            title: 'Đăng xuất',
+            isUpperCase: true,
+            event: () => Get.offAllNamed(Routes.login),
           ),
         ],
       ),

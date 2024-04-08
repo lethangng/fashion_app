@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
+import '../../../app/routes.dart';
 import '../../../utils/color_app.dart';
 import '../../../view_models/profile_view_models/change_password_view_model.dart';
 import '../../widgets/button_primary.dart';
@@ -48,7 +49,7 @@ class ChangePasswordView extends StatelessWidget {
                 textController: oldPasswordController,
                 title: 'Mật khẩu cũ',
                 des: 'Nhập mật khẩu cũ',
-                isTrue: oldPasswordController.text.isNotEmpty,
+                isLast: changePasswordViewModel.isLast.value,
                 isPassword: true,
                 event: () => changePasswordViewModel.handleShowPassword(
                     passwordType: PasswordType.oldPassword),
@@ -58,13 +59,31 @@ class ChangePasswordView extends StatelessWidget {
                     changePasswordViewModel.formError.value.oldPassword,
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 10),
+            Align(
+              alignment: Alignment.centerRight,
+              child: InkWell(
+                customBorder: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                onTap: () => Get.toNamed(Routes.forgotPassword),
+                child: const Text(
+                  'Quên mật khẩu?',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: ColorApp.gray,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 15),
             Obx(
               () => TextInputContainer(
                 textController: newPasswordController,
                 title: 'Mật khẩu mới',
                 des: 'Nhập mật khẩu mới',
-                isTrue: newPasswordController.text.isNotEmpty,
+                isLast: changePasswordViewModel.isLast.value,
                 isPassword: true,
                 event: () => changePasswordViewModel.handleShowPassword(
                     passwordType: PasswordType.newPassword),
@@ -80,7 +99,7 @@ class ChangePasswordView extends StatelessWidget {
                 textController: confirmPasswordController,
                 title: 'Nhập lại mật khẩu',
                 des: 'Nhập lại mật khẩu',
-                isTrue: confirmPasswordController.text.isNotEmpty,
+                isLast: changePasswordViewModel.isLast.value,
                 isPassword: true,
                 event: () => changePasswordViewModel.handleShowPassword(
                     passwordType: PasswordType.confirmPassword),

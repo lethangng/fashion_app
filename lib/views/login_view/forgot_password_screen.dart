@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '../../view_models/login_view_models/forgot_password_view_model.dart';
 import '../widgets/app_bar_container.dart';
+import '../widgets/button_primary.dart';
 import '../widgets/text_input_container.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
@@ -29,11 +31,17 @@ class ForgotPasswordScreen extends StatelessWidget {
               SizedBox(
                 height: size.height * 0.09,
               ),
+              // Center(
+              //   child: Image.asset(
+              //     'assets/images/sad.png',
+              //     height: size.height * 0.25,
+              //     fit: BoxFit.cover,
+              //   ),
+              // ),
               Center(
-                child: Image.asset(
-                  'assets/images/sad.png',
+                child: SvgPicture.asset(
+                  'assets/icons/sad-icon.svg',
                   height: size.height * 0.25,
-                  fit: BoxFit.cover,
                 ),
               ),
               SizedBox(
@@ -69,7 +77,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                   textController: emailController,
                   title: 'Email',
                   des: 'Nhập email',
-                  isTrue: emailController.text.isNotEmpty,
+                  isLast: forgotPasswordViewModel.isLast.value,
                   isPassword: false,
                   errorString: forgotPasswordViewModel.formError.value.email,
                 ),
@@ -77,24 +85,10 @@ class ForgotPasswordScreen extends StatelessWidget {
               SizedBox(
                 height: size.height * 0.02,
               ),
-              Container(
-                width: double.infinity,
-                decoration: const BoxDecoration(
-                  color: Color(0xFFDB3022),
-                  borderRadius: BorderRadius.all(Radius.circular(4)),
-                ),
-                child: TextButton(
-                  onPressed: () {
-                    forgotPasswordViewModel.validate(emailController.text);
-                  },
-                  child: const Text(
-                    'Tiếp tục',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
+              ButtonPrimary(
+                title: 'Tiếp tục',
+                event: () =>
+                    forgotPasswordViewModel.validate(emailController.text),
               ),
             ],
           ),

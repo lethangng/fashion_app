@@ -65,41 +65,53 @@ class WomenTab extends StatelessWidget {
     );
   }
 
-  Widget categoryContainer(
-      {required String title, required String image, required event}) {
+  Widget categoryContainer({
+    required String title,
+    required String image,
+    required void Function()? event,
+  }) {
     return GestureDetector(
       onTap: event,
-      child: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: Colors.white,
-        ),
-        child: Row(
-          children: [
-            Expanded(
-              child: Row(
-                children: [
-                  const SizedBox(width: 23),
-                  Text(
-                    title,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xFF222222),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8.0),
+        child: Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                blurRadius: 25,
+                offset: const Offset(0, 4),
+                color: const Color(0xFF000000).withOpacity(0.08),
+              ),
+            ],
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: Row(
+                  children: [
+                    const SizedBox(width: 23),
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xFF222222),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              child: Image.asset(
-                image,
-                width: double.infinity,
-                fit: BoxFit.cover,
+              Expanded(
+                child: Image.asset(
+                  image,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

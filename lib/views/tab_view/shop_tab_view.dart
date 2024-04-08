@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
+import '../../app/routes.dart';
+import '../../utils/color_app.dart';
+import '../../view_models/tab_view_models/shop_tab_models/search_view_model.dart';
 import '../../view_models/tab_view_models/shop_tab_view_model.dart';
 import 'shop_tab_view/kid_tab.dart';
 import 'shop_tab_view/men_tab.dart';
@@ -10,11 +13,14 @@ import 'shop_tab_view/women_tab.dart';
 class ShopTabView extends StatelessWidget {
   ShopTabView({super.key});
   final ShopTabViewModel shopTabViewModel = Get.put(ShopTabViewModel());
+  final SearchViewModel searchViewModel = Get.put(SearchViewModel());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: ColorApp.background,
         appBar: AppBar(
+          backgroundColor: Colors.transparent,
           title: const Text(
             'Danh mục',
             style: TextStyle(
@@ -26,7 +32,7 @@ class ShopTabView extends StatelessWidget {
           leading: const SizedBox(),
           actions: [
             IconButton(
-              onPressed: () {},
+              onPressed: () => Get.toNamed(Routes.search),
               icon: SvgPicture.asset('assets/icons/search.svg'),
             ),
           ],
@@ -56,8 +62,8 @@ class ShopTabView extends StatelessWidget {
                 controller: shopTabViewModel.tabController,
                 children: [
                   WomenTab(),
-                  const MenTab(),
-                  const KidTab(),
+                  MenTab(),
+                  KidTab(),
                 ],
               ),
             ),

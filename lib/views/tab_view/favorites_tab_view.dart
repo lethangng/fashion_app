@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
-import '../../../app/routes.dart';
 import '../../../view_models/home_view_model.dart';
 import '../../../view_models/tab_view_models/shop_tab_models/category_detail_view_model.dart';
 import '../widgets/product_container.dart';
@@ -30,102 +28,9 @@ class FavoritesTabView extends StatelessWidget {
           ),
         ),
         centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: SvgPicture.asset('assets/icons/search.svg'),
-          ),
-        ],
-        leading: IconButton(
-          onPressed: () => Get.back(),
-          icon: SvgPicture.asset('assets/icons/arrow-back.svg'),
-        ),
       ),
       body: Column(
         children: [
-          Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 10,
-            ),
-            decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  offset: const Offset(0, 4),
-                  color: const Color(0xFF000000).withOpacity(0.12),
-                  blurRadius: 12,
-                )
-              ],
-              color: Colors.white,
-            ),
-            child: Column(
-              children: [
-                const SizedBox(height: 10),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: categoryDetailViewModel.listData
-                        .map(
-                          (item) => Padding(
-                            padding: const EdgeInsets.only(right: 10),
-                            child: chip(title: item.title, event: item.event),
-                          ),
-                        )
-                        .toList(),
-                  ),
-                ),
-                const SizedBox(height: 18),
-                Container(
-                  decoration: const BoxDecoration(color: Color(0xFFF9F9F9)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      TextButton(
-                        onPressed: () => Get.toNamed(Routes.filters),
-                        child: Row(
-                          children: [
-                            SvgPicture.asset('assets/icons/filters-2.svg'),
-                            const SizedBox(width: 7),
-                            const Text(
-                              'Lọc',
-                              style: TextStyle(
-                                color: Color(0xFF222222),
-                                fontSize: 14,
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          SvgPicture.asset('assets/icons/sort.svg'),
-                          const SizedBox(width: 6),
-                          Obx(
-                            () => Text(
-                              categoryDetailViewModel.sortValue.value,
-                              style: const TextStyle(
-                                color: Color(0xFF222222),
-                                fontSize: 14,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      IconButton(
-                        onPressed: () => onPressSort(),
-                        style: IconButton.styleFrom(
-                          minimumSize: Size.zero,
-                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        ),
-                        icon: SvgPicture.asset('assets/icons/filters.svg'),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
           Expanded(
             child: MasonryGridView.count(
               padding: const EdgeInsets.all(16),
