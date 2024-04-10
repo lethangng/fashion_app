@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
 
-import '../../../models/bag_models/address_model.dart';
+import '../../../models/bag_models/address.dart';
 
-class PayViewModel extends GetxController {
-  Rx<AddressModel> addressData = AddressModel(
+class PayController extends GetxController {
+  Rx<Address> addressData = Address(
     id: 0,
     name: 'Jane Doe',
     address: '3 Newbridge Court',

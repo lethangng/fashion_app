@@ -1,20 +1,20 @@
 import 'dart:convert';
 
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-class CategoryModel {
+class Category {
   String title;
   String image;
 
-  CategoryModel({
+  Category({
     required this.title,
     required this.image,
   });
 
-  CategoryModel copyWith({
+  Category copyWith({
     String? title,
     String? image,
   }) {
-    return CategoryModel(
+    return Category(
       title: title ?? this.title,
       image: image ?? this.image,
     );
@@ -27,8 +27,8 @@ class CategoryModel {
     };
   }
 
-  factory CategoryModel.fromMap(Map<String, dynamic> map) {
-    return CategoryModel(
+  factory Category.fromMap(Map<String, dynamic> map) {
+    return Category(
       title: map['title'] as String,
       image: map['image'] as String,
     );
@@ -36,6 +36,6 @@ class CategoryModel {
 
   String toJson() => json.encode(toMap());
 
-  factory CategoryModel.fromJson(String source) =>
-      CategoryModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory Category.fromJson(String source) =>
+      Category.fromMap(json.decode(source) as Map<String, dynamic>);
 }

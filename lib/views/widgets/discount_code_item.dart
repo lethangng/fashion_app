@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../models/bag_models/discount_code_model.dart';
+import '../../models/bag_models/discount_code.dart';
 import '../../utils/color_app.dart';
 
 class DiscountCodeItem extends StatelessWidget {
@@ -12,7 +12,7 @@ class DiscountCodeItem extends StatelessWidget {
     this.event,
   });
 
-  final DiscountCodeModel discountCode;
+  final DiscountCode discountCode;
   final void Function()? event;
 
   @override

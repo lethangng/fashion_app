@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
-import '../../models/bag_models/bag_model.dart';
-import '../../models/shop_models/filters_model.dart';
+import '../../models/bag_models/bag_item.dart';
+import '../../models/shop_models/filters.dart';
 import '../../utils/color_app.dart';
-import '../../view_models/tab_view_models/bag_tab_models/bag_tab_view_model.dart';
+import '../../view_models/tab_view_models/bag_tab_view_models/bag_tab_controller.dart';
 import 'button_primary.dart';
 
 // ignore: must_be_immutable
@@ -16,9 +16,9 @@ class ProductBagContainer extends StatelessWidget {
     required this.bagModel,
     this.isPay = false,
   });
-  final BagModel bagModel;
+  final BagItem bagModel;
   bool isPay;
-  final BagTabViewModel bagTabViewModel = Get.find<BagTabViewModel>();
+  final BagTabController bagTabViewModel = Get.find<BagTabController>();
   final RxBool isShowDelete = false.obs;
 
   void onShowDelete() {
@@ -37,7 +37,7 @@ class ProductBagContainer extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Image.asset(
-                  bagModel.image,
+                  bagModel.product.listImage.first,
                   width: Get.width * 0.3,
                   fit: BoxFit.cover,
                 ),
@@ -56,7 +56,7 @@ class ProductBagContainer extends StatelessWidget {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Text(
-                                  bagModel.name,
+                                  bagModel.product.name,
                                   style: const TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600,
@@ -64,7 +64,8 @@ class ProductBagContainer extends StatelessWidget {
                                   ),
                                 ),
                                 InkWell(
-                                  onTap: () => onShowSelect(),
+                                  onTap: () =>
+                                      onShowSelect(idProduct: bagModel.id),
                                   child: Container(
                                     padding: const EdgeInsets.all(4),
                                     color: ColorApp.gray.withOpacity(0.1),
@@ -79,9 +80,13 @@ class ProductBagContainer extends StatelessWidget {
                                               color: ColorApp.black,
                                             ),
                                             children: [
-                                              TextSpan(text: bagModel.color),
+                                              TextSpan(
+                                                  text: bagModel
+                                                      .selectColor.color),
                                               const TextSpan(text: ', '),
-                                              TextSpan(text: bagModel.size),
+                                              TextSpan(
+                                                  text:
+                                                      bagModel.selectSize.size),
                                             ],
                                           ),
                                         ),
@@ -181,7 +186,7 @@ class ProductBagContainer extends StatelessWidget {
                                     ],
                                   ),
                                   Text(
-                                    '${bagModel.price}\$',
+                                    '${bagModel.product.price}\$',
                                     style: const TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500,
@@ -259,34 +264,52 @@ class ProductBagContainer extends StatelessWidget {
     );
   }
 
-  void onShowSelect() {
-    RxList<FiltersModel> listSize = [
-      FiltersModel(id: 1, title: 'XS', isSelect: true, event: () {}),
-      FiltersModel(id: 2, title: 'S', isSelect: false, event: () {}),
-      FiltersModel(id: 3, title: 'M', isSelect: false, event: () {}),
-      FiltersModel(id: 4, title: 'L', isSelect: false, event: () {}),
-      FiltersModel(id: 5, title: 'XL', isSelect: false, event: () {}),
+  void onShowSelect({required int idProduct}) {
+    int idColor = bagModel.selectColor.id;
+    int idSize = bagModel.selectSize.id;
+
+    RxList<Filters> listSize = <Filters>[
+      ...bagModel.product.listSize.map(
+        (item) => Filters(
+          id: item.id,
+          title: item.size,
+          isSelect: (bagModel.selectSize.id == item.id),
+        ),
+      )
     ].obs;
 
-    RxList<FiltersModel> listColor = [
-      FiltersModel(id: 1, title: 'Xám', isSelect: true, event: () {}),
-      FiltersModel(id: 2, title: 'Trắng', isSelect: false, event: () {}),
-      FiltersModel(id: 3, title: 'Xanh', isSelect: false, event: () {}),
-      FiltersModel(id: 4, title: 'Tím', isSelect: false, event: () {}),
+    RxList<Filters> listColor = <Filters>[
+      ...bagModel.product.listColor.map(
+        (item) => Filters(
+            id: item.id,
+            title: item.color,
+            isSelect: bagModel.selectColor.id == item.id),
+      )
     ].obs;
 
     void handleSelectSize(int id) {
       for (var item in listSize) {
-        item.isSelect = item.id == id;
+        item.isSelect = (item.id == id);
       }
+      idSize = id;
       listSize.refresh();
     }
 
     void handleSelectColor(int id) {
       for (var item in listColor) {
-        item.isSelect = item.id == id;
+        item.isSelect = (item.id == id);
       }
+      idColor = id;
       listColor.refresh();
+    }
+
+    void handleSubmit() {
+      bagTabViewModel.handleSelect(
+        id: idProduct,
+        idColor: idColor,
+        idSize: idSize,
+      );
+      Get.back();
     }
 
     Get.bottomSheet(
@@ -297,7 +320,6 @@ class ProductBagContainer extends StatelessWidget {
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 5),
             Container(
@@ -440,7 +462,7 @@ class ProductBagContainer extends StatelessWidget {
             ButtonPrimary(
               title: 'Đồng ý',
               isUpperCase: true,
-              event: () {},
+              event: () => handleSubmit(),
             ),
             const SizedBox(height: 30),
           ],

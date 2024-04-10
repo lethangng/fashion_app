@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class SearchViewModel extends GetxController {
+class SearchViewController extends GetxController {
   RxList<String> listSearch = <String>[
     'Tread',
     'Thời trang nam',

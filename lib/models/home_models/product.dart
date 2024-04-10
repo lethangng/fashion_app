@@ -1,5 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-class ProductModel {
+class Product {
   final int id;
   final String image;
   final String name;
@@ -13,7 +13,7 @@ class ProductModel {
   final bool isOutOfStock;
   final void Function()? event;
 
-  ProductModel({
+  Product({
     required this.id,
     required this.image,
     required this.name,

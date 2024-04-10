@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../models/shop_models/filters_model.dart';
+import '../../models/shop_models/filters.dart';
 
 class SelectSize {
   static void onFavarite() {
-    RxList<FiltersModel> listSize = [
-      FiltersModel(id: 1, title: 'XS', isSelect: true, event: () {}),
-      FiltersModel(id: 2, title: 'S', isSelect: false, event: () {}),
-      FiltersModel(id: 3, title: 'M', isSelect: false, event: () {}),
-      FiltersModel(id: 4, title: 'L', isSelect: false, event: () {}),
-      FiltersModel(id: 5, title: 'XL', isSelect: false, event: () {}),
+    RxList<Filters> listSize = [
+      Filters(id: 1, title: 'XS', isSelect: true),
+      Filters(id: 2, title: 'S', isSelect: false),
+      Filters(id: 3, title: 'M', isSelect: false),
+      Filters(id: 4, title: 'L', isSelect: false),
+      Filters(id: 5, title: 'XL', isSelect: false),
     ].obs;
 
     void handleSelectSize(int id) {

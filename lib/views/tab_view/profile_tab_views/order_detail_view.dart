@@ -4,12 +4,12 @@ import 'package:get/get.dart';
 
 import '../../../utils/color_app.dart';
 import '../../../utils/text_themes.dart';
-import '../../../view_models/tab_view_models/bag_tab_models/bag_tab_view_model.dart';
+import '../../../view_models/tab_view_models/bag_tab_view_models/bag_tab_controller.dart';
 import '../../widgets/product_detail_history.dart';
 
 class OrderDetailView extends StatelessWidget {
   OrderDetailView({super.key});
-  final BagTabViewModel bagTabViewModel = Get.put(BagTabViewModel());
+  final BagTabController bagTabViewModel = Get.put(BagTabController());
 
   @override
   Widget build(BuildContext context) {

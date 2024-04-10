@@ -4,12 +4,12 @@ import 'package:get/get.dart';
 
 import '../../../app/routes.dart';
 import '../../../utils/color_app.dart';
-import '../../../view_models/tab_view_models/shop_tab_models/search_view_model.dart';
+import '../../../view_models/tab_view_models/shop_tab_view_models/search_view_controller.dart';
 
 class SearchScreen extends StatelessWidget {
   SearchScreen({super.key});
 
-  final SearchViewModel searchViewModel = Get.find<SearchViewModel>();
+  final SearchViewController searchViewModel = Get.find<SearchViewController>();
 
   @override
   Widget build(BuildContext context) {

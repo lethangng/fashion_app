@@ -1,10 +1,10 @@
 import 'package:get/get.dart';
 
-import '../models/home_models/product_model.dart';
+import '../models/home_models/product.dart';
 
-class HomeViewModel extends GetxController {
-  RxList<ProductModel> listProductNew = [
-    ProductModel(
+class HomeController extends GetxController {
+  RxList<Product> listProductNew = [
+    Product(
       id: 0,
       image: 'assets/images/product.png',
       name: 'T-Shirt SPANISH',
@@ -15,7 +15,7 @@ class HomeViewModel extends GetxController {
       isNew: true,
       isOutOfStock: false,
     ),
-    ProductModel(
+    Product(
       id: 1,
       image: 'assets/images/product-2.png',
       name: 'Sport Dress',
@@ -26,7 +26,7 @@ class HomeViewModel extends GetxController {
       salePrice: 19,
       isOutOfStock: true,
     ),
-    ProductModel(
+    Product(
       id: 2,
       image: 'assets/images/product-3.png',
       name: 'Sport',
@@ -39,7 +39,7 @@ class HomeViewModel extends GetxController {
       percent: 12,
       isOutOfStock: false,
     ),
-    ProductModel(
+    Product(
       id: 2,
       image: 'assets/images/product-4.png',
       name: 'Light blouse',
@@ -50,7 +50,7 @@ class HomeViewModel extends GetxController {
       isNew: true,
       isOutOfStock: false,
     ),
-    ProductModel(
+    Product(
       id: 2,
       image: 'assets/images/product-5.png',
       name: 'Pullover',
@@ -62,7 +62,7 @@ class HomeViewModel extends GetxController {
       percent: 12,
       isOutOfStock: false,
     ),
-    ProductModel(
+    Product(
       id: 2,
       image: 'assets/images/product-6.png',
       name: 'Shirt',

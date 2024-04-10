@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../models/shop_models/color_model.dart';
-import '../../../models/shop_models/filters_model.dart';
+import '../../../models/shop_models/filters.dart';
 
-class FiltersViewModel extends GetxController {
-  RxList<FiltersModel> listPrice = [
-    FiltersModel(id: 1, title: '0-100k', isSelect: true, event: () {}),
-    FiltersModel(id: 2, title: '100k-200k', isSelect: false, event: () {}),
-    FiltersModel(id: 3, title: '200k-300k', isSelect: false, event: () {}),
-    FiltersModel(id: 4, title: '300k-500k', isSelect: false, event: () {}),
-    FiltersModel(id: 5, title: '500k-1tr', isSelect: false, event: () {}),
-    FiltersModel(id: 5, title: '>1tr', isSelect: false, event: () {}),
+class FiltersController extends GetxController {
+  RxList<Filters> listPrice = [
+    Filters(id: 1, title: '0-100k', isSelect: true),
+    Filters(id: 2, title: '100k-200k', isSelect: false),
+    Filters(id: 3, title: '200k-300k', isSelect: false),
+    Filters(id: 4, title: '300k-500k', isSelect: false),
+    Filters(id: 5, title: '500k-1tr', isSelect: false),
+    Filters(id: 5, title: '>1tr', isSelect: false),
   ].obs;
 
   RxList<ColorModel> listColor = [
@@ -23,20 +23,20 @@ class FiltersViewModel extends GetxController {
     ColorModel(id: 6, color: const Color(0xFF151867), isSelect: false),
   ].obs;
 
-  RxList<FiltersModel> listSize = [
-    FiltersModel(id: 1, title: 'XS', isSelect: true, event: () {}),
-    FiltersModel(id: 2, title: 'S', isSelect: false, event: () {}),
-    FiltersModel(id: 3, title: 'M', isSelect: false, event: () {}),
-    FiltersModel(id: 4, title: 'L', isSelect: false, event: () {}),
-    FiltersModel(id: 5, title: 'XL', isSelect: false, event: () {}),
+  RxList<Filters> listSize = [
+    Filters(id: 1, title: 'XS', isSelect: true),
+    Filters(id: 2, title: 'S', isSelect: false),
+    Filters(id: 3, title: 'M', isSelect: false),
+    Filters(id: 4, title: 'L', isSelect: false),
+    Filters(id: 5, title: 'XL', isSelect: false),
   ].obs;
 
-  RxList<FiltersModel> listCategory = [
-    FiltersModel(id: 1, title: 'Tất cả', isSelect: true, event: () {}),
-    FiltersModel(id: 2, title: 'Phụ nữ', isSelect: false, event: () {}),
-    FiltersModel(id: 3, title: 'Đàn ông', isSelect: false, event: () {}),
-    FiltersModel(id: 4, title: 'Bé trai', isSelect: false, event: () {}),
-    FiltersModel(id: 5, title: 'Bé giá', isSelect: false, event: () {}),
+  RxList<Filters> listCategory = [
+    Filters(id: 1, title: 'Tất cả', isSelect: true),
+    Filters(id: 2, title: 'Phụ nữ', isSelect: false),
+    Filters(id: 3, title: 'Đàn ông', isSelect: false),
+    Filters(id: 4, title: 'Bé trai', isSelect: false),
+    Filters(id: 5, title: 'Bé giá', isSelect: false),
   ].obs;
 
   void handleSelect(int id, String type) {

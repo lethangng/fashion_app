@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
-import '../../../view_models/tab_view_models/shop_tab_models/brand_view_model.dart';
+import '../../../view_models/tab_view_models/shop_tab_view_models/brand_controller.dart';
 
 class BrandScreen extends StatelessWidget {
   BrandScreen({super.key});
-  final BrandViewModel brandViewModel = Get.find<BrandViewModel>();
+  final BrandController brandViewModel = Get.find<BrandController>();
 
   @override
   Widget build(BuildContext context) {

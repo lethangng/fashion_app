@@ -3,13 +3,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '../../../app/routes.dart';
-import '../../../models/bag_models/address_model.dart';
+import '../../../models/bag_models/address.dart';
 import '../../../utils/color_app.dart';
-import '../../../view_models/tab_view_models/bag_tab_models/address_view_model.dart';
+import '../../../view_models/tab_view_models/bag_tab_view_models/address_controller.dart';
 
 class AddressView extends StatelessWidget {
   AddressView({super.key});
-  final AddressViewModel addressViewModel = Get.put(AddressViewModel());
+  final AddressController addressViewModel = Get.put(AddressController());
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +63,7 @@ class AddressView extends StatelessWidget {
   }
 
   Widget addressContainer({
-    required AddressModel address,
+    required Address address,
     void Function()? event,
   }) {
     return Container(

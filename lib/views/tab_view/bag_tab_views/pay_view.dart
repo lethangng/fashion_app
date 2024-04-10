@@ -3,16 +3,16 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '../../../app/routes.dart';
-import '../../../models/bag_models/address_model.dart';
+import '../../../models/bag_models/address.dart';
 import '../../../utils/color_app.dart';
-import '../../../view_models/tab_view_models/bag_tab_models/bag_tab_view_model.dart';
-import '../../../view_models/tab_view_models/bag_tab_models/pay_view_model.dart';
+import '../../../view_models/tab_view_models/bag_tab_view_models/bag_tab_controller.dart';
+import '../../../view_models/tab_view_models/bag_tab_view_models/pay_controller.dart';
 import '../../widgets/product_bag_container.dart';
 
 class PayView extends StatelessWidget {
   PayView({super.key});
-  final PayViewModel payViewModel = Get.put(PayViewModel());
-  final BagTabViewModel bagTabViewModel = Get.find<BagTabViewModel>();
+  final PayController payViewModel = Get.put(PayController());
+  final BagTabController bagTabViewModel = Get.find<BagTabController>();
 
   @override
   Widget build(BuildContext context) {
@@ -136,7 +136,7 @@ class PayView extends StatelessWidget {
   }
 
   Widget addressContainer({
-    required AddressModel address,
+    required Address address,
     void Function()? event,
   }) {
     return Container(

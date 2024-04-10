@@ -3,11 +3,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 // import '../../utils/color_app.dart';
-import '../../view_models/login_view_models/splash_view_model.dart';
+import '../../view_models/login_view_models/splash_controller.dart';
 
 class SplashScreen extends StatelessWidget {
   SplashScreen({super.key});
-  final SplashViewModel splashViewModel = Get.put(SplashViewModel());
+  final SplashController splashViewModel = Get.put(SplashController());
 
   @override
   Widget build(BuildContext context) {

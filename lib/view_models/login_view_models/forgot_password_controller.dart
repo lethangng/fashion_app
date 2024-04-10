@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 
 import '../../models/login_models/form_data_error.dart';
 
-class ForgotPasswordViewModel extends GetxController {
+class ForgotPasswordController extends GetxController {
   final Rx<FormDataError> formError = FormDataError(
     name: '',
     email: '',

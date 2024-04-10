@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 
 import '../../app/routes.dart';
 import '../../utils/color_app.dart';
-import '../../view_models/tab_view_models/shop_tab_models/search_view_model.dart';
-import '../../view_models/tab_view_models/shop_tab_view_model.dart';
+import '../../view_models/tab_view_models/shop_tab_view_models/search_view_controller.dart';
+import '../../view_models/tab_view_models/shop_tab_controller.dart';
 import 'shop_tab_view/kid_tab.dart';
 import 'shop_tab_view/men_tab.dart';
 import 'shop_tab_view/women_tab.dart';
@@ -13,7 +13,7 @@ import 'shop_tab_view/women_tab.dart';
 class ShopTabView extends StatelessWidget {
   ShopTabView({super.key});
   final ShopTabViewModel shopTabViewModel = Get.put(ShopTabViewModel());
-  final SearchViewModel searchViewModel = Get.put(SearchViewModel());
+  final SearchViewController searchViewModel = Get.put(SearchViewController());
 
   @override
   Widget build(BuildContext context) {

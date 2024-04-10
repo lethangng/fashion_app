@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'shop_tab_models/search_view_model.dart';
-
-class ShopTabViewModel extends GetxController
+class HistoryController extends GetxController
     with GetSingleTickerProviderStateMixin {
   late TabController tabController;
 
   final List<Tab> listTap = <Tab>[
-    const Tab(text: 'Phụ nữ'),
-    const Tab(text: 'Đàn ông'),
-    const Tab(text: 'Trẻ em'),
+    const Tab(text: 'Đã giao hàng'),
+    const Tab(text: 'Đang xử lý'),
+    const Tab(text: 'Đã hủy'),
   ];
 
   @override
@@ -21,7 +19,6 @@ class ShopTabViewModel extends GetxController
       vsync: this,
     );
     tabController.animateTo(0);
-    Get.put(SearchViewModel());
     super.onInit();
   }
 

@@ -1,24 +1,24 @@
 import 'package:get/get.dart';
 
-import '../../../models/bag_models/address_model.dart';
+import '../../../models/bag_models/address.dart';
 
-class AddressViewModel extends GetxController {
-  RxList<AddressModel> listDataAddress = <AddressModel>[
-    AddressModel(
+class AddressController extends GetxController {
+  RxList<Address> listDataAddress = <Address>[
+    Address(
       id: 0,
       name: 'Jane Doe',
       address: '3 Newbridge Court',
       city: 'Chino Hills',
       isDefault: true,
     ),
-    AddressModel(
+    Address(
       id: 1,
       name: 'Jane Doe',
       address: '3 Newbridge Court',
       city: 'Chino Hills',
       isDefault: false,
     ),
-    AddressModel(
+    Address(
       id: 2,
       name: 'Jane Doe',
       address: '3 Newbridge Court',

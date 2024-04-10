@@ -6,8 +6,8 @@ import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 // import '../../app/routes.dart';
 import '../../utils/color_app.dart';
-import '../../view_models/tab_view_models/home_tab_view_model.dart';
-import '../../view_models/tab_view_models/tab_view_model.dart';
+import '../../view_models/tab_view_models/home_tab_controller.dart';
+import '../../view_models/tab_view_models/tab_controller.dart';
 import 'bag_tab_views/bag_tab_view.dart';
 import 'favorites_tab_view.dart';
 import 'home_tab_view.dart';
@@ -17,7 +17,7 @@ import 'shop_tab_view.dart';
 class MainWrapper extends StatelessWidget {
   MainWrapper({super.key});
   final TabViewModel tabViewModel = Get.put(TabViewModel());
-  final HomeTabViewModel homeTabViewModel = Get.put(HomeTabViewModel());
+  final HomeTabController homeTabViewModel = Get.put(HomeTabController());
 
   @override
   Widget build(BuildContext context) {

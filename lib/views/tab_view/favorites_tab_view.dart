@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
 
-import '../../../view_models/home_view_model.dart';
-import '../../../view_models/tab_view_models/shop_tab_models/category_detail_view_model.dart';
+import '../../view_models/home_contronller.dart';
+import '../../view_models/tab_view_models/shop_tab_view_models/category_detail_controller.dart';
 import '../widgets/product_container.dart';
 
 class FavoritesTabView extends StatelessWidget {
   FavoritesTabView({super.key});
-  final CategoryDetailViewModel categoryDetailViewModel =
-      Get.put(CategoryDetailViewModel());
-  final HomeViewModel homeViewModel = Get.find<HomeViewModel>();
+  final CategoryDetailController categoryDetailViewModel =
+      Get.put(CategoryDetailController());
+  final HomeController homeViewModel = Get.find<HomeController>();
 
   @override
   Widget build(BuildContext context) {

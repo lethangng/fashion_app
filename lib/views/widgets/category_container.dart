@@ -1,16 +1,17 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../../models/shop_models/category.dart';
 
 class CategoryContainer extends StatelessWidget {
   const CategoryContainer({
     super.key,
-    required this.title,
-    required this.image,
+    required this.category,
     this.event,
   });
 
-  final String title;
-  final String image;
+  final Category category;
   final void Function()? event;
 
   @override
@@ -40,7 +41,7 @@ class CategoryContainer extends StatelessWidget {
                     children: [
                       const SizedBox(width: 23),
                       Text(
-                        title,
+                        category.title,
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w500,
@@ -52,8 +53,9 @@ class CategoryContainer extends StatelessWidget {
                 ),
                 Expanded(
                   child: Image.asset(
-                    image,
+                    category.image,
                     width: double.infinity,
+                    height: Get.width * 0.3,
                     fit: BoxFit.cover,
                   ),
                 ),

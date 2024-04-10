@@ -4,15 +4,15 @@ import 'package:get/get.dart';
 
 import '../../../app/routes.dart';
 import '../../../utils/color_app.dart';
-import '../../../view_models/profile_view_models/change_password_view_model.dart';
+import '../../../view_models/profile_view_models/change_password_controller.dart';
 import '../../widgets/button_primary.dart';
 import '../../widgets/text_input_container.dart';
 
 class ChangePasswordView extends StatelessWidget {
   ChangePasswordView({super.key});
 
-  final ChangePasswordViewModel changePasswordViewModel =
-      Get.put(ChangePasswordViewModel());
+  final ChangePasswordController changePasswordViewModel =
+      Get.put(ChangePasswordController());
 
   final TextEditingController oldPasswordController = TextEditingController();
   final TextEditingController newPasswordController = TextEditingController();

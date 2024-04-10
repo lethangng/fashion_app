@@ -4,13 +4,13 @@ import 'package:get/get.dart';
 
 import '../../app/routes.dart';
 import '../../utils/text_themes.dart';
-import '../../view_models/login_view_models/signup_view_model.dart';
+import '../../view_models/login_view_models/signup_controller.dart';
 import '../widgets/text_input_container.dart';
 
 class SignUpScreen extends StatelessWidget {
   SignUpScreen({super.key});
 
-  final SignUpViewModel signUpViewModel = Get.put(SignUpViewModel());
+  final SignUpController signUpViewModel = Get.put(SignUpController());
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();

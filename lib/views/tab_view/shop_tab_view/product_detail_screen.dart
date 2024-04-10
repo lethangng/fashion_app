@@ -5,8 +5,8 @@ import 'package:get/get.dart';
 
 import '../../../app/routes.dart';
 import '../../../utils/color_app.dart';
-import '../../../view_models/home_view_model.dart';
-import '../../../view_models/tab_view_models/shop_tab_models/product_detail_view_model.dart';
+import '../../../view_models/home_contronller.dart';
+import '../../../view_models/tab_view_models/shop_tab_view_models/product_detail_controller.dart';
 import '../../widgets/button_primary.dart';
 import '../../widgets/button_second.dart';
 import '../../widgets/product_container.dart';
@@ -14,9 +14,9 @@ import '../../widgets/select_size.dart';
 
 class ProductDetailScreen extends StatelessWidget {
   ProductDetailScreen({super.key});
-  final ProductDetailViewModel productDetailViewModel =
-      Get.put(ProductDetailViewModel());
-  final HomeViewModel homeViewModel = Get.put(HomeViewModel());
+  final ProductDetailController productDetailViewModel =
+      Get.put(ProductDetailController());
+  final HomeController homeViewModel = Get.put(HomeController());
 
   @override
   Widget build(BuildContext context) {

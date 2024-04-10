@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../view_models/home_view_model.dart';
-import '../../view_models/tab_view_models/tab_view_model.dart';
+import '../../view_models/home_contronller.dart';
+import '../../view_models/tab_view_models/tab_controller.dart';
 import '../widgets/product_container.dart';
 
 class HomeTabView extends StatelessWidget {
   HomeTabView({super.key});
 
   final TabViewModel tabViewModel = Get.find<TabViewModel>();
-  final HomeViewModel homeViewModel = Get.put(HomeViewModel());
+  final HomeController homeViewModel = Get.put(HomeController());
 
   @override
   Widget build(BuildContext context) {

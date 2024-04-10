@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 
 import '../../app/routes.dart';
 
-class SplashViewModel extends GetxController {
+class SplashController extends GetxController {
   @override
   void onInit() {
     goToHomeScreen();

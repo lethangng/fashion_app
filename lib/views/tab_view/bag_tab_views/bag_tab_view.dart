@@ -4,13 +4,13 @@ import 'package:get/get.dart';
 
 import '../../../app/routes.dart';
 import '../../../utils/color_app.dart';
-import '../../../view_models/tab_view_models/bag_tab_models/bag_tab_view_model.dart';
+import '../../../view_models/tab_view_models/bag_tab_view_models/bag_tab_controller.dart';
 import '../../widgets/discount_code_item.dart';
 import '../../widgets/product_bag_container.dart';
 
 class BagTabView extends StatelessWidget {
   BagTabView({super.key});
-  final BagTabViewModel bagTabViewModel = Get.put(BagTabViewModel());
+  final BagTabController bagTabViewModel = Get.put(BagTabController());
 
   final TextEditingController discountCodeController = TextEditingController();
 

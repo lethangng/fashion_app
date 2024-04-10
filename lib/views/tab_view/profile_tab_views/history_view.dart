@@ -3,12 +3,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '../../../utils/color_app.dart';
-import '../../../view_models/profile_view_models/history_view_model.dart';
+import '../../../view_models/profile_view_models/history_controller.dart';
 import '../../widgets/history_container_item.dart';
 
 class HistoryView extends StatelessWidget {
   HistoryView({super.key});
-  final HistoryViewModel historyViewModel = Get.put(HistoryViewModel());
+  final HistoryController historyViewModel = Get.put(HistoryController());
 
   @override
   Widget build(BuildContext context) {

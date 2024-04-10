@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import '../../../models/shop_models/category_sort.dart';
 import '../../../models/shop_models/category_type.dart';
 
-class CategoryDetailViewModel extends GetxController {
+class CategoryDetailController extends GetxController {
   List<CategoryType> listData = [
     CategoryType(title: 'Áo phông', event: () {}),
     CategoryType(title: 'Áo Crop tops', event: () {}),

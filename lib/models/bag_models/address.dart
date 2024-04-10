@@ -1,11 +1,11 @@
-class AddressModel {
+class Address {
   int id;
   String name;
   String address;
   String city;
   bool isDefault;
 
-  AddressModel({
+  Address({
     required this.id,
     required this.name,
     required this.address,

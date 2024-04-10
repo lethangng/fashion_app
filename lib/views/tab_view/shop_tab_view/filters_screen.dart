@@ -3,13 +3,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '../../../app/routes.dart';
-import '../../../view_models/tab_view_models/shop_tab_models/brand_view_model.dart';
-import '../../../view_models/tab_view_models/shop_tab_models/filters_view_model.dart';
+import '../../../view_models/tab_view_models/shop_tab_view_models/brand_controller.dart';
+import '../../../view_models/tab_view_models/shop_tab_view_models/filters_controller.dart';
 
 class FiltersScreen extends StatelessWidget {
   FiltersScreen({super.key});
-  final FiltersViewModel filtersViewModel = Get.put(FiltersViewModel());
-  final BrandViewModel brandViewModel = Get.put(BrandViewModel());
+  final FiltersController filtersViewModel = Get.put(FiltersController());
+  final BrandController brandViewModel = Get.put(BrandController());
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +48,7 @@ class FiltersScreen extends StatelessWidget {
                                 id: item.id,
                                 title: item.title,
                                 isSelect: item.isSelect,
-                                event: item.event,
+                                event: () {},
                                 type: 'price',
                               ))
                           .toList(),
@@ -84,7 +84,7 @@ class FiltersScreen extends StatelessWidget {
                                 id: item.id,
                                 title: item.title,
                                 isSelect: item.isSelect,
-                                event: item.event,
+                                event: () {},
                                 type: 'size',
                               ))
                           .toList(),
@@ -102,7 +102,7 @@ class FiltersScreen extends StatelessWidget {
                                 id: item.id,
                                 title: item.title,
                                 isSelect: item.isSelect,
-                                event: item.event,
+                                event: () {},
                                 type: 'category',
                               ))
                           .toList(),

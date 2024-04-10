@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../models/bag_models/bag_model.dart';
+import '../../models/bag_models/bag_item.dart';
 import '../../utils/color_app.dart';
 import '../../utils/text_themes.dart';
 
@@ -11,7 +11,7 @@ class ProductDetailHistory extends StatelessWidget {
     super.key,
     required this.bagModel,
   });
-  final BagModel bagModel;
+  final BagItem bagModel;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class ProductDetailHistory extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Image.asset(
-              bagModel.image,
+              bagModel.product.listImage.first,
               width: Get.width * 0.3,
               fit: BoxFit.cover,
             ),
@@ -38,7 +38,7 @@ class ProductDetailHistory extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          bagModel.name,
+                          bagModel.product.name,
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
@@ -47,15 +47,18 @@ class ProductDetailHistory extends StatelessWidget {
                         ),
                         // const SizedBox(height: 2),
                         Text(
-                          bagModel.productType,
+                          bagModel.product.listBrand.first.brand,
                           style: TextThemes.textGray_11_400,
                         ),
                         const SizedBox(height: 7),
                         Row(
                           children: [
-                            rowInfo(title: 'Màu: ', value: bagModel.color),
+                            rowInfo(
+                                title: 'Màu: ',
+                                value: bagModel.selectColor.color),
                             const SizedBox(width: 22),
-                            rowInfo(title: 'Cỡ: ', value: bagModel.size),
+                            rowInfo(
+                                title: 'Cỡ: ', value: bagModel.selectSize.size),
                           ],
                         ),
                         const SizedBox(height: 11),
@@ -66,7 +69,7 @@ class ProductDetailHistory extends StatelessWidget {
                                 title: 'Số lượng: ',
                                 value: '${bagModel.count}'),
                             Text(
-                              '${bagModel.price}\$',
+                              '${bagModel.count}\$',
                               style: TextThemes.text_14_500,
                             )
                           ],
