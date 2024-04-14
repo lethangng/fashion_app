@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
+import '../../../models/profile_models/order.dart';
 import '../../../utils/color_app.dart';
 import '../../../view_models/profile_view_models/history_controller.dart';
 import '../../widgets/history_container_item.dart';
@@ -75,7 +76,9 @@ class HistoryView extends StatelessWidget {
                   itemBuilder: (BuildContext context, int index) {
                     return const Padding(
                       padding: EdgeInsets.only(bottom: 24),
-                      child: HistoryContainerItem(),
+                      child: HistoryContainerItem(
+                        orderType: OrderType.delivered,
+                      ),
                     );
                   },
                 ),
@@ -89,7 +92,9 @@ class HistoryView extends StatelessWidget {
                   itemBuilder: (BuildContext context, int index) {
                     return const Padding(
                       padding: EdgeInsets.only(bottom: 24),
-                      child: HistoryContainerItem(),
+                      child: HistoryContainerItem(
+                        orderType: OrderType.processing,
+                      ),
                     );
                   },
                 ),
@@ -103,7 +108,9 @@ class HistoryView extends StatelessWidget {
                   itemBuilder: (BuildContext context, int index) {
                     return const Padding(
                       padding: EdgeInsets.only(bottom: 24),
-                      child: HistoryContainerItem(),
+                      child: HistoryContainerItem(
+                        orderType: OrderType.cancelled,
+                      ),
                     );
                   },
                 ),

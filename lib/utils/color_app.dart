@@ -9,6 +9,7 @@ class ColorApp {
   static const Color error = Color(0xFFF01F0E);
   static const Color success = Color(0xFF2AA952);
   static const Color hot = Color(0xFFDB3022);
+  static const Color origin = Color(0xFFFFBA49);
 
   static const Color colorGrey = Color(0xFFC1C1CD);
   static const Color colorGrey2 = Color(0xFFA0A0A0);

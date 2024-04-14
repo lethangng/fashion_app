@@ -16,14 +16,14 @@ class BagTabView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).viewPadding.top;
+    // final height = MediaQuery.of(context).viewPadding.top;
     final appBarHeight = AppBar().preferredSize.height;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 14),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: height + appBarHeight),
+          SizedBox(height: appBarHeight),
           const Text(
             'Giỏ hàng',
             style: TextStyle(
@@ -32,6 +32,7 @@ class BagTabView extends StatelessWidget {
               color: ColorApp.black,
             ),
           ),
+          const SizedBox(height: 10),
           Expanded(
             child: Obx(
               () => ListView.builder(
@@ -68,29 +69,27 @@ class BagTabView extends StatelessWidget {
                     bottomRight: Radius.circular(35),
                   ),
                 ),
-                child: Expanded(
-                  child: TextField(
-                    controller: discountCodeController,
-                    style: const TextStyle(
-                      color: ColorApp.black,
+                child: TextField(
+                  controller: discountCodeController,
+                  style: const TextStyle(
+                    color: ColorApp.black,
+                  ),
+                  onTap: () => onShowSelectDiscountCode(),
+                  readOnly: true,
+                  textAlignVertical: TextAlignVertical.center,
+                  textAlign: TextAlign.left,
+                  decoration: const InputDecoration(
+                    isDense: true, // Cho chu can giua theo chieu doc
+                    hintText: 'Nhập mã giảm giá',
+                    hintStyle: TextStyle(
+                      color: ColorApp.colorGrey2,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
                     ),
-                    onTap: () => onShowSelectDiscountCode(),
-                    readOnly: true,
-                    textAlignVertical: TextAlignVertical.center,
-                    textAlign: TextAlign.left,
-                    decoration: const InputDecoration(
-                      isDense: true, // Cho chu can giua theo chieu doc
-                      hintText: 'Nhập mã giảm giá',
-                      hintStyle: TextStyle(
-                        color: ColorApp.colorGrey2,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                      ),
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 12,
-                      ),
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 12,
                     ),
                   ),
                 ),
@@ -115,10 +114,10 @@ class BagTabView extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 28),
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
+              const Text(
                 'Tổng: ',
                 style: TextStyle(
                   fontSize: 14,
@@ -126,12 +125,14 @@ class BagTabView extends StatelessWidget {
                   color: ColorApp.gray,
                 ),
               ),
-              Text(
-                '141\$',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                  color: ColorApp.black,
+              Obx(
+                () => Text(
+                  '${bagTabViewModel.totalPrice.value}\$',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                    color: ColorApp.black,
+                  ),
                 ),
               )
             ],
@@ -208,28 +209,26 @@ class BagTabView extends StatelessWidget {
                       bottomRight: Radius.circular(35),
                     ),
                   ),
-                  child: Expanded(
-                    child: TextField(
-                      controller: discountCodeController,
-                      style: const TextStyle(
-                        color: ColorApp.black,
+                  child: TextField(
+                    controller: discountCodeController,
+                    style: const TextStyle(
+                      color: ColorApp.black,
+                    ),
+                    onTap: () {},
+                    textAlignVertical: TextAlignVertical.center,
+                    textAlign: TextAlign.left,
+                    decoration: const InputDecoration(
+                      isDense: true, // Cho chu can giua theo chieu doc
+                      hintText: 'Nhập mã giảm giá',
+                      hintStyle: TextStyle(
+                        color: ColorApp.colorGrey2,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
                       ),
-                      onTap: () {},
-                      textAlignVertical: TextAlignVertical.center,
-                      textAlign: TextAlign.left,
-                      decoration: const InputDecoration(
-                        isDense: true, // Cho chu can giua theo chieu doc
-                        hintText: 'Nhập mã giảm giá',
-                        hintStyle: TextStyle(
-                          color: ColorApp.colorGrey2,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                        ),
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: 20,
-                          vertical: 12,
-                        ),
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 12,
                       ),
                     ),
                   ),

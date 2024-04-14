@@ -140,6 +140,79 @@ class HomeTabView extends StatelessWidget {
               ],
             ),
           ),
+          const SizedBox(height: 30),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 14),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    const Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Khuyến mãi',
+                          style: TextStyle(
+                            fontSize: 34,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          'Siêu giảm giá cho bạn!',
+                          style: TextStyle(
+                            color: Color(0xFF9B9B9B),
+                          ),
+                        )
+                      ],
+                    ),
+                    const Spacer(),
+                    TextButton(
+                      onPressed: () {},
+                      style: TextButton.styleFrom(
+                        minimumSize: Size.zero,
+                        padding: const EdgeInsets.symmetric(
+                          // horizontal: 12,
+                          vertical: 6,
+                        ),
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        foregroundColor: const Color(0xFF222222),
+                      ),
+                      child: const Text('Xem tất cả'),
+                    ),
+                    const SizedBox(height: 20),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: homeViewModel.listProductNew
+                        .map(
+                          (item) => Container(
+                            margin: const EdgeInsets.only(right: 12),
+                            width: size.width * 0.4,
+                            child: ProductContainer(
+                              id: item.id,
+                              image: item.image,
+                              name: item.name,
+                              star: item.star,
+                              evaluate: item.evaluate,
+                              typeProduct: item.typeProduct,
+                              price: item.price,
+                              salePrice: item.salePrice,
+                              percent: item.percent,
+                              isNew: item.isNew,
+                              isOutOfStock: item.isOutOfStock,
+                              typeContainer: '',
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );

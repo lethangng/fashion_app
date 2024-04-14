@@ -281,9 +281,11 @@ class ProductBagContainer extends StatelessWidget {
     RxList<Filters> listColor = <Filters>[
       ...bagModel.product.listColor.map(
         (item) => Filters(
-            id: item.id,
-            title: item.color,
-            isSelect: bagModel.selectColor.id == item.id),
+          id: item.id,
+          title: item.color,
+          image: item.image,
+          isSelect: bagModel.selectColor.id == item.id,
+        ),
       )
     ].obs;
 
@@ -334,6 +336,82 @@ class ProductBagContainer extends StatelessWidget {
             const Align(
               alignment: Alignment.centerLeft,
               child: Text(
+                'Chọn màu sắc',
+                style: TextStyle(
+                  color: Color(0xFF222222),
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            SizedBox(
+              width: Get.width,
+              child: Obx(
+                () => Wrap(
+                  spacing: 16,
+                  runSpacing: 16,
+                  children: listColor
+                      .map(
+                        (item) => InkWell(
+                          onTap: () => handleSelectColor(item.id),
+                          borderRadius: BorderRadius.circular(8),
+                          child: Container(
+                            // width: Get.width * 0.27,
+                            constraints:
+                                BoxConstraints(minWidth: Get.width * 0.25),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 10,
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                  width: 1,
+                                  color: item.isSelect
+                                      ? ColorApp.primary
+                                      : ColorApp.gray),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Visibility(
+                                  visible: item.image != null,
+                                  maintainSize: false,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(right: 4),
+                                    child: Image.asset(
+                                      '${item.image}',
+                                      width: Get.width * 0.05,
+                                      height: Get.width * 0.05,
+                                      // fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  item.title,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: item.isSelect
+                                        ? ColorApp.primary
+                                        : const Color(0xFF222222),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      )
+                      .toList(),
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            const Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
                 'Chọn cỡ',
                 style: TextStyle(
                   color: Color(0xFF222222),
@@ -356,70 +434,6 @@ class ProductBagContainer extends StatelessWidget {
                           child: OutlinedButton(
                             onPressed: () {
                               handleSelectSize(item.id);
-                            },
-                            style: TextButton.styleFrom(
-                              minimumSize: Size.zero,
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 10,
-                              ),
-                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              backgroundColor: item.isSelect
-                                  ? const Color(0xFFDB3022)
-                                  : Colors.transparent,
-                              side: BorderSide(
-                                color: item.isSelect
-                                    ? const Color(0xFFDB3022)
-                                    : const Color(0xFF9B9B9B),
-                                width: 1,
-                              ),
-                            ),
-                            child: Text(
-                              item.title,
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                                color: item.isSelect
-                                    ? Colors.white
-                                    : const Color(0xFF222222),
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
-                      .toList(),
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-            const Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Chọn màu sắc',
-                style: TextStyle(
-                  color: Color(0xFF222222),
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ),
-            const SizedBox(height: 10),
-            SizedBox(
-              width: Get.width,
-              child: Obx(
-                () => Wrap(
-                  spacing: 16,
-                  runSpacing: 16,
-                  children: listColor
-                      .map(
-                        (item) => SizedBox(
-                          width: Get.width * 0.27,
-                          child: OutlinedButton(
-                            onPressed: () {
-                              handleSelectColor(item.id);
                             },
                             style: TextButton.styleFrom(
                               minimumSize: Size.zero,

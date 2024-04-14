@@ -1,11 +1,18 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../app/routes.dart';
+import '../../models/profile_models/order.dart';
 import '../../utils/color_app.dart';
 
 class HistoryContainerItem extends StatelessWidget {
-  const HistoryContainerItem({super.key});
+  const HistoryContainerItem({
+    super.key,
+    required this.orderType,
+  });
+
+  final OrderType orderType;
 
   @override
   Widget build(BuildContext context) {
@@ -131,12 +138,12 @@ class HistoryContainerItem extends StatelessWidget {
                   ),
                 ),
               ),
-              const Text(
-                'Đã giao hàng',
+              Text(
+                orderTypeValue(orderType: orderType)['title'],
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
-                  color: ColorApp.success,
+                  color: orderTypeValue(orderType: orderType)['color'],
                 ),
               )
             ],
@@ -144,6 +151,25 @@ class HistoryContainerItem extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Map<String, dynamic> orderTypeValue({required OrderType orderType}) {
+    if (orderType == OrderType.delivered) {
+      return {
+        'title': 'Đã giao hàng',
+        'color': ColorApp.success,
+      };
+    } else if (orderType == OrderType.processing) {
+      return {
+        'title': 'Đang xử lý',
+        'color': ColorApp.origin,
+      };
+    } else {
+      return {
+        'title': 'Đã hủy',
+        'color': ColorApp.primary,
+      };
+    }
   }
 
   Widget rowInfo({

@@ -6,6 +6,8 @@ import '../../../models/bag_models/product.dart';
 import '../../../utils/color_app.dart';
 
 class BagTabController extends GetxController {
+  RxDouble totalPrice = 0.0.obs;
+
   RxList<BagItem> listDataBag = <BagItem>[
     BagItem(
       id: 0,
@@ -21,7 +23,8 @@ class BagTabController extends GetxController {
         listColor: [
           ProductColor(
               id: 0, color: 'Xanh', image: 'assets/images/product-bag-1.png'),
-          ProductColor(id: 1, color: 'Xám'),
+          ProductColor(
+              id: 1, color: 'Xám', image: 'assets/images/product-bag-2.png'),
         ],
         listSize: [
           ProductSize(id: 0, size: 'M'),
@@ -106,6 +109,14 @@ class BagTabController extends GetxController {
     ),
   ].obs;
 
+  double handleTotalPrice() {
+    double totalPrice = 0;
+    for (var item in listDataBag) {
+      totalPrice += item.count * item.product.price;
+    }
+    return totalPrice;
+  }
+
   void handleCount({required int id, required String type}) {
     for (var item in listDataBag) {
       if (item.id == id) {
@@ -119,6 +130,7 @@ class BagTabController extends GetxController {
       }
     }
     listDataBag.refresh();
+    totalPrice.value = handleTotalPrice();
   }
 
   void handleSelect({
@@ -141,5 +153,11 @@ class BagTabController extends GetxController {
       }
     }
     listDataBag.refresh();
+  }
+
+  @override
+  void onReady() {
+    totalPrice.value = handleTotalPrice();
+    super.onReady();
   }
 }

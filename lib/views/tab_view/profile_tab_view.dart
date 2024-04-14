@@ -77,6 +77,16 @@ class ProfileTabView extends StatelessWidget {
             color: ColorApp.gray,
           ),
           rowInfo(
+            title: 'Thông báo',
+            desc: 'Có ${10} thông báo mới',
+            event: () => Get.toNamed(Routes.historyView),
+          ),
+          Container(
+            height: 1,
+            width: double.infinity,
+            color: ColorApp.gray,
+          ),
+          rowInfo(
               title: 'Địa chỉ giao hàng',
               desc: '${3} địa chỉ',
               event: () => Get.toNamed(Routes.address)),
