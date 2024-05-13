@@ -15,6 +15,7 @@ void main() async {
           Brightness.dark, // Mau cua bieu tuong trong status bar
     ),
   );
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );

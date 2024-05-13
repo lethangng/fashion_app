@@ -1,3 +1,4 @@
+import 'package:fashion_app/view_models/auth/register_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -11,6 +12,7 @@ class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
 
   final LoginController loginViewModel = Get.put(LoginController());
+  final RegisterController _registerController = RegisterController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
@@ -163,14 +165,20 @@ class LoginScreen extends StatelessWidget {
                       Expanded(
                         child: loginContainer(
                           image: 'assets/icons/google.svg',
-                          event: () {},
+                          event: () async {
+                            await _registerController
+                                .authenticationWithGoogle();
+                          },
                         ),
                       ),
                       const SizedBox(width: 16),
                       Expanded(
                         child: loginContainer(
                           image: 'assets/icons/facebook.svg',
-                          event: () {},
+                          event: () async {
+                            await _registerController
+                                .authenticationWithFacebook();
+                          },
                         ),
                       ),
                     ],

@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '../../app/routes.dart';
+import '../../services/auth_service.dart';
 import '../../utils/color_app.dart';
 import '../../utils/text_themes.dart';
 import '../widgets/button_primary.dart';
@@ -131,7 +132,10 @@ class ProfileTabView extends StatelessWidget {
           ButtonPrimary(
             title: 'Đăng xuất',
             isUpperCase: true,
-            event: () => Get.offAllNamed(Routes.login),
+            event: () async {
+              await AuthService.logout();
+              Get.offAllNamed(Routes.login);
+            },
           ),
         ],
       ),
