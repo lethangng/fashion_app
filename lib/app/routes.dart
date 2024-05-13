@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
 
-import '../views/login_view/forgot_password_screen.dart';
-import '../views/login_view/login_screen.dart';
-import '../views/login_view/signup_screen.dart';
-import '../views/login_view/splash_screen.dart';
+import '../views/login/forgot_password_screen.dart';
+import '../views/login/login_screen.dart';
+import '../views/login/signup_screen.dart';
+import '../views/login/splash_screen.dart';
 import '../views/tab_view/bag_tab_views/address_view.dart';
 import '../views/tab_view/bag_tab_views/edit_address_view.dart';
 import '../views/tab_view/bag_tab_views/pay_success_view.dart';
