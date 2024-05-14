@@ -105,6 +105,7 @@ class TextInputContainer extends StatelessWidget {
                                     Colors.grey,
                                     BlendMode.srcIn,
                                   ),
+                                  width: 24,
                                 ),
                               )
                             : const SizedBox(),

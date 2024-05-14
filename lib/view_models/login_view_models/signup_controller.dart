@@ -59,9 +59,9 @@ class SignUpController extends GetxController {
       formError.value.password = 'Vui lòng nhập mật khẩu lớn hơn 6 ký tự';
     } else if (Validate.validatePassword(password) == PasswordError.long) {
       formError.value.password = 'Vui lòng nhập mật khẩu nhỏ hơn 20 ký tự';
-    } else if (Validate.validatePassword(password) == PasswordError.format) {
-      formError.value.password =
-          'Vui lòng nhập mật khẩu chứa ít nhất 1 chữ hoa và 1 ký tự đặc biệt';
+      // } else if (Validate.validatePassword(password) == PasswordError.format) {
+      //   formError.value.password =
+      //       'Vui lòng nhập mật khẩu chứa ít nhất 1 chữ hoa và 1 ký tự đặc biệt';
     } else {
       formError.value.password = '';
     }

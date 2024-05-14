@@ -71,43 +71,12 @@ class HomeTabView extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 14),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    const Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Mới nhất',
-                          style: TextStyle(
-                            fontSize: 34,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          'Bạn chưa bao giờ nhìn thấy nó trước đây!',
-                          style: TextStyle(
-                            color: Color(0xFF9B9B9B),
-                          ),
-                        )
-                      ],
-                    ),
-                    const Spacer(),
-                    TextButton(
-                      onPressed: () {},
-                      style: TextButton.styleFrom(
-                        minimumSize: Size.zero,
-                        padding: const EdgeInsets.symmetric(
-                          // horizontal: 12,
-                          vertical: 6,
-                        ),
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        foregroundColor: const Color(0xFF222222),
-                      ),
-                      child: const Text('Xem tất cả'),
-                    ),
-                    const SizedBox(height: 20),
-                  ],
+                rowInfo(
+                  title: 'Mới nhất',
+                  subTitle: 'Bạn chưa bao giờ nhìn thấy nó trước đây!',
+                  event: () {},
                 ),
                 const SizedBox(height: 20),
                 SingleChildScrollView(
@@ -145,42 +114,10 @@ class HomeTabView extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 14),
             child: Column(
               children: [
-                Row(
-                  children: [
-                    const Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Khuyến mãi',
-                          style: TextStyle(
-                            fontSize: 34,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          'Siêu giảm giá cho bạn!',
-                          style: TextStyle(
-                            color: Color(0xFF9B9B9B),
-                          ),
-                        )
-                      ],
-                    ),
-                    const Spacer(),
-                    TextButton(
-                      onPressed: () {},
-                      style: TextButton.styleFrom(
-                        minimumSize: Size.zero,
-                        padding: const EdgeInsets.symmetric(
-                          // horizontal: 12,
-                          vertical: 6,
-                        ),
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        foregroundColor: const Color(0xFF222222),
-                      ),
-                      child: const Text('Xem tất cả'),
-                    ),
-                    const SizedBox(height: 20),
-                  ],
+                rowInfo(
+                  title: 'Khuyến mãi',
+                  subTitle: 'Siêu giảm giá cho bạn!',
+                  event: () {},
                 ),
                 const SizedBox(height: 20),
                 SingleChildScrollView(
@@ -215,6 +152,50 @@ class HomeTabView extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Widget rowInfo({
+    required String title,
+    required String subTitle,
+    required void Function() event,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 34,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const Spacer(),
+            TextButton(
+              onPressed: event,
+              style: TextButton.styleFrom(
+                minimumSize: Size.zero,
+                padding: const EdgeInsets.symmetric(
+                  // horizontal: 12,
+                  vertical: 6,
+                ),
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                foregroundColor: const Color(0xFF222222),
+              ),
+              child: const Text('Xem tất cả'),
+            ),
+            const SizedBox(height: 20),
+          ],
+        ),
+        Text(
+          subTitle,
+          style: const TextStyle(
+            color: Color(0xFF9B9B9B),
+          ),
+        ),
+      ],
     );
   }
 }

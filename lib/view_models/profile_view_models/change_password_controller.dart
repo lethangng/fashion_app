@@ -52,9 +52,9 @@ class ChangePasswordController extends GetxController {
       formError.value.newPassword = 'Vui lòng nhập mật khẩu lớn hơn 6 ký tự';
     } else if (Validate.validatePassword(newPassword) == PasswordError.long) {
       formError.value.newPassword = 'Vui lòng nhập mật khẩu nhỏ hơn 20 ký tự';
-    } else if (Validate.validatePassword(newPassword) == PasswordError.format) {
-      formError.value.newPassword =
-          'Vui lòng nhập mật khẩu chứa ít nhất 1 chữ hoa và 1 ký tự đặc biệt';
+      // } else if (Validate.validatePassword(newPassword) == PasswordError.format) {
+      //   formError.value.newPassword =
+      //       'Vui lòng nhập mật khẩu chứa ít nhất 1 chữ hoa và 1 ký tự đặc biệt';
     } else {
       formError.value.newPassword = '';
     }

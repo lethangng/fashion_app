@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '../../app/routes.dart';
-import '../../services/auth_service.dart';
+import '../../services/auth/auth_service.dart';
 import '../../utils/color_app.dart';
 import '../../utils/text_themes.dart';
 import '../widgets/button_primary.dart';

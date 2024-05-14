@@ -1,7 +1,7 @@
 enum PasswordError {
   long,
   sort,
-  format,
+  // format,
   isNull,
 }
 
@@ -11,9 +11,9 @@ class Validate {
       return PasswordError.sort;
     } else if (password.length > 20) {
       return PasswordError.long;
-    } else if (!RegExp(r'^(?=.*[A-Z])(?=.*[^\w\d\s]).{6,20}$')
-        .hasMatch(password)) {
-      return PasswordError.format;
+      // } else if (!RegExp(r'^(?=.*[A-Z])(?=.*[^\w\d\s]).{6,20}$')
+      //     .hasMatch(password)) {
+      //   return PasswordError.format;
     } else {
       return PasswordError.isNull;
     }
