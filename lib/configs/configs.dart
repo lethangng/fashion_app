@@ -1,4 +1,4 @@
 class Configs {
-  static String baseUrl = 'http://127.0.0.1:8000/api';
-  static String getProducts = '/products';
+  static String baseUrl = 'http://192.168.58.16:8000/api';
+  static String checkLogin = '/check-login';
 }

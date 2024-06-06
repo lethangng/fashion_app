@@ -23,7 +23,7 @@ class AuthService {
   static final _auth = FirebaseAuth.instance;
   static User? get user => _auth.currentUser;
 
-  static Future<UserCredential> login({
+  static Future<UserCredential> loginWithPassword({
     required String email,
     required String password,
   }) async {
@@ -37,24 +37,8 @@ class AuthService {
         code: 1,
         message: 'Email hoặc mật khẩu không đúng.',
       );
-      // if (e.code == 'user-not-found') {
-      //   debugPrint('Email không đúng.');
-      //   throw AuthException(
-      //     code: 1,
-      //     message: 'Email hoặc mật khẩu không đúng.',
-      //   );
-      // } else if (e.code == 'wrong-password') {
-      //   debugPrint('Mật khẩu không đúng.');
-      //   throw AuthException(
-      //     code: 1,
-      //     message: 'Email hoặc mật khẩu không đúng.',
-      //   );
-      // } else {
-      //   throw AuthException(
-      //     code: 1,
-      //     message: 'Email hoặc mật khẩu không đúng.',
-      //   );
-      // }
+    } catch (e) {
+      rethrow;
     }
   }
 

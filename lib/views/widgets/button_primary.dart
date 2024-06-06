@@ -11,7 +11,6 @@ class ButtonPrimary extends StatelessWidget {
     this.background = ColorApp.primary,
     this.isUpperCase = false,
     this.size = double.infinity,
-    this.isLoading = false,
     this.event,
   });
 
@@ -19,7 +18,6 @@ class ButtonPrimary extends StatelessWidget {
   final Color background;
   final bool isUpperCase;
   final double size;
-  final bool isLoading;
   final void Function()? event;
 
   @override
@@ -39,14 +37,10 @@ class ButtonPrimary extends StatelessWidget {
           ),
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
         ),
-        child: isLoading
-            ? const CircularProgressIndicator(
-                color: Colors.white,
-              )
-            : Text(
-                isUpperCase ? title.toUpperCase() : title,
-                style: TextThemes.text_14_500.copyWith(color: Colors.white),
-              ),
+        child: Text(
+          isUpperCase ? title.toUpperCase() : title,
+          style: TextThemes.text_14_500.copyWith(color: Colors.white),
+        ),
       ),
     );
   }

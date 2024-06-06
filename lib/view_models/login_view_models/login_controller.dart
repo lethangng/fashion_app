@@ -1,25 +1,15 @@
 import 'package:get/get.dart';
 
-import '../../app/routes.dart';
 import '../../models/login_models/form_data_error.dart';
 import '../../services/auth/auth_service.dart';
 import '../../utils/validate.dart';
+import '../auth/auth_controller.dart';
 
 class LoginController extends GetxController {
-  final Rx<FormDataError> formError = FormDataError(
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-  ).obs;
-
-  final RxBool isLoading = false.obs;
-  void setIsLoading(bool value) {
-    isLoading.value = value;
-  }
+  final AuthController _authController = Get.find<AuthController>();
+  final Rx<FormDataError> formError = FormDataError().obs;
 
   final RxBool isLastCheck = true.obs;
-
   final RxBool showPassword = false.obs;
 
   void handleShowPassword() {
@@ -31,7 +21,6 @@ class LoginController extends GetxController {
     String password,
   ) async {
     isLastCheck.value = false;
-    setIsLoading(true);
 
     if (email.isEmpty) {
       formError.value.email = 'Tên đăng nhập không được để trống';
@@ -51,23 +40,16 @@ class LoginController extends GetxController {
       formError.value.password = '';
     }
 
-    if (formError.value ==
-        FormDataError(
-          name: '',
-          email: '',
-          password: '',
-          confirmPassword: '',
-        )) {
+    if (formError.value == FormDataError()) {
       try {
-        await AuthService.login(email: email, password: password);
-        printInfo(info: AuthService.user.toString());
-        Get.toNamed(Routes.home);
+        formError.refresh();
+        await _authController.authenticationWithPassword(
+            email: email, password: password);
       } on AuthException catch (e) {
         formError.value.email = e.toString();
         formError.value.password = e.toString();
       }
     }
     formError.refresh();
-    setIsLoading(false);
   }
 }

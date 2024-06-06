@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../view_models/controllers/controller_bindings.dart';
 import 'routes.dart';
 
 class App extends StatelessWidget {
@@ -8,6 +9,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      initialBinding: ControllerBindings(),
       title: 'Fashion app',
       theme: ThemeData(
         useMaterial3: true,

@@ -4,6 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '../../app/routes.dart';
+import '../../services/response/api_status.dart';
+import '../../utils/color_app.dart';
 import '../../utils/text_themes.dart';
 import '../../view_models/login_view_models/login_controller.dart';
 import '../widgets/button_primary.dart';
@@ -13,9 +15,9 @@ class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
 
   final LoginController _loginViewModel = Get.put(LoginController());
-  final AuthController _registerController = AuthController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  final AuthController _authController = AuthController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +62,7 @@ class LoginScreen extends StatelessWidget {
               const SizedBox(height: 50),
               Obx(
                 () => TextInputContainer(
-                  textController: emailController,
+                  textController: _emailController,
                   title: 'Email',
                   des: 'Nhập email',
                   isLast: _loginViewModel.isLastCheck.value,
@@ -71,7 +73,7 @@ class LoginScreen extends StatelessWidget {
               const SizedBox(height: 10),
               Obx(
                 () => TextInputContainer(
-                  textController: passwordController,
+                  textController: _passwordController,
                   title: 'Mật khẩu',
                   des: 'Nhập mật khẩu',
                   isLast: _loginViewModel.isLastCheck.value,
@@ -112,35 +114,24 @@ class LoginScreen extends StatelessWidget {
               ),
               const SizedBox(height: 30),
               Obx(
-                () => ButtonPrimary(
-                  title: 'Đăng nhập',
-                  event: () => _loginViewModel.validate(
-                    emailController.text,
-                    passwordController.text,
-                  ),
-                  isLoading: _loginViewModel.isLoading.value,
-                ),
+                () {
+                  if (_authController.loginRes.value.status == Status.loading) {
+                    return const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(color: ColorApp.primary),
+                    );
+                  }
+
+                  return ButtonPrimary(
+                    title: 'Đăng nhập',
+                    event: () => _loginViewModel.validate(
+                      _emailController.text,
+                      _passwordController.text,
+                    ),
+                  );
+                },
               ),
-              // Container(
-              //   width: double.infinity,
-              //   decoration: const BoxDecoration(
-              //     color: Color(0xFFDB3022),
-              //     borderRadius: BorderRadius.all(Radius.circular(4)),
-              //   ),
-              //   child: TextButton(
-              // onPressed: () => loginViewModel.validate(
-              //   emailController.text,
-              //   passwordController.text,
-              // ),
-              //     child: const Text(
-              //       'Đăng nhập',
-              //       style: TextStyle(
-              //         fontWeight: FontWeight.w600,
-              //         color: Colors.white,
-              //       ),
-              //     ),
-              //   ),
-              // ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -182,8 +173,7 @@ class LoginScreen extends StatelessWidget {
                           child: loginContainer(
                             image: 'assets/icons/google.svg',
                             event: () async {
-                              await _registerController
-                                  .authenticationWithGoogle();
+                              await _authController.authenticationWithGoogle();
                             },
                           ),
                         ),
@@ -192,7 +182,7 @@ class LoginScreen extends StatelessWidget {
                           child: loginContainer(
                             image: 'assets/icons/facebook.svg',
                             event: () async {
-                              await _registerController
+                              await _authController
                                   .authenticationWithFacebook();
                             },
                           ),

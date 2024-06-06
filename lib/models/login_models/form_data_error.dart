@@ -6,10 +6,10 @@ class FormDataError {
   String confirmPassword;
 
   FormDataError({
-    required this.name,
-    required this.email,
-    required this.password,
-    required this.confirmPassword,
+    this.name = '',
+    this.email = '',
+    this.password = '',
+    this.confirmPassword = '',
   });
 
   @override

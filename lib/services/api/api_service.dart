@@ -42,8 +42,8 @@ class ApiService extends BaseApiService {
     dynamic responseJson;
     try {
       final response = await http.post(
-        Uri.parse(url),
-        // Uri.parse(baseUrl + url),
+        // Uri.parse(url),
+        Uri.parse(baseUrl + url),
         // headers: baseHeader,
         // body: json.encode(jsonBody),
         body: jsonBody,

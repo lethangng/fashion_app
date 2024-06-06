@@ -1,4 +1,4 @@
 abstract class BaseRepository<T> {
-  getData(T? data);
+  getData(T data);
   postData(T data);
 }

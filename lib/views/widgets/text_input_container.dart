@@ -70,6 +70,7 @@ class TextInputContainer extends StatelessWidget {
                         Expanded(
                           child: TextField(
                             controller: textController,
+                            keyboardType: TextInputType.multiline,
                             obscureText: isPassword && showPassword == false,
                             cursorColor: ColorApp.colorGrey2,
                             style: const TextStyle(color: Colors.black),
