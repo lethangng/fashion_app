@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 
 import '../../../app/routes.dart';
 import '../../../utils/color_app.dart';
-import '../../../view_models/home_contronller.dart';
+import '../../../view_models/home_viewmodel.dart';
 import '../../../view_models/tab_view_models/shop_tab_view_models/product_detail_controller.dart';
 import '../../widgets/button_primary.dart';
 import '../../widgets/button_second.dart';

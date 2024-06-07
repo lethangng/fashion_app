@@ -4,12 +4,12 @@ import 'package:get/get.dart';
 
 import '../../../models/profile_models/order.dart';
 import '../../../utils/color_app.dart';
-import '../../../view_models/profile_view_models/history_controller.dart';
+import '../../../view_models/profile_view_models/history_viewmodel.dart';
 import '../../widgets/history_container_item.dart';
 
 class HistoryView extends StatelessWidget {
   HistoryView({super.key});
-  final HistoryController historyViewModel = Get.put(HistoryController());
+  final HistoryViewModel historyViewModel = Get.put(HistoryViewModel());
 
   @override
   Widget build(BuildContext context) {

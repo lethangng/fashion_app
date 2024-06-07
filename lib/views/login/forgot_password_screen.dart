@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
-import '../../view_models/login_view_models/forgot_password_controller.dart';
+import '../../view_models/login_view_models/forgot_password_viewmodel.dart';
 import '../widgets/app_bar_container.dart';
 import '../widgets/button_primary.dart';
 import '../widgets/text_input_container.dart';
@@ -10,8 +10,8 @@ import '../widgets/text_input_container.dart';
 class ForgotPasswordScreen extends StatelessWidget {
   ForgotPasswordScreen({super.key});
 
-  final ForgotPasswordController forgotPasswordViewModel =
-      Get.put(ForgotPasswordController());
+  final ForgotPasswordViewModel forgotPasswordViewModel =
+      Get.put(ForgotPasswordViewModel());
   final TextEditingController emailController = TextEditingController();
 
   @override

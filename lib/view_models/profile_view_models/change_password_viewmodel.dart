@@ -9,7 +9,7 @@ enum PasswordType {
   confirmPassword,
 }
 
-class ChangePasswordController extends GetxController {
+class ChangePasswordViewModel extends GetxController {
   final Rx<PasswordDataError> formError = PasswordDataError(
     oldPassword: '',
     newPassword: '',

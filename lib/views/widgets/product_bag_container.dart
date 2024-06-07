@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import '../../models/bag_models/bag_item.dart';
 import '../../models/shop_models/filters.dart';
 import '../../utils/color_app.dart';
-import '../../view_models/tab_view_models/bag_tab_view_models/bag_tab_controller.dart';
+import '../../view_models/tab_view_models/bag_tab_view_models/bag_tab_viewmodel.dart';
 import 'button_primary.dart';
 
 // ignore: must_be_immutable

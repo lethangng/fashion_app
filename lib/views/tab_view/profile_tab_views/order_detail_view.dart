@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 
 import '../../../utils/color_app.dart';
 import '../../../utils/text_themes.dart';
-import '../../../view_models/tab_view_models/bag_tab_view_models/bag_tab_controller.dart';
+import '../../../view_models/tab_view_models/bag_tab_view_models/bag_tab_viewmodel.dart';
 import '../../widgets/product_detail_history.dart';
 
 class OrderDetailView extends StatelessWidget {

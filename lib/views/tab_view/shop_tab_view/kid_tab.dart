@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 
 import '../../../app/routes.dart';
 import '../../../utils/color_app.dart';
-import '../../../view_models/tab_view_models/shop_tab_controller.dart';
+import '../../../view_models/tab_view_models/shop_tab_viewmodel.dart';
 import '../../widgets/category_container.dart';
 import '../../widgets/sale_container.dart';
 

@@ -8,7 +8,7 @@ enum PasswordType {
   confirmPassword,
 }
 
-class SignUpController extends GetxController {
+class RegisterViewModel extends GetxController {
   final Rx<FormDataError> formError = FormDataError(
     name: '',
     email: '',

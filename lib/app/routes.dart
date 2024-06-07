@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 
 import '../views/login/forgot_password_screen.dart';
 import '../views/login/login_screen.dart';
-import '../views/login/signup_screen.dart';
+import '../views/login/register_screen.dart';
 import '../views/login/splash_screen.dart';
 import '../views/tab_view/bag_tab_views/address_view.dart';
 import '../views/tab_view/bag_tab_views/edit_address_view.dart';
@@ -48,7 +48,7 @@ class Routes {
     // GetPage(name: splashScreen, page: () => SearchScreen()),
     GetPage(name: splashScreen, page: () => SplashScreen()),
     GetPage(name: home, page: () => MainWrapper()),
-    GetPage(name: signup, page: () => SignUpScreen()),
+    GetPage(name: signup, page: () => RegisterScreen()),
     GetPage(name: login, page: () => LoginScreen()),
     GetPage(name: forgotPassword, page: () => ForgotPasswordScreen()),
     GetPage(name: categryDetail, page: () => CaegoryDetail()),

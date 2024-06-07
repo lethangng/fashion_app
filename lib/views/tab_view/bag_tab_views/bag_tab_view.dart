@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 
 import '../../../app/routes.dart';
 import '../../../utils/color_app.dart';
-import '../../../view_models/tab_view_models/bag_tab_view_models/bag_tab_controller.dart';
+import '../../../view_models/tab_view_models/bag_tab_view_models/bag_tab_viewmodel.dart';
 import '../../widgets/discount_code_item.dart';
 import '../../widgets/product_bag_container.dart';
 

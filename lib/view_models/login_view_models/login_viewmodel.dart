@@ -5,7 +5,7 @@ import '../../services/auth/auth_service.dart';
 import '../../utils/validate.dart';
 import '../auth/auth_controller.dart';
 
-class LoginController extends GetxController {
+class LoginViewModel extends GetxController {
   final AuthController _authController = Get.find<AuthController>();
   final Rx<FormDataError> formError = FormDataError().obs;
 

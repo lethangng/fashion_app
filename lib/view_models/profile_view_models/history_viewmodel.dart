@@ -5,7 +5,7 @@ import '../../models/bag_models/bag_item.dart';
 import '../../models/bag_models/product.dart';
 import '../../models/profile_models/order.dart';
 
-class HistoryController extends GetxController
+class HistoryViewModel extends GetxController
     with GetSingleTickerProviderStateMixin {
   late TabController tabController;
 

@@ -7,14 +7,14 @@ import '../../app/routes.dart';
 import '../../services/response/api_status.dart';
 import '../../utils/color_app.dart';
 import '../../utils/text_themes.dart';
-import '../../view_models/login_view_models/login_controller.dart';
+import '../../view_models/login_view_models/login_viewmodel.dart';
 import '../widgets/button_primary.dart';
 import '../widgets/text_input_container.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
 
-  final LoginController _loginViewModel = Get.put(LoginController());
+  final LoginViewModel _loginViewModel = Get.put(LoginViewModel());
   final AuthController _authController = AuthController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();

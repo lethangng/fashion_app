@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import '../../../app/routes.dart';
 import '../../../models/bag_models/address.dart';
 import '../../../utils/color_app.dart';
-import '../../../view_models/tab_view_models/bag_tab_view_models/address_controller.dart';
+import '../../../view_models/tab_view_models/bag_tab_view_models/address_viewmodel.dart';
 
 class AddressView extends StatelessWidget {
   AddressView({super.key});

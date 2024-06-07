@@ -5,8 +5,8 @@ import 'package:get/get.dart';
 import '../../../app/routes.dart';
 import '../../../models/bag_models/address.dart';
 import '../../../utils/color_app.dart';
-import '../../../view_models/tab_view_models/bag_tab_view_models/bag_tab_controller.dart';
-import '../../../view_models/tab_view_models/bag_tab_view_models/pay_controller.dart';
+import '../../../view_models/tab_view_models/bag_tab_view_models/bag_tab_viewmodel.dart';
+import '../../../view_models/tab_view_models/bag_tab_view_models/pay_viewmodel.dart';
 import '../../widgets/product_bag_container.dart';
 
 class PayView extends StatelessWidget {
