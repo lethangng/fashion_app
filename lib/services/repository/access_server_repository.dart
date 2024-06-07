@@ -1,20 +1,19 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 
+import '../../models/request/request_data.dart';
 import '../api/api_endpoints.dart';
 import '../api/api_service.dart';
 import '../exceptions/app_exceptions.dart';
 import 'base_respository.dart';
 
-class AccessServerRepository implements BaseRepository<Map<String, dynamic>> {
+class AccessServerRepository implements BaseRepository<RequestData> {
   final ApiService apiService = ApiService();
 
   @override
-  getData(Map<String, dynamic> data) async {
+  getData(RequestData data) async {
     try {
       dynamic response = await apiService.getResponse(
-        ApiEndPoints.endPoint(data['query']),
+        ApiEndPoints.endPoint(data.query),
       );
       if (response is List) {
         // List<DataMessage> jsonData =
@@ -22,7 +21,7 @@ class AccessServerRepository implements BaseRepository<Map<String, dynamic>> {
         // return jsonData;
       } else if (response is Map) {
         if (response['res'] == 'done') {
-          var data = response['msg'];
+          var data = response['data'];
           return data;
         } else {
           throw BadRequestException('${response['msg']}');
@@ -37,11 +36,11 @@ class AccessServerRepository implements BaseRepository<Map<String, dynamic>> {
   }
 
   @override
-  postData(Map<String, dynamic> data) async {
+  postData(RequestData data) async {
     try {
       dynamic response = await apiService.postResponse(
-        url: ApiEndPoints.endPoint(data['query']),
-        jsonBody: json.decode(data['data']),
+        url: ApiEndPoints.endPoint(data.query),
+        jsonBody: data.data,
       );
       if (response is List) {
         // List<DataMessage> jsonData =

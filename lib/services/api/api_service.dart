@@ -39,8 +39,8 @@ class ApiService extends BaseApiService {
     required String url,
     required Object jsonBody,
   }) async {
-    dynamic responseJson;
     try {
+      dynamic responseJson;
       final response = await http.post(
         // Uri.parse(url),
         Uri.parse(baseUrl + url),
@@ -49,12 +49,12 @@ class ApiService extends BaseApiService {
         body: jsonBody,
       );
       responseJson = returnResponse(response);
+      return responseJson;
     } on SocketException {
       throw FetchDataException('No Internet Connection');
     } on RequestTimeOut {
       throw RequestTimeOut('Request Timeout');
     }
-    return responseJson;
   }
 
   dynamic returnResponse(http.Response response) {

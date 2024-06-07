@@ -1,19 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../services/response/api_status.dart';
+import '../../utils/color_app.dart';
 import '../../view_models/home_viewmodel.dart';
 import '../../view_models/tab_view_models/tab_controller.dart';
 import '../widgets/product_container.dart';
+import '../widgets/show_dialog_error.dart';
 
 class HomeTabView extends StatelessWidget {
   HomeTabView({super.key});
 
-  final TabViewModel tabViewModel = Get.find<TabViewModel>();
-  final HomeController homeViewModel = Get.put(HomeController());
+  final TabViewModel _tabViewModel = Get.find<TabViewModel>();
+  final HomeController _homeViewModel = Get.put(HomeController());
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    return Obx(() {
+      if (_homeViewModel.productSaleRes.value.status == Status.error) {
+        showDialogError(error: _homeViewModel.productSaleRes.value.message!);
+      }
+
+      if (_homeViewModel.productSaleRes.value.status == Status.completed) {
+        return screen();
+      }
+      return const Center(
+        child: CircularProgressIndicator(
+          color: ColorApp.primary,
+        ),
+      );
+    });
+  }
+
+  Widget screen() {
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -44,9 +63,9 @@ class HomeTabView extends StatelessWidget {
                           ),
                         ),
                         SizedBox(
-                          width: size.width * 0.4,
+                          width: Get.width * 0.4,
                           child: TextButton(
-                            onPressed: () => tabViewModel.goToTab(1),
+                            onPressed: () => _tabViewModel.goToTab(1),
                             style: TextButton.styleFrom(
                               backgroundColor: const Color(0xFFDB3022),
                               foregroundColor: Colors.white,
@@ -82,24 +101,14 @@ class HomeTabView extends StatelessWidget {
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
-                    children: homeViewModel.listProductNew
+                    children: _homeViewModel.listProductSale
                         .map(
                           (item) => Container(
                             margin: const EdgeInsets.only(right: 12),
-                            width: size.width * 0.4,
+                            width: Get.width * 0.4,
                             child: ProductContainer(
-                              id: item.id,
-                              image: item.image,
-                              name: item.name,
-                              star: item.star,
-                              evaluate: item.evaluate,
-                              typeProduct: item.typeProduct,
-                              price: item.price,
-                              salePrice: item.salePrice,
-                              percent: item.percent,
-                              isNew: item.isNew,
-                              isOutOfStock: item.isOutOfStock,
-                              typeContainer: '',
+                              product: item,
+                              productType: ProductType.product,
                             ),
                           ),
                         )
@@ -110,46 +119,46 @@ class HomeTabView extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 30),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 14),
-            child: Column(
-              children: [
-                rowInfo(
-                  title: 'Khuyến mãi',
-                  subTitle: 'Siêu giảm giá cho bạn!',
-                  event: () {},
-                ),
-                const SizedBox(height: 20),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: homeViewModel.listProductNew
-                        .map(
-                          (item) => Container(
-                            margin: const EdgeInsets.only(right: 12),
-                            width: size.width * 0.4,
-                            child: ProductContainer(
-                              id: item.id,
-                              image: item.image,
-                              name: item.name,
-                              star: item.star,
-                              evaluate: item.evaluate,
-                              typeProduct: item.typeProduct,
-                              price: item.price,
-                              salePrice: item.salePrice,
-                              percent: item.percent,
-                              isNew: item.isNew,
-                              isOutOfStock: item.isOutOfStock,
-                              typeContainer: '',
-                            ),
-                          ),
-                        )
-                        .toList(),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(horizontal: 14),
+          //   child: Column(
+          //     children: [
+          //       rowInfo(
+          //         title: 'Khuyến mãi',
+          //         subTitle: 'Siêu giảm giá cho bạn!',
+          //         event: () {},
+          //       ),
+          //       const SizedBox(height: 20),
+          //       SingleChildScrollView(
+          //         scrollDirection: Axis.horizontal,
+          //         child: Row(
+          //           children: _homeViewModel.listProductNew
+          //               .map(
+          //                 (item) => Container(
+          //                   margin: const EdgeInsets.only(right: 12),
+          //                   width: size.width * 0.4,
+          //                   child: ProductContainer(
+          //                     id: item.id,
+          //                     image: item.image,
+          //                     name: item.name,
+          //                     star: item.star,
+          //                     evaluate: item.evaluate,
+          //                     typeProduct: item.typeProduct,
+          //                     price: item.price,
+          //                     salePrice: item.salePrice,
+          //                     percent: item.percent,
+          //                     isNew: item.isNew,
+          //                     isOutOfStock: item.isOutOfStock,
+          //                     typeContainer: '',
+          //                   ),
+          //                 ),
+          //               )
+          //               .toList(),
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
         ],
       ),
     );

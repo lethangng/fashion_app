@@ -106,7 +106,7 @@ class AuthService {
         FacebookAuthProvider.credential(loginResult.accessToken!.token);
 
     // Once signed in, return the UserCredential
-    return _auth.signInWithCredential(facebookAuthCredential);
+    return await _auth.signInWithCredential(facebookAuthCredential);
   }
 
   static Future<void> logout() async {

@@ -168,22 +168,11 @@ class CaegoryDetail extends StatelessWidget {
               crossAxisCount: 2,
               crossAxisSpacing: 12,
               mainAxisSpacing: 16,
-              itemCount: homeViewModel.listProductNew.length,
+              itemCount: homeViewModel.listProductSale.length,
               itemBuilder: (context, index) {
                 return ProductContainer(
-                  id: homeViewModel.listProductNew[index].id,
-                  image: homeViewModel.listProductNew[index].image,
-                  name: homeViewModel.listProductNew[index].name,
-                  star: homeViewModel.listProductNew[index].star,
-                  evaluate: homeViewModel.listProductNew[index].evaluate,
-                  typeProduct: homeViewModel.listProductNew[index].typeProduct,
-                  price: homeViewModel.listProductNew[index].price,
-                  percent: homeViewModel.listProductNew[index].percent,
-                  salePrice: homeViewModel.listProductNew[index].salePrice,
-                  isNew: homeViewModel.listProductNew[index].isNew,
-                  isOutOfStock:
-                      homeViewModel.listProductNew[index].isOutOfStock,
-                  typeContainer: '',
+                  product: homeViewModel.listProductSale[index],
+                  productType: ProductType.product,
                 );
               },
             ),

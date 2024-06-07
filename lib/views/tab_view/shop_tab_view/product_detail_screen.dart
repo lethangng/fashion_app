@@ -351,24 +351,14 @@ class ProductDetailScreen extends StatelessWidget {
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Row(
-                          children: homeViewModel.listProductNew
+                          children: homeViewModel.listProductSale
                               .map(
                                 (item) => Container(
                                   margin: const EdgeInsets.only(right: 12),
                                   width: size.width * 0.4,
                                   child: ProductContainer(
-                                    id: item.id,
-                                    image: item.image,
-                                    name: item.name,
-                                    star: item.star,
-                                    evaluate: item.evaluate,
-                                    typeProduct: item.typeProduct,
-                                    price: item.price,
-                                    salePrice: item.salePrice,
-                                    percent: item.percent,
-                                    isNew: item.isNew,
-                                    isOutOfStock: item.isOutOfStock,
-                                    typeContainer: '',
+                                    product: item,
+                                    productType: ProductType.product,
                                   ),
                                 ),
                               )

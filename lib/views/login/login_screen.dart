@@ -170,20 +170,49 @@ class LoginScreen extends StatelessWidget {
                     Row(
                       children: [
                         Expanded(
-                          child: loginContainer(
-                            image: 'assets/icons/google.svg',
-                            event: () async {
-                              await _authController.authenticationWithGoogle();
+                          child: Obx(
+                            () {
+                              if (_authController.loginRes.value.status ==
+                                  Status.loading) {
+                                return const SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(
+                                      color: ColorApp.primary),
+                                );
+                              }
+
+                              return loginContainer(
+                                image: 'assets/icons/google.svg',
+                                event: () async {
+                                  await _authController
+                                      .authenticationWithGoogle();
+                                },
+                              );
                             },
                           ),
                         ),
                         const SizedBox(width: 16),
                         Expanded(
-                          child: loginContainer(
-                            image: 'assets/icons/facebook.svg',
-                            event: () async {
-                              await _authController
-                                  .authenticationWithFacebook();
+                          child: Obx(
+                            () {
+                              if (_authController.loginRes.value.status ==
+                                  Status.loading) {
+                                return const SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(
+                                      color: ColorApp.primary),
+                                );
+                              }
+
+                              return loginContainer(
+                                image: 'assets/icons/facebook.svg',
+                                event: () async {
+                                  await _authController
+                                      .authenticationWithFacebook();
+                                },
+                              );
                             },
                           ),
                         ),

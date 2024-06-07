@@ -3,10 +3,10 @@ import 'dart:convert';
 
 class User {
   final int id;
-  final int u_id;
+  final String u_id;
   final String fullname;
   final String email;
-  final String image;
+  final String? image;
   final String login_type;
 
   User({
@@ -14,25 +14,25 @@ class User {
     required this.u_id,
     required this.fullname,
     required this.email,
-    required this.login_type,
     required this.image,
+    required this.login_type,
   });
 
   User copyWith({
     int? id,
-    int? u_id,
+    String? u_id,
     String? fullname,
     String? email,
-    String? login_type,
     String? image,
+    String? login_type,
   }) {
     return User(
       id: id ?? this.id,
       u_id: u_id ?? this.u_id,
       fullname: fullname ?? this.fullname,
       email: email ?? this.email,
-      login_type: login_type ?? this.login_type,
       image: image ?? this.image,
+      login_type: login_type ?? this.login_type,
     );
   }
 
@@ -42,19 +42,19 @@ class User {
       'u_id': u_id,
       'fullname': fullname,
       'email': email,
-      'login_type': login_type,
       'image': image,
+      'login_type': login_type,
     };
   }
 
   factory User.fromMap(Map<String, dynamic> map) {
     return User(
       id: map['id'] as int,
-      u_id: map['u_id'] as int,
+      u_id: map['u_id'] as String,
       fullname: map['fullname'] as String,
       email: map['email'] as String,
+      image: map['image'] != null ? map['image'] as String : null,
       login_type: map['login_type'] as String,
-      image: map['image'] as String,
     );
   }
 
@@ -65,7 +65,7 @@ class User {
 
   @override
   String toString() {
-    return 'User(id: $id, u_id: $u_id, fullname: $fullname, email: $email, login_type: $login_type, image: $image)';
+    return 'User(id: $id, u_id: $u_id, fullname: $fullname, email: $email, image: $image, login_type: $login_type)';
   }
 
   @override
@@ -76,8 +76,8 @@ class User {
         other.u_id == u_id &&
         other.fullname == fullname &&
         other.email == email &&
-        other.login_type == login_type &&
-        other.image == image;
+        other.image == image &&
+        other.login_type == login_type;
   }
 
   @override
@@ -86,7 +86,7 @@ class User {
         u_id.hashCode ^
         fullname.hashCode ^
         email.hashCode ^
-        login_type.hashCode ^
-        image.hashCode;
+        image.hashCode ^
+        login_type.hashCode;
   }
 }

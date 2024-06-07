@@ -1,17 +1,25 @@
 import 'package:get/get.dart';
 
+// import '../../app/routes.dart';
 import '../../app/routes.dart';
+import '../controllers/user_controller.dart';
 
 class SplashViewModel extends GetxController {
-  @override
-  void onInit() {
-    goToHomeScreen();
-    super.onInit();
+  final UserController _userController = Get.find<UserController>();
+
+  Future<void> initData() async {
+    await _userController.handleGetUser();
   }
 
-  void goToHomeScreen() {
-    Future.delayed(const Duration(seconds: 2), () {
+  Future<void> goToScreen() async {
+    await Future.delayed(const Duration(seconds: 1), () {
       Get.offAllNamed(Routes.home);
     });
+  }
+
+  @override
+  void onInit() {
+    initData();
+    super.onInit();
   }
 }

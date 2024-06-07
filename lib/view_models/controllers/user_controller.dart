@@ -1,10 +1,10 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../configs/configs.dart';
 import '../../models/request/request_data.dart';
 import '../../models/request/user.dart';
+import '../../services/auth/auth_service.dart';
 import '../../services/repository/access_server_repository.dart';
 import '../../services/response/api_response.dart';
 
@@ -22,7 +22,7 @@ class UserController extends GetxController {
     setUserRes(ApiResponse.loading());
     try {
       final Map<String, dynamic> data =
-          await _accessServerRepository.postData(req.toMap());
+          await _accessServerRepository.postData(req);
 
       User user = User.fromMap(data);
       debugPrint(user.toString());
@@ -35,12 +35,13 @@ class UserController extends GetxController {
 
   Future<void> handleGetUser({String? uId}) async {
     Map<String, dynamic> data = {
-      'u_id': uId ?? 'sr7yFfa3IkUqXdQQGJaUyKfNUsq1',
+      'u_id': uId ?? AuthService.user?.uid ?? 'KKOAW8GqDRXGAvjPZ4biVrWpzho2',
+      // 'u_id': uId ?? 'KKOAW8GqDRXGAvjPZ4biVrWpzho2',
     };
 
     RequestData resquestData = RequestData(
-      query: 'user-info',
-      data: json.encode(data),
+      query: Configs.getUserInfo,
+      data: data,
     );
 
     await _fetchUserDetail(resquestData);

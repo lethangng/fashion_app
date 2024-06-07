@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:get/get.dart';
 
 import '../../app/routes.dart';
@@ -26,7 +24,7 @@ class AuthController {
     setLoginRes(ApiResponse.loading());
     try {
       final Map<String, dynamic> data =
-          await _accessServerRepository.postData(req.toMap());
+          await _accessServerRepository.postData(req);
 
       User user = User.fromMap(data);
 
@@ -44,13 +42,16 @@ class AuthController {
   Future<void> handleLogin(String loginType) async {
     Map<String, dynamic> data = {
       'u_id': AuthService.user!.uid,
-      'email': AuthService.user!.email,
+      'email': AuthService.user!.providerData[0].email,
+      'fullname': AuthService.user!.providerData[0].displayName,
+      'image': AuthService.user!.providerData[0].photoURL,
+      // 'login_type': AuthService.user!.providerData[0].providerId,
       'login_type': loginType,
     };
 
     RequestData resquestData = RequestData(
       query: Configs.checkLogin,
-      data: json.encode(data),
+      data: data,
     );
 
     await _fetchData(resquestData);
@@ -62,7 +63,7 @@ class AuthController {
   }) async {
     try {
       await AuthService.loginWithPassword(email: email, password: password);
-      // printInfo(info: AuthService.user!.toString());
+      printInfo(info: AuthService.user!.toString());
 
       await handleLogin('password');
 
@@ -77,7 +78,7 @@ class AuthController {
   Future<void> authenticationWithGoogle() async {
     try {
       await AuthService.signInWithGoogle();
-      // printInfo(info: AuthService.user!.toString());
+      printInfo(info: AuthService.user!.toString());
 
       await handleLogin('google');
 
@@ -91,7 +92,7 @@ class AuthController {
   Future<void> authenticationWithFacebook() async {
     try {
       await AuthService.signInWithFacebook();
-      // printInfo(info: AuthService.user!.toString());
+      printInfo(info: AuthService.user!.toString());
 
       await handleLogin('facebook');
 

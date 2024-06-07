@@ -1,9 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
+
 class RequestData {
   final String query;
-  final String data;
+  final Map<String, dynamic> data;
 
   RequestData({
     required this.query,
@@ -12,7 +14,7 @@ class RequestData {
 
   RequestData copyWith({
     String? query,
-    String? data,
+    Map<String, dynamic>? data,
   }) {
     return RequestData(
       query: query ?? this.query,
@@ -30,7 +32,7 @@ class RequestData {
   factory RequestData.fromMap(Map<String, dynamic> map) {
     return RequestData(
       query: map['query'] as String,
-      data: map['data'] as String,
+      data: Map<String, dynamic>.from((map['data'] as Map<String, dynamic>)),
     );
   }
 
@@ -46,7 +48,7 @@ class RequestData {
   bool operator ==(covariant RequestData other) {
     if (identical(this, other)) return true;
 
-    return other.query == query && other.data == data;
+    return other.query == query && mapEquals(other.data, data);
   }
 
   @override
