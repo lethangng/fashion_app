@@ -20,8 +20,12 @@ class HomeTabView extends StatelessWidget {
       if (_homeViewModel.productSaleRes.value.status == Status.error) {
         showDialogError(error: _homeViewModel.productSaleRes.value.message!);
       }
+      if (_homeViewModel.productNewestRes.value.status == Status.error) {
+        showDialogError(error: _homeViewModel.productNewestRes.value.message!);
+      }
 
-      if (_homeViewModel.productSaleRes.value.status == Status.completed) {
+      if (_homeViewModel.productSaleRes.value.status == Status.completed &&
+          _homeViewModel.productNewestRes.value.status == Status.completed) {
         return screen();
       }
       return const Center(
@@ -86,15 +90,54 @@ class HomeTabView extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 30),
+          // const SizedBox(height: 10),
+          Container(
+            height: 10,
+            color: Colors.white,
+          ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 14),
+            padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 rowInfo(
                   title: 'Mới nhất',
                   subTitle: 'Bạn chưa bao giờ nhìn thấy nó trước đây!',
+                  event: () {},
+                ),
+                const SizedBox(height: 20),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: _homeViewModel.listProductNewest
+                        .map(
+                          (item) => Container(
+                            margin: const EdgeInsets.only(right: 12),
+                            width: Get.width * 0.4,
+                            child: ProductContainer(
+                              product: item,
+                              productType: ProductType.product,
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // const SizedBox(height: 30),
+          Container(
+            height: 30,
+            color: Colors.white,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              children: [
+                rowInfo(
+                  title: 'Khuyến mãi',
+                  subTitle: 'Siêu giảm giá cho bạn!',
                   event: () {},
                 ),
                 const SizedBox(height: 20),
@@ -118,47 +161,6 @@ class HomeTabView extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 30),
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(horizontal: 14),
-          //   child: Column(
-          //     children: [
-          //       rowInfo(
-          //         title: 'Khuyến mãi',
-          //         subTitle: 'Siêu giảm giá cho bạn!',
-          //         event: () {},
-          //       ),
-          //       const SizedBox(height: 20),
-          //       SingleChildScrollView(
-          //         scrollDirection: Axis.horizontal,
-          //         child: Row(
-          //           children: _homeViewModel.listProductNew
-          //               .map(
-          //                 (item) => Container(
-          //                   margin: const EdgeInsets.only(right: 12),
-          //                   width: size.width * 0.4,
-          //                   child: ProductContainer(
-          //                     id: item.id,
-          //                     image: item.image,
-          //                     name: item.name,
-          //                     star: item.star,
-          //                     evaluate: item.evaluate,
-          //                     typeProduct: item.typeProduct,
-          //                     price: item.price,
-          //                     salePrice: item.salePrice,
-          //                     percent: item.percent,
-          //                     isNew: item.isNew,
-          //                     isOutOfStock: item.isOutOfStock,
-          //                     typeContainer: '',
-          //                   ),
-          //                 ),
-          //               )
-          //               .toList(),
-          //         ),
-          //       ),
-          //     ],
-          //   ),
-          // ),
         ],
       ),
     );

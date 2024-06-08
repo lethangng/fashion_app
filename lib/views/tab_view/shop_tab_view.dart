@@ -6,9 +6,10 @@ import '../../app/routes.dart';
 import '../../utils/color_app.dart';
 import '../../view_models/tab_view_models/shop_tab_view_models/search_view_controller.dart';
 import '../../view_models/tab_view_models/shop_tab_viewmodel.dart';
-import 'shop_tab_view/kid_tab.dart';
-import 'shop_tab_view/men_tab.dart';
-import 'shop_tab_view/women_tab.dart';
+import 'shop_tab_view/tabs/accessory_tab.dart';
+import 'shop_tab_view/tabs/kid_tab.dart';
+import 'shop_tab_view/tabs/men_tab.dart';
+import 'shop_tab_view/tabs/women_tab.dart';
 
 class ShopTabView extends StatelessWidget {
   ShopTabView({super.key});
@@ -64,6 +65,7 @@ class ShopTabView extends StatelessWidget {
                   WomenTab(),
                   MenTab(),
                   KidTab(),
+                  AccessoryTab(),
                 ],
               ),
             ),

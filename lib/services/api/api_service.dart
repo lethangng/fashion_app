@@ -23,7 +23,7 @@ class ApiService extends BaseApiService {
             // headers: baseHeader,
           )
           .timeout(
-            const Duration(seconds: 10),
+            const Duration(seconds: 15),
           );
       responseJson = returnResponse(response);
     } on SocketException {

@@ -1,16 +1,24 @@
 class Configs {
-  static String baseUrl = 'http://192.168.0.16:8000/api';
+  static String baseUrl = 'http://192.168.1.9:8000/api';
   static String checkLogin = '/check-login';
   static String getUserInfo = '/user-info';
-  // static String getListProduct = '/product';
+  static String addFavoriteProduct = '/favorite/add';
 
   static String getListProduct({
     required int page,
-    required int user_id,
-    required int limit,
-    required bool sale,
-    required bool newest,
+    int? user_id,
+    int? limit,
+    bool? sale,
+    bool? newest,
+    int? category_id,
   }) {
-    return '/product?page=$page&user_id=$user_id&limit=$limit&newest=$newest';
+    return '/product?page=$page&user_id=${user_id ?? ''}&limit=${limit ?? ''}&newest=${newest ?? ''}&category_id=${category_id ?? ''}';
+  }
+
+  static String getDetailProduct({
+    required int id,
+    int? user_id,
+  }) {
+    return '/product/detail?id=$id&user_id=${user_id ?? ''}';
   }
 }

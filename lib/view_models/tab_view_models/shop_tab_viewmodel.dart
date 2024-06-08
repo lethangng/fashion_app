@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+// import '../../models/home_models/product.dart';
 import '../../models/shop_models/category.dart';
 import 'shop_tab_view_models/search_view_controller.dart';
 
@@ -12,7 +13,10 @@ class ShopTabViewModel extends GetxController
     const Tab(text: 'Phụ nữ'),
     const Tab(text: 'Đàn ông'),
     const Tab(text: 'Trẻ em'),
+    const Tab(text: 'Phụ kiện'),
   ];
+
+  // final RxList<Product> listProductWomen = <Product>[].obs;
 
   List<Category> listDataWomen = [
     Category(title: 'Mới nhất', image: 'assets/images/category-1.png'),

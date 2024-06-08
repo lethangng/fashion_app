@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 enum PasswordError {
   long,
   sort,
@@ -21,5 +23,18 @@ class Validate {
 
   static bool validateConfirmPassword(String password, String confirmPassword) {
     return password == confirmPassword;
+  }
+
+  static bool checkNullEmpty(String? value) {
+    return value != null && value.isNotEmpty;
+  }
+
+  static String formatMonney(int amount) {
+    final formatter = NumberFormat.currency(
+      locale: 'vi_VN',
+      symbol: 'đ',
+      decimalDigits: 0,
+    );
+    return formatter.format(amount);
   }
 }
