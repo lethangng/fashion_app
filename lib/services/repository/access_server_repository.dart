@@ -40,7 +40,7 @@ class AccessServerRepository implements BaseRepository<RequestData> {
     try {
       dynamic response = await apiService.postResponse(
         url: ApiEndPoints.endPoint(data.query),
-        jsonBody: data.data,
+        bodyData: data.data,
       );
       if (response is List) {
         // List<DataMessage> jsonData =

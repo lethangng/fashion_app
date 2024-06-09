@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -7,8 +9,10 @@ import 'package:get/get.dart';
 
 import '../../../app/routes.dart';
 import '../../../models/home_models/product_detail.dart';
+import '../../../models/shop_models/filters.dart';
 import '../../../services/response/api_status.dart';
 import '../../../utils/color_app.dart';
+import '../../../utils/helper.dart';
 import '../../../utils/validate.dart';
 import '../../../view_models/home_viewmodel.dart';
 import '../../../view_models/tab_view_models/shop_tab_view_models/product_detail_viewmodel.dart';
@@ -16,9 +20,15 @@ import '../../widgets/button_primary.dart';
 import '../../widgets/button_second.dart';
 import '../../widgets/image_container.dart';
 import '../../widgets/product_container.dart';
+import '../../widgets/review_container.dart';
 import '../../widgets/show_dialog_error.dart';
 
 final staticAnchorKey = GlobalKey();
+
+enum AddType {
+  cart,
+  pay,
+}
 
 class ProductDetailScreen extends StatelessWidget {
   ProductDetailScreen({super.key});
@@ -31,7 +41,7 @@ class ProductDetailScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFF9F9F9),
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         scrolledUnderElevation: 0,
         title: const Text(
           'Chi tiết sản phẩm',
@@ -249,10 +259,13 @@ class ProductDetailScreen extends StatelessWidget {
                                 width: 36,
                                 height: 36,
                                 alignment: Alignment.center,
-                                decoration: const BoxDecoration(
-                                  color: Colors.white,
+                                decoration: BoxDecoration(
+                                  color:
+                                      _productDetailViewModel.isFavorite.value
+                                          ? ColorApp.primary
+                                          : Colors.white,
                                   shape: BoxShape.circle,
-                                  boxShadow: [
+                                  boxShadow: const [
                                     BoxShadow(
                                       blurRadius: 4,
                                       offset: Offset(0, 4),
@@ -260,8 +273,8 @@ class ProductDetailScreen extends StatelessWidget {
                                     ),
                                   ],
                                 ),
-                                child:
-                                    SvgPicture.asset('assets/icons/heart.svg'),
+                                child: SvgPicture.asset(
+                                    'assets/icons/${_productDetailViewModel.isFavorite.value ? 'heart-2' : 'heart'}.svg'),
                               ),
                             ),
                           ],
@@ -426,26 +439,41 @@ class ProductDetailScreen extends StatelessWidget {
                           ],
                         ),
                         const SizedBox(height: 10),
-                        ListView.builder(
-                          itemCount: 2,
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Padding(
-                              padding:
-                                  EdgeInsets.only(bottom: index != 1 ? 20 : 0),
-                              child: reviewsContainer(
-                                id: 1,
-                                image: 'assets/images/avatar-review.png',
-                                name: 'Helene Moore',
-                                star: 4,
-                                time: '05/03/2024',
-                                content:
-                                    '''The dress is great! Very classy and comfortable. It fit perfectly! I'm 5'7" and 130 pounds. I am a 34B chest. This dress would be too long for those who are shorter but could be hemmed. I wouldn't recommend it for those big chested as I am smaller chested and it fit me perfectly. The underarms were not too wide and the dress was made well.''',
-                              ),
+                        Obx(() {
+                          if (_productDetailViewModel
+                                  .evaluateRes.value.status ==
+                              Status.error) {
+                            showDialogError(
+                                error: _productDetailViewModel
+                                    .evaluateRes.value.message!);
+                          }
+
+                          if (_productDetailViewModel
+                                  .evaluateRes.value.status ==
+                              Status.completed) {
+                            return ListView.builder(
+                              itemCount:
+                                  _productDetailViewModel.listEvaluate.length,
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Padding(
+                                  padding: EdgeInsets.only(
+                                      bottom: index != 1 ? 20 : 0),
+                                  child: ReviewContainer(
+                                    evaluate: _productDetailViewModel
+                                        .listEvaluate[index],
+                                  ),
+                                );
+                              },
                             );
-                          },
-                        ),
+                          }
+                          return const Center(
+                            child: CircularProgressIndicator(
+                              color: ColorApp.primary,
+                            ),
+                          );
+                        }),
                         const Divider(
                           height: 1,
                           color: ColorApp.gray,
@@ -456,7 +484,10 @@ class ProductDetailScreen extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(vertical: 10),
                           color: Colors.white,
                           child: GestureDetector(
-                            onTap: () => Get.toNamed(Routes.reviews),
+                            onTap: () => Get.toNamed(Routes.reviews,
+                                arguments: {
+                                  'productId': _productDetailViewModel.productId
+                                }),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -554,7 +585,7 @@ class ProductDetailScreen extends StatelessWidget {
                         child: ButtonSecond(
                           title: 'Thêm vào giỏ hàng',
                           isUpperCase: true,
-                          event: () {},
+                          event: () async => await onShowSelect(AddType.cart),
                         ),
                       ),
                       const SizedBox(width: 16),
@@ -562,7 +593,7 @@ class ProductDetailScreen extends StatelessWidget {
                         child: ButtonPrimary(
                           title: 'Mua ngay',
                           isUpperCase: true,
-                          event: () {},
+                          event: () async => await onShowSelect(AddType.pay),
                         ),
                       ),
                     ],
@@ -577,121 +608,237 @@ class ProductDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget reviewsContainer({
-    required int id,
-    required String image,
-    required String name,
-    required int star,
-    required String time,
-    required String content,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
-        boxShadow: [
-          BoxShadow(
-            blurRadius: 25,
-            offset: const Offset(0, 1),
-            color: const Color(0xFF000000).withOpacity(0.05),
-          )
-        ],
-      ),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Image.asset(image),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        name,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: Color(0xFF222222),
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          for (int i = 0; i < 5; i++)
-                            Padding(
-                              padding: const EdgeInsets.only(right: 2),
-                              child: SvgPicture.asset(
-                                  'assets/icons/${(i < star) ? 'star-full' : 'star-empty'}.svg'),
-                            ),
-                        ],
-                      )
-                    ],
-                  ),
-                ],
-              ),
-              Text(
-                time,
-                style: const TextStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w400,
-                  color: Color(0xFF9B9B9B),
-                ),
-              )
-            ],
-          ),
-          const SizedBox(height: 11),
-          Text(
-            content,
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-              color: Color(0xFF222222),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  Future<void> onShowSelect(AddType addType) async {
+    final ProductDetail productDetail =
+        _productDetailViewModel.productDetailRes.value.data!;
+    int idColor = productDetail.colors.first.id;
+    int idSize = productDetail.sizes.first.id;
 
-  Widget button({
-    required String title,
-    required Color borderColor,
-    required void Function()? event,
-  }) {
-    return OutlinedButton(
-      onPressed: event,
-      style: OutlinedButton.styleFrom(
-        foregroundColor: const Color(0xFF222222),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
+    RxList<Filters> listSize = <Filters>[
+      ...productDetail.sizes.map(
+        (item) => Filters(
+          id: item.id,
+          title: item.name,
+          isSelect: (idSize == item.id),
         ),
-        side: BorderSide(
-          color: borderColor,
-          width: 1,
+      )
+    ].obs;
+
+    RxList<Filters> listColor = <Filters>[
+      ...productDetail.colors.map(
+        (item) => Filters(
+          id: item.id,
+          title: item.name,
+          colorValue: item.color,
+          isSelect: idColor == item.id,
         ),
-        padding: const EdgeInsets.symmetric(
-          horizontal: 12,
-          vertical: 10,
+      )
+    ].obs;
+
+    void handleSelectSize(int id) {
+      for (var item in listSize) {
+        item.isSelect = (item.id == id);
+      }
+      idSize = id;
+      listSize.refresh();
+    }
+
+    void handleSelectColor(int id) {
+      for (var item in listColor) {
+        item.isSelect = (item.id == id);
+      }
+      idColor = id;
+      listColor.refresh();
+    }
+
+    Future<void> handleSubmit() async {
+      Get.back();
+      if (addType == AddType.cart) {
+        await _productDetailViewModel.handleLoadAddCart(
+          idColor: idColor,
+          idSize: idSize,
+        );
+      } else {
+        //
+      }
+    }
+
+    await Get.bottomSheet(
+      Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
         ),
-      ),
-      child: Row(
-        children: [
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-              color: Color(0xFF222222),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(height: 10),
+            Container(
+              width: Get.width * 0.2,
+              height: 5,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(100),
+                color: const Color(0xFF979797),
+              ),
             ),
-          ),
-          const Spacer(),
-          SvgPicture.asset('assets/icons/arrow-down.svg'),
-        ],
+            const SizedBox(height: 16),
+            const Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Chọn màu sắc',
+                style: TextStyle(
+                  color: Color(0xFF222222),
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            SizedBox(
+              width: Get.width,
+              child: Obx(
+                () => Wrap(
+                  spacing: 16,
+                  runSpacing: 16,
+                  children: listColor
+                      .map(
+                        (item) => InkWell(
+                          onTap: () => handleSelectColor(item.id),
+                          borderRadius: BorderRadius.circular(8),
+                          child: Container(
+                            // width: Get.width * 0.27,
+                            constraints:
+                                BoxConstraints(minWidth: Get.width * 0.25),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 10,
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                  width: 1,
+                                  color: item.isSelect
+                                      ? ColorApp.primary
+                                      : ColorApp.gray),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                // Visibility(
+                                //   visible: item.colorValue != null,
+                                //   maintainSize: false,
+                                //   child: Padding(
+                                //     padding: const EdgeInsets.only(right: 4),
+                                //     child:
+                                //     Image.asset(
+                                //       '${item.colorValue}',
+                                //       width: Get.width * 0.05,
+                                //       height: Get.width * 0.05,
+                                //       // fit: BoxFit.cover,
+                                //     ),
+                                //   ),
+                                // ),
+                                Container(
+                                  width: 15,
+                                  height: 15,
+                                  color: Helper.hexToColor(item.colorValue!),
+                                ),
+                                const SizedBox(width: 5),
+                                Text(
+                                  item.title,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: item.isSelect
+                                        ? ColorApp.primary
+                                        : const Color(0xFF222222),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      )
+                      .toList(),
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            const Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Chọn kích thước',
+                style: TextStyle(
+                  color: Color(0xFF222222),
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            SizedBox(
+              width: Get.width,
+              child: Obx(
+                () => Wrap(
+                  spacing: 16,
+                  runSpacing: 16,
+                  children: listSize
+                      .map(
+                        (item) => SizedBox(
+                          width: Get.width * 0.27,
+                          child: OutlinedButton(
+                            onPressed: () {
+                              handleSelectSize(item.id);
+                            },
+                            style: TextButton.styleFrom(
+                              minimumSize: Size.zero,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 10,
+                              ),
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              backgroundColor: item.isSelect
+                                  ? const Color(0xFFDB3022)
+                                  : Colors.transparent,
+                              side: BorderSide(
+                                color: item.isSelect
+                                    ? const Color(0xFFDB3022)
+                                    : const Color(0xFF9B9B9B),
+                                width: 1,
+                              ),
+                            ),
+                            child: Text(
+                              item.title,
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: item.isSelect
+                                    ? Colors.white
+                                    : const Color(0xFF222222),
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                      .toList(),
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            ButtonPrimary(
+              title: 'Đồng ý',
+              isUpperCase: true,
+              event: () => handleSubmit(),
+            ),
+            const SizedBox(height: 30),
+          ],
+        ),
       ),
+      backgroundColor: Colors.white,
     );
   }
 }

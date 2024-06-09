@@ -2,13 +2,13 @@
 class Filters {
   final int id;
   final String title;
-  final String? image;
+  final String? colorValue;
   bool isSelect;
 
   Filters({
     required this.id,
     required this.title,
-    this.image,
+    this.colorValue,
     required this.isSelect,
   });
 }

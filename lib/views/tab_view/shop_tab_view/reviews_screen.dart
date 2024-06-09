@@ -3,10 +3,16 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
+import '../../../services/response/api_status.dart';
 import '../../../utils/color_app.dart';
+import '../../../view_models/tab_view_models/shop_tab_view_models/reviews_viewmodel.dart';
+import '../../widgets/loadmore.dart';
+import '../../widgets/review_container.dart';
+import '../../widgets/show_dialog_error.dart';
 
-class ReviewsView extends StatelessWidget {
-  const ReviewsView({super.key});
+class ReviewsScreen extends StatelessWidget {
+  ReviewsScreen({super.key});
+  final ReviewsViewmodel _reviewsViewmodel = Get.put(ReviewsViewmodel());
 
   @override
   Widget build(BuildContext context) {
@@ -21,133 +27,159 @@ class ReviewsView extends StatelessWidget {
           icon: SvgPicture.asset('assets/icons/arrow-back.svg'),
         ),
       ),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 50),
-        child: FilledButton(
-          onPressed: () => onWriteReview(),
-          style: FilledButton.styleFrom(
-            backgroundColor: ColorApp.primary,
-            foregroundColor: ColorApp.white,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(25),
-            ),
-            minimumSize: Size.zero,
-            padding: const EdgeInsets.symmetric(
-              horizontal: 14,
-              vertical: 10,
-            ),
-            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      // floatingActionButton: Padding(
+      //   padding: const EdgeInsets.only(bottom: 50),
+      //   child: FilledButton(
+      //     onPressed: () => onWriteReview(),
+      //     style: FilledButton.styleFrom(
+      //       backgroundColor: ColorApp.primary,
+      //       foregroundColor: ColorApp.white,
+      //       shape: RoundedRectangleBorder(
+      //         borderRadius: BorderRadius.circular(25),
+      //       ),
+      //       minimumSize: Size.zero,
+      //       padding: const EdgeInsets.symmetric(
+      //         horizontal: 14,
+      //         vertical: 10,
+      //       ),
+      //       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      //     ),
+      //     child: Row(
+      //       mainAxisSize: MainAxisSize.min,
+      //       children: [
+      //         SvgPicture.asset('assets/icons/edit.svg'),
+      //         const SizedBox(width: 4),
+      //         const Text(
+      //           'Thêm bình luận',
+      //           style: TextStyle(
+      //             fontSize: 14,
+      //             fontWeight: FontWeight.w700,
+      //           ),
+      //         )
+      //       ],
+      //     ),
+      //   ),
+      // ),
+      body: Obx(() {
+        if (_reviewsViewmodel.evaluateRes.value.status == Status.error) {
+          showDialogError(error: _reviewsViewmodel.evaluateRes.value.message!);
+        }
+
+        if (_reviewsViewmodel.evaluateRes.value.status == Status.completed) {
+          return Loadmore(
+            refreshController: _reviewsViewmodel.refreshController,
+            onLoading: _reviewsViewmodel.onLoading,
+            onRefresh: _reviewsViewmodel.onRefresh,
+            widget: screen(),
+          );
+        }
+        return const Center(
+          child: CircularProgressIndicator(
+            color: ColorApp.primary,
           ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SvgPicture.asset('assets/icons/edit.svg'),
-              const SizedBox(width: 4),
-              const Text(
-                'Thêm bình luận',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700,
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 14),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 18),
-              const Text(
-                'Xếp hạng & Đánh giá',
-                style: TextStyle(
-                  fontSize: 36,
-                  fontWeight: FontWeight.w700,
-                  color: ColorApp.black,
-                ),
+        );
+      }),
+    );
+  }
+
+  Widget screen() {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 18),
+            const Text(
+              'Xếp hạng & Đánh giá',
+              style: TextStyle(
+                fontSize: 36,
+                fontWeight: FontWeight.w700,
+                color: ColorApp.black,
               ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  const SizedBox(width: 20),
-                  const Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        '4.3',
-                        style: TextStyle(
-                          fontSize: 44,
-                          fontWeight: FontWeight.w700,
-                          color: ColorApp.black,
-                        ),
+            ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                const SizedBox(width: 20),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      '${_reviewsViewmodel.average_evaluate}',
+                      style: const TextStyle(
+                        fontSize: 44,
+                        fontWeight: FontWeight.w700,
+                        color: ColorApp.black,
                       ),
-                      Text(
-                        '23 đánh giá',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          color: ColorApp.gray,
-                        ),
-                      )
-                    ],
-                  ),
-                  // const Spacer(),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      starContainer(starCount: 5, count: 12),
-                      starContainer(starCount: 4, count: 5),
-                      starContainer(starCount: 3, count: 4),
-                      starContainer(starCount: 2, count: 2),
-                      starContainer(starCount: 1, count: 0),
-                    ],
-                  ),
-                  const SizedBox(width: 20),
-                ],
-              ),
-              const SizedBox(height: 30),
-              const Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  '8 bình luận',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.w700,
-                    color: Color(0xFF222222),
-                  ),
+                    ),
+                    Text(
+                      '${_reviewsViewmodel.count} đánh giá',
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: ColorApp.gray,
+                      ),
+                    )
+                  ],
+                ),
+                // const Spacer(),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    starContainer(
+                      starCount: 5,
+                      count: _reviewsViewmodel.star_5,
+                    ),
+                    starContainer(
+                      starCount: 4,
+                      count: _reviewsViewmodel.star_4,
+                    ),
+                    starContainer(
+                      starCount: 3,
+                      count: _reviewsViewmodel.star_3,
+                    ),
+                    starContainer(
+                      starCount: 2,
+                      count: _reviewsViewmodel.star_2,
+                    ),
+                    starContainer(
+                      starCount: 1,
+                      count: _reviewsViewmodel.star_1,
+                    ),
+                  ],
+                ),
+                const SizedBox(width: 20),
+              ],
+            ),
+            const SizedBox(height: 30),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                '${_reviewsViewmodel.listEvaluate.length} đánh giá',
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xFF222222),
                 ),
               ),
-              const SizedBox(height: 10),
-              Column(
-                children: [
-                  const SizedBox(height: 20),
-                  reviewsContainer(
-                    id: 1,
-                    image: 'assets/images/avatar-review.png',
-                    name: 'Helene Moore',
-                    star: 4,
-                    time: '05/03/2024',
-                    content:
-                        '''The dress is great! Very classy and comfortable. It fit perfectly! I'm 5'7" and 130 pounds. I am a 34B chest. This dress would be too long for those who are shorter but could be hemmed. I wouldn't recommend it for those big chested as I am smaller chested and it fit me perfectly. The underarms were not too wide and the dress was made well.''',
+            ),
+            const SizedBox(height: 10),
+            ListView.builder(
+              itemCount: _reviewsViewmodel.listEvaluate.length,
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemBuilder: (BuildContext context, int index) {
+                return Padding(
+                  padding: EdgeInsets.only(bottom: index != 1 ? 20 : 0),
+                  child: ReviewContainer(
+                    evaluate: _reviewsViewmodel.listEvaluate[index],
                   ),
-                  const SizedBox(height: 20),
-                  reviewsContainer(
-                    id: 2,
-                    image: 'assets/images/avatar-review.png',
-                    name: 'Helene Moore',
-                    star: 4,
-                    time: '05/03/2024',
-                    content:
-                        '''The dress is great! Very classy and comfortable. It fit perfectly! I'm 5'7" and 130 pounds. I am a 34B chest. This dress would be too long for those who are shorter but could be hemmed. I wouldn't recommend it for those big chested as I am smaller chested and it fit me perfectly. The underarms were not too wide and the dress was made well.''',
-                  ),
-                ],
-              )
-            ],
-          ),
+                );
+              },
+            )
+          ],
         ),
       ),
     );

@@ -7,6 +7,7 @@ import '../../models/request/user.dart';
 import '../../services/auth/auth_service.dart';
 import '../../services/repository/access_server_repository.dart';
 import '../../services/response/api_response.dart';
+import '../../utils/helper.dart';
 import '../controllers/user_controller.dart';
 
 class AuthController {
@@ -51,7 +52,7 @@ class AuthController {
 
     RequestData resquestData = RequestData(
       query: Configs.checkLogin,
-      data: data,
+      data: Helper.toMapString(data),
     );
 
     await _fetchData(resquestData);

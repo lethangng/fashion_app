@@ -264,7 +264,7 @@ class ProductBagContainer extends StatelessWidget {
     );
   }
 
-  void onShowSelect({required int idProduct}) {
+  Future<void> onShowSelect({required int idProduct}) async {
     int idColor = bagModel.selectColor.id;
     int idSize = bagModel.selectSize.id;
 
@@ -283,7 +283,7 @@ class ProductBagContainer extends StatelessWidget {
         (item) => Filters(
           id: item.id,
           title: item.color,
-          image: item.image,
+          colorValue: item.image,
           isSelect: bagModel.selectColor.id == item.id,
         ),
       )
@@ -314,7 +314,7 @@ class ProductBagContainer extends StatelessWidget {
       Get.back();
     }
 
-    Get.bottomSheet(
+    await Get.bottomSheet(
       Container(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         decoration: BoxDecoration(
@@ -323,7 +323,7 @@ class ProductBagContainer extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const SizedBox(height: 5),
+            const SizedBox(height: 10),
             Container(
               width: Get.width * 0.2,
               height: 5,
@@ -377,12 +377,12 @@ class ProductBagContainer extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Visibility(
-                                  visible: item.image != null,
+                                  visible: item.colorValue != null,
                                   maintainSize: false,
                                   child: Padding(
                                     padding: const EdgeInsets.only(right: 4),
                                     child: Image.asset(
-                                      '${item.image}',
+                                      '${item.colorValue}',
                                       width: Get.width * 0.05,
                                       height: Get.width * 0.05,
                                       // fit: BoxFit.cover,
@@ -412,7 +412,7 @@ class ProductBagContainer extends StatelessWidget {
             const Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                'Chọn cỡ',
+                'Chọn kích thước',
                 style: TextStyle(
                   color: Color(0xFF222222),
                   fontSize: 18,

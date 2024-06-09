@@ -5,6 +5,7 @@ import '../models/home_models/product.dart';
 import '../models/request/request_data.dart';
 import '../services/repository/access_server_repository.dart';
 import '../services/response/api_response.dart';
+import '../utils/helper.dart';
 import 'controllers/user_controller.dart';
 
 class HomeController extends GetxController {
@@ -54,7 +55,7 @@ class HomeController extends GetxController {
         newest: true,
         user_id: _userController.userRes.value.data!.id,
       ),
-      data: data,
+      data: Helper.toMapString(data),
     );
 
     await _fetchDataProductNewest(resquestData);
@@ -87,7 +88,7 @@ class HomeController extends GetxController {
         sale: true,
         user_id: _userController.userRes.value.data!.id,
       ),
-      data: data,
+      data: Helper.toMapString(data),
     );
 
     await _fetchDataProductSale(resquestData);

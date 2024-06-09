@@ -7,6 +7,6 @@ abstract class BaseApiService {
 
   Future<dynamic> postResponse({
     required String url,
-    required Object jsonBody,
+    required Object bodyData,
   });
 }

@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 
 class RequestData {
   final String query;
-  final Map<String, dynamic> data;
+  final Map<String, String> data;
 
   RequestData({
     required this.query,
@@ -14,7 +14,7 @@ class RequestData {
 
   RequestData copyWith({
     String? query,
-    Map<String, dynamic>? data,
+    Map<String, String>? data,
   }) {
     return RequestData(
       query: query ?? this.query,
@@ -32,7 +32,7 @@ class RequestData {
   factory RequestData.fromMap(Map<String, dynamic> map) {
     return RequestData(
       query: map['query'] as String,
-      data: Map<String, dynamic>.from((map['data'] as Map<String, dynamic>)),
+      data: Map<String, String>.from((map['data'] as Map<String, String>)),
     );
   }
 

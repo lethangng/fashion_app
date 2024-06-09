@@ -19,7 +19,7 @@ import '../views/tab_view/shop_tab_view/caegory_detail.dart';
 import '../views/tab_view/shop_tab_view/filters_screen.dart';
 // import '../views/tab_view/shop_tab_view/product_detail_screen.dart';
 import '../views/tab_view/shop_tab_view/product_detail_screen.dart';
-import '../views/tab_view/shop_tab_view/reviews_view.dart';
+import '../views/tab_view/shop_tab_view/reviews_screen.dart';
 import '../views/tab_view/shop_tab_view/search_screen.dart';
 
 class Routes {
@@ -54,7 +54,7 @@ class Routes {
     GetPage(name: categryDetail, page: () => CaegoryDetail()),
     GetPage(name: filters, page: () => FiltersScreen()),
     GetPage(name: brand, page: () => BrandScreen()),
-    GetPage(name: reviews, page: () => const ReviewsView()),
+    GetPage(name: reviews, page: () => ReviewsScreen()),
     GetPage(name: address, page: () => AddressView()),
     GetPage(name: addAddress, page: () => const EditAddressView()),
     GetPage(name: pay, page: () => PayView()),

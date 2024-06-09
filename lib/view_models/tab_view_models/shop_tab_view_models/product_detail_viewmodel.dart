@@ -1,11 +1,16 @@
+import 'dart:convert';
+
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../configs/configs.dart';
+import '../../../models/home_models/evaluate.dart';
 import '../../../models/home_models/product_detail.dart';
 import '../../../models/request/request_data.dart';
 import '../../../services/repository/access_server_repository.dart';
 import '../../../services/response/api_response.dart';
+import '../../../utils/helper.dart';
 import '../../controllers/user_controller.dart';
 
 class ProductDetailViewmodel extends GetxController {
@@ -16,8 +21,23 @@ class ProductDetailViewmodel extends GetxController {
       ApiResponse<ProductDetail>.loading().obs;
 
   final Rx<ApiResponse<bool>> addFavoriteRes = ApiResponse<bool>.loading().obs;
+  final Rx<ApiResponse<bool>> addCartRes = ApiResponse<bool>.loading().obs;
+  final Rx<ApiResponse<List<Evaluate>>> evaluateRes =
+      ApiResponse<List<Evaluate>>.loading().obs;
+
+  final RxList<Evaluate> listEvaluate = <Evaluate>[].obs;
 
   final RxBool isShow = false.obs;
+  final RxBool isFavorite = false.obs;
+
+  late final int productId;
+
+  final RxInt current = 0.obs;
+  final CarouselController controller = CarouselController();
+
+  void handleOnPageChange(int value) {
+    current.value = value;
+  }
 
   void setIsShow() {
     isShow.value = !isShow.value;
@@ -31,6 +51,14 @@ class ProductDetailViewmodel extends GetxController {
     addFavoriteRes.value = res;
   }
 
+  void setAddCartRes(ApiResponse<bool> res) {
+    addCartRes.value = res;
+  }
+
+  void setEvaluateRes(ApiResponse<List<Evaluate>> res) {
+    evaluateRes.value = res;
+  }
+
   Future<void> _fetchData(RequestData req) async {
     try {
       setProductDetailRes(ApiResponse.loading());
@@ -38,6 +66,9 @@ class ProductDetailViewmodel extends GetxController {
           await _accessServerRepository.getData(req);
 
       ProductDetail product = ProductDetail.fromMap(res);
+      if (product.favorite) isFavorite.value = true;
+      // idColor = product.colors.first.id;
+      // idSize = product.sizes.first.id;
 
       setProductDetailRes(ApiResponse.completed(product));
     } catch (e, s) {
@@ -56,24 +87,61 @@ class ProductDetailViewmodel extends GetxController {
         id: productId,
         user_id: _userController.userRes.value.data!.id,
       ),
-      data: data,
+      data: Helper.toMapString(data),
     );
 
     await _fetchData(resquestData);
   }
 
-  Future<void> _fetchDataAddFavorite(RequestData req) async {
+  Future<void> _fetchDataEvaluate(RequestData req) async {
     try {
-      setProductDetailRes(ApiResponse.loading());
-      final Map<String, dynamic> res =
-          await _accessServerRepository.postData(req);
+      setEvaluateRes(ApiResponse.loading());
+      final List res = await _accessServerRepository.getData(req);
+      List<Evaluate> data = res.map((item) => Evaluate.fromMap(item)).toList();
 
-      ProductDetail product = ProductDetail.fromMap(res);
+      listEvaluate.addAll(data);
+      listEvaluate.refresh();
 
-      setProductDetailRes(ApiResponse.completed(product));
+      setEvaluateRes(ApiResponse.completed(data));
     } catch (e, s) {
       s.printError();
-      setProductDetailRes(ApiResponse.error(e.toString()));
+      setEvaluateRes(ApiResponse.error(e.toString()));
+    }
+  }
+
+  Future<void> _handleLoadEvaluate() async {
+    Map<String, dynamic> data = {
+      //
+    };
+
+    RequestData resquestData = RequestData(
+      query: Configs.getEvaluate(
+        page: 1,
+        product_id: productId,
+      ),
+      data: Helper.toMapString(data),
+    );
+
+    await _fetchDataEvaluate(resquestData);
+  }
+
+  Future<void> _fetchDataAddFavorite(RequestData req) async {
+    try {
+      setAddFavoriteRes(ApiResponse.loading());
+      Map<String, dynamic> map = await _accessServerRepository.postData(req);
+      isFavorite.value = !isFavorite.value;
+
+      setAddFavoriteRes(ApiResponse.completed(true));
+      Get.snackbar(
+        'Thông báo',
+        '${map['msg']}',
+        icon: const Icon(Icons.check, color: Colors.green),
+        colorText: Colors.white,
+        backgroundColor: Colors.black,
+      );
+    } catch (e, s) {
+      s.printError();
+      setAddFavoriteRes(ApiResponse.error(e.toString()));
     }
   }
 
@@ -85,32 +153,63 @@ class ProductDetailViewmodel extends GetxController {
 
     RequestData resquestData = RequestData(
       query: Configs.addFavoriteProduct,
-      data: data,
+      data: Helper.toMapString(data),
     );
 
     await _fetchDataAddFavorite(resquestData);
   }
 
-  // final List<String> imgList = [
-  //   'assets/images/product-detail-1.png',
-  //   'assets/images/product-detail-2.png',
-  //   'assets/images/product-detail-1.png',
-  // ];
+  Future<void> _fetchDataAddCart(RequestData req) async {
+    try {
+      setAddCartRes(ApiResponse.loading());
+      Map<String, dynamic> map = await _accessServerRepository.postData(req);
 
-  late final int productId;
+      setAddCartRes(ApiResponse.completed(true));
+      Get.snackbar(
+        'Thông báo',
+        '${map['msg']}',
+        // icon: const Icon(Icons.check, color: Colors.green),
+        colorText: Colors.white,
+        backgroundColor: Colors.black,
+      );
+    } catch (e, s) {
+      s.printError();
+      setAddCartRes(ApiResponse.error(e.toString()));
+    }
+  }
 
-  final RxInt current = 0.obs;
-  final CarouselController controller = CarouselController();
+  Future<void> handleLoadAddCart({
+    required int idSize,
+    required int idColor,
+  }) async {
+    Map<String, dynamic> data = {
+      'product_id': productId,
+      'user_id': _userController.userRes.value.data!.id,
+      'quantity': 1,
+      'extra_product': json.encode({
+        'size': idSize,
+        'color': idColor,
+      }),
+    };
 
-  void handleOnPageChange(int value) {
-    current.value = value;
+    RequestData resquestData = RequestData(
+      query: Configs.addCart,
+      data: Helper.toMapString(data),
+    );
+
+    await _fetchDataAddCart(resquestData);
+  }
+
+  Future<void> initData() async {
+    await handleLoad();
+    await _handleLoadEvaluate();
   }
 
   @override
   void onInit() {
     productId = Get.arguments['productId'];
 
-    handleLoad();
+    initData();
     super.onInit();
   }
 }

@@ -7,6 +7,7 @@ import '../../models/request/user.dart';
 import '../../services/auth/auth_service.dart';
 import '../../services/repository/access_server_repository.dart';
 import '../../services/response/api_response.dart';
+import '../../utils/helper.dart';
 
 class UserController extends GetxController {
   final AccessServerRepository _accessServerRepository =
@@ -41,7 +42,7 @@ class UserController extends GetxController {
 
     RequestData resquestData = RequestData(
       query: Configs.getUserInfo,
-      data: data,
+      data: Helper.toMapString(data),
     );
 
     await _fetchUserDetail(resquestData);

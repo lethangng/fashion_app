@@ -3,6 +3,16 @@ class Configs {
   static String checkLogin = '/check-login';
   static String getUserInfo = '/user-info';
   static String addFavoriteProduct = '/favorite/add';
+  static String addCart = '/cart/add';
+
+  static String getEvaluate({
+    required int page,
+    int? limit,
+    required int product_id,
+    int? is_sum,
+  }) {
+    return '/evaluates?page=$page&limit=${limit ?? 2}&product_id=$product_id&is_sum=${is_sum ?? 0}';
+  }
 
   static String getListProduct({
     required int page,

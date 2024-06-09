@@ -6,6 +6,7 @@ import '../../../../models/home_models/product.dart';
 import '../../../../models/request/request_data.dart';
 import '../../../../services/repository/access_server_repository.dart';
 import '../../../../services/response/api_response.dart';
+import '../../../../utils/helper.dart';
 import '../../../controllers/user_controller.dart';
 
 class WomenTabViewmodel extends GetxController {
@@ -51,7 +52,7 @@ class WomenTabViewmodel extends GetxController {
         user_id: _userController.userRes.value.data!.id,
         category_id: 1,
       ),
-      data: data,
+      data: Helper.toMapString(data),
     );
 
     await _fetchData(resquestData);

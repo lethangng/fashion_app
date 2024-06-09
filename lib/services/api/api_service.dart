@@ -37,7 +37,7 @@ class ApiService extends BaseApiService {
   @override
   Future postResponse({
     required String url,
-    required Object jsonBody,
+    required Object bodyData,
   }) async {
     try {
       dynamic responseJson;
@@ -46,7 +46,7 @@ class ApiService extends BaseApiService {
         Uri.parse(baseUrl + url),
         // headers: baseHeader,
         // body: json.encode(jsonBody),
-        body: jsonBody,
+        body: bodyData,
       );
       responseJson = returnResponse(response);
       return responseJson;
