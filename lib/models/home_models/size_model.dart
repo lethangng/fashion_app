@@ -3,34 +3,34 @@ import 'dart:convert';
 
 class SizeModel {
   final int id;
-  final String name;
+  final String size;
 
   SizeModel({
     required this.id,
-    required this.name,
+    required this.size,
   });
 
   SizeModel copyWith({
     int? id,
-    String? name,
+    String? size,
   }) {
     return SizeModel(
       id: id ?? this.id,
-      name: name ?? this.name,
+      size: size ?? this.size,
     );
   }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
-      'name': name,
+      'size': size,
     };
   }
 
   factory SizeModel.fromMap(Map<String, dynamic> map) {
     return SizeModel(
       id: map['id'] as int,
-      name: map['name'] as String,
+      size: map['size'] as String,
     );
   }
 
@@ -40,15 +40,15 @@ class SizeModel {
       SizeModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
-  String toString() => 'Size(id: $id, name: $name)';
+  String toString() => 'SizeModel(id: $id, size: $size)';
 
   @override
   bool operator ==(covariant SizeModel other) {
     if (identical(this, other)) return true;
 
-    return other.id == id && other.name == name;
+    return other.id == id && other.size == size;
   }
 
   @override
-  int get hashCode => id.hashCode ^ name.hashCode;
+  int get hashCode => id.hashCode ^ size.hashCode;
 }

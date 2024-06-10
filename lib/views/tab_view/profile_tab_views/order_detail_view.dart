@@ -5,11 +5,11 @@ import 'package:get/get.dart';
 import '../../../utils/color_app.dart';
 import '../../../utils/text_themes.dart';
 import '../../../view_models/tab_view_models/bag_tab_view_models/bag_tab_viewmodel.dart';
-import '../../widgets/product_detail_history.dart';
+// import '../../widgets/product_detail_history.dart';
 
 class OrderDetailView extends StatelessWidget {
   OrderDetailView({super.key});
-  final BagTabController bagTabViewModel = Get.put(BagTabController());
+  final BagTabViewmodel bagTabViewModel = Get.put(BagTabViewmodel());
 
   @override
   Widget build(BuildContext context) {
@@ -66,20 +66,20 @@ class OrderDetailView extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 18),
-              ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: bagTabViewModel.listDataBag.length,
-                padding: EdgeInsets.zero,
-                itemBuilder: (BuildContext context, int index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 24),
-                    child: ProductDetailHistory(
-                      bagModel: bagTabViewModel.listDataBag[index],
-                    ),
-                  );
-                },
-              ),
+              // ListView.builder(
+              //   physics: const NeverScrollableScrollPhysics(),
+              //   shrinkWrap: true,
+              //   itemCount: bagTabViewModel.listCart.length,
+              //   padding: EdgeInsets.zero,
+              //   itemBuilder: (BuildContext context, int index) {
+              //     return Padding(
+              //       padding: const EdgeInsets.only(bottom: 24),
+              //       child: ProductDetailHistory(
+              //         bagModel: bagTabViewModel.listCart[index],
+              //       ),
+              //     );
+              //   },
+              // ),
               Text(
                 'Thông tin chi tiết',
                 style: TextThemes.text_14_500,

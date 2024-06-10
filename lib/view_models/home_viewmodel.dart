@@ -95,7 +95,6 @@ class HomeController extends GetxController {
   }
 
   Future<void> onRefresh() async {
-    // _page = 1;
     listProductSale.value = [];
     listProductNewest.value = [];
     await _handleLoadProductSale();

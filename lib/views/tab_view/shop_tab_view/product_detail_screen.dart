@@ -13,7 +13,6 @@ import '../../../models/shop_models/filters.dart';
 import '../../../services/response/api_status.dart';
 import '../../../utils/color_app.dart';
 import '../../../utils/helper.dart';
-import '../../../utils/validate.dart';
 import '../../../view_models/home_viewmodel.dart';
 import '../../../view_models/tab_view_models/shop_tab_view_models/product_detail_viewmodel.dart';
 import '../../widgets/button_primary.dart';
@@ -171,7 +170,7 @@ class ProductDetailScreen extends StatelessWidget {
                         Row(
                           children: [
                             Text(
-                              Validate.formatMonney(productDetail.price),
+                              Helper.formatMonney(productDetail.price),
                               style: const TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.w700,
@@ -184,7 +183,7 @@ class ProductDetailScreen extends StatelessWidget {
                               child: Row(
                                 children: [
                                   Text(
-                                    Validate.formatMonney(
+                                    Helper.formatMonney(
                                         productDetail.price_off ?? 0),
                                     style: const TextStyle(
                                       color: Color(0xFF9B9B9B),
@@ -618,8 +617,8 @@ class ProductDetailScreen extends StatelessWidget {
       ...productDetail.sizes.map(
         (item) => Filters(
           id: item.id,
-          title: item.name,
-          isSelect: (idSize == item.id),
+          title: item.size,
+          isSelect: idSize == item.id,
         ),
       )
     ].obs;

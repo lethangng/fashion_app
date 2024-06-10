@@ -3,14 +3,18 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '../../../app/routes.dart';
+import '../../../services/response/api_status.dart';
 import '../../../utils/color_app.dart';
+import '../../../utils/helper.dart';
 import '../../../view_models/tab_view_models/bag_tab_view_models/bag_tab_viewmodel.dart';
 import '../../widgets/discount_code_item.dart';
+import '../../widgets/loadmore.dart';
 import '../../widgets/product_bag_container.dart';
+import '../../widgets/show_dialog_error.dart';
 
 class BagTabView extends StatelessWidget {
   BagTabView({super.key});
-  final BagTabController bagTabViewModel = Get.put(BagTabController());
+  final BagTabViewmodel _bagTabViewModel = Get.put(BagTabViewmodel());
 
   final TextEditingController discountCodeController = TextEditingController();
 
@@ -23,97 +27,120 @@ class BagTabView extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: appBarHeight),
-          const Text(
-            'Giỏ hàng',
-            style: TextStyle(
-              fontSize: 34,
-              fontWeight: FontWeight.w700,
-              color: ColorApp.black,
-            ),
-          ),
-          const SizedBox(height: 10),
+          // SizedBox(height: appBarHeight),
+          // const Text(
+          //   'Giỏ hàng',
+          //   style: TextStyle(
+          //     fontSize: 34,
+          //     fontWeight: FontWeight.w700,
+          //     color: ColorApp.black,
+          //   ),
+          // ),
+          // const SizedBox(height: 10),
           Expanded(
             child: Obx(
-              () => ListView.builder(
-                itemCount: bagTabViewModel.listDataBag.length,
-                padding: EdgeInsets.zero,
-                itemBuilder: (BuildContext context, int index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 24),
-                    child: ProductBagContainer(
-                      bagModel: bagTabViewModel.listDataBag[index],
-                    ),
-                  );
-                },
-              ),
+              () {
+                if (_bagTabViewModel.cartRes.value.status == Status.error) {
+                  showDialogError(
+                      error: _bagTabViewModel.cartRes.value.message!);
+                }
+
+                if (_bagTabViewModel.cartRes.value.status == Status.completed) {
+                  return _bagTabViewModel.listCart.isEmpty
+                      ? const Center(
+                          child: Text(
+                            'Chưa có sản phẩm nào trong giỏ hàng',
+                            style: TextStyle(
+                              color: ColorApp.black,
+                              fontSize: 16,
+                            ),
+                          ),
+                        )
+                      : Loadmore(
+                          refreshController: _bagTabViewModel.refreshController,
+                          onLoading: _bagTabViewModel.onLoading,
+                          onRefresh: _bagTabViewModel.onRefresh,
+                          widget: ListView.builder(
+                            itemCount: _bagTabViewModel.listCart.length,
+                            padding: EdgeInsets.only(top: appBarHeight),
+                            itemBuilder: (BuildContext context, int index) {
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 24),
+                                child: ProductBagContainer(
+                                  cart: _bagTabViewModel.listCart[index],
+                                ),
+                              );
+                            },
+                          ),
+                        );
+                }
+                return const Center(
+                  child: CircularProgressIndicator(
+                    color: ColorApp.primary,
+                  ),
+                );
+              },
             ),
           ),
-          Stack(
+          const SizedBox(height: 16),
+          Row(
             children: [
-              Container(
-                width: Get.width,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 8,
-                      offset: const Offset(0, 1),
-                      color: const Color(0xFF000000).withOpacity(0.05),
-                    ),
-                  ],
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(8),
-                    bottomLeft: Radius.circular(8),
-                    topRight: Radius.circular(35),
-                    bottomRight: Radius.circular(35),
+              Expanded(
+                child: Container(
+                  width: Get.width,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        blurRadius: 8,
+                        offset: const Offset(0, 1),
+                        color: const Color(0xFF000000).withOpacity(0.05),
+                      ),
+                    ],
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                ),
-                child: TextField(
-                  controller: discountCodeController,
-                  style: const TextStyle(
-                    color: ColorApp.black,
-                  ),
-                  onTap: () => onShowSelectDiscountCode(),
-                  readOnly: true,
-                  textAlignVertical: TextAlignVertical.center,
-                  textAlign: TextAlign.left,
-                  decoration: const InputDecoration(
-                    isDense: true, // Cho chu can giua theo chieu doc
-                    hintText: 'Nhập mã giảm giá',
-                    hintStyle: TextStyle(
-                      color: ColorApp.colorGrey2,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
+                  child: TextField(
+                    controller: discountCodeController,
+                    style: const TextStyle(
+                      color: ColorApp.black,
                     ),
-                    border: InputBorder.none,
-                    contentPadding: EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 12,
+                    onTap: () {
+                      _bagTabViewModel.onRefreshCoupon();
+                      onShowSelectDiscountCode();
+                    },
+                    readOnly: true,
+                    textAlignVertical: TextAlignVertical.center,
+                    textAlign: TextAlign.left,
+                    decoration: const InputDecoration(
+                      isDense: true, // Cho chu can giua theo chieu doc
+                      hintText: 'Nhập mã giảm giá',
+                      hintStyle: TextStyle(
+                        color: ColorApp.colorGrey2,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 12,
+                      ),
                     ),
                   ),
                 ),
               ),
-              Positioned.fill(
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: Container(
-                    width: 36,
-                    height: 36,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: ColorApp.black,
-                    ),
-                    child: IconButton(
-                      onPressed: () {},
-                      icon: SvgPicture.asset('assets/icons/arrow-right.svg'),
-                    ),
-                  ),
+              const SizedBox(width: 8),
+              Container(
+                width: 36,
+                height: 36,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: ColorApp.black,
                 ),
+                child: SvgPicture.asset('assets/icons/arrow-right.svg'),
               )
             ],
           ),
-          const SizedBox(height: 28),
+          const SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -127,7 +154,7 @@ class BagTabView extends StatelessWidget {
               ),
               Obx(
                 () => Text(
-                  '${bagTabViewModel.totalPrice.value}\$',
+                  Helper.formatMonney(_bagTabViewModel.totalPrice.value),
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
@@ -137,7 +164,7 @@ class BagTabView extends StatelessWidget {
               )
             ],
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 16),
           SizedBox(
             width: double.infinity,
             child: OutlinedButton(
@@ -162,7 +189,7 @@ class BagTabView extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 22),
+          const SizedBox(height: 16),
         ],
       ),
     );
@@ -177,9 +204,8 @@ class BagTabView extends StatelessWidget {
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 5),
+            const SizedBox(height: 10),
             Container(
               width: Get.width * 0.2,
               height: 5,
@@ -189,65 +215,58 @@ class BagTabView extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 32),
-            Stack(
+            Row(
               children: [
-                Container(
-                  width: Get.width,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        blurRadius: 8,
-                        offset: const Offset(0, 1),
-                        color: const Color(0xFF000000).withOpacity(0.05),
-                      ),
-                    ],
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(8),
-                      bottomLeft: Radius.circular(8),
-                      topRight: Radius.circular(35),
-                      bottomRight: Radius.circular(35),
+                Expanded(
+                  child: Container(
+                    width: Get.width,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          blurRadius: 8,
+                          offset: const Offset(0, 1),
+                          color: const Color(0xFF000000).withOpacity(0.05),
+                        ),
+                      ],
+                      borderRadius: BorderRadius.circular(8),
                     ),
-                  ),
-                  child: TextField(
-                    controller: discountCodeController,
-                    style: const TextStyle(
-                      color: ColorApp.black,
-                    ),
-                    onTap: () {},
-                    textAlignVertical: TextAlignVertical.center,
-                    textAlign: TextAlign.left,
-                    decoration: const InputDecoration(
-                      isDense: true, // Cho chu can giua theo chieu doc
-                      hintText: 'Nhập mã giảm giá',
-                      hintStyle: TextStyle(
-                        color: ColorApp.colorGrey2,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
+                    child: TextField(
+                      controller: discountCodeController,
+                      style: const TextStyle(
+                        color: ColorApp.black,
                       ),
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 12,
+                      onTap: () {},
+                      textAlignVertical: TextAlignVertical.center,
+                      textAlign: TextAlign.left,
+                      decoration: const InputDecoration(
+                        isDense: true, // Cho chu can giua theo chieu doc
+                        hintText: 'Nhập mã giảm giá',
+                        hintStyle: TextStyle(
+                          color: ColorApp.colorGrey2,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 12,
+                        ),
                       ),
                     ),
                   ),
                 ),
-                Positioned.fill(
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: Container(
-                      width: 36,
-                      height: 36,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: ColorApp.black,
-                      ),
-                      child: IconButton(
-                        onPressed: () {},
-                        icon: SvgPicture.asset('assets/icons/arrow-right.svg'),
-                      ),
-                    ),
+                const SizedBox(width: 8),
+                Container(
+                  width: 36,
+                  height: 36,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: ColorApp.black,
+                  ),
+                  child: IconButton(
+                    onPressed: () {},
+                    icon: SvgPicture.asset('assets/icons/arrow-right.svg'),
                   ),
                 )
               ],
@@ -266,14 +285,41 @@ class BagTabView extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Expanded(
-              child: ListView.builder(
-                itemCount: bagTabViewModel.listDiscountCode.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 24),
-                    child: DiscountCodeItem(
-                      discountCode: bagTabViewModel.listDiscountCode[index],
-                      event: () {},
+              child: Obx(
+                () {
+                  if (_bagTabViewModel.couponRes.value.status == Status.error) {
+                    showDialogError(
+                        error: _bagTabViewModel.couponRes.value.message!);
+                  }
+
+                  if (_bagTabViewModel.couponRes.value.status ==
+                      Status.completed) {
+                    return _bagTabViewModel.listCoupon.isEmpty
+                        ? const Center(
+                            child: Text(
+                              'Không có mã giảm giá nào',
+                              style: TextStyle(
+                                color: ColorApp.black,
+                                fontSize: 16,
+                              ),
+                            ),
+                          )
+                        : ListView.builder(
+                            itemCount: _bagTabViewModel.listCoupon.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 24),
+                                child: DiscountCodeItem(
+                                  coupon: _bagTabViewModel.listCoupon[index],
+                                  event: () {},
+                                ),
+                              );
+                            },
+                          );
+                  }
+                  return const Center(
+                    child: CircularProgressIndicator(
+                      color: ColorApp.primary,
                     ),
                   );
                 },

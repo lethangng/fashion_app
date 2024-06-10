@@ -12,7 +12,7 @@ import '../../widgets/product_bag_container.dart';
 class PayView extends StatelessWidget {
   PayView({super.key});
   final PayController payViewModel = Get.put(PayController());
-  final BagTabController bagTabViewModel = Get.find<BagTabController>();
+  final BagTabViewmodel bagTabViewModel = Get.find<BagTabViewmodel>();
 
   @override
   Widget build(BuildContext context) {
@@ -59,13 +59,13 @@ class PayView extends StatelessWidget {
               ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                itemCount: bagTabViewModel.listDataBag.length,
+                itemCount: bagTabViewModel.listCart.length,
                 padding: EdgeInsets.zero,
                 itemBuilder: (BuildContext context, int index) {
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 24),
                     child: ProductBagContainer(
-                      bagModel: bagTabViewModel.listDataBag[index],
+                      cart: bagTabViewModel.listCart[index],
                       isPay: true,
                     ),
                   );

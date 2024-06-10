@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import '../../app/routes.dart';
 import '../../models/home_models/product.dart';
 import '../../utils/color_app.dart';
-import '../../utils/validate.dart';
+import '../../utils/helper.dart';
 import 'image_container.dart';
 
 enum ProductType {
@@ -222,7 +222,7 @@ class ProductContainer extends StatelessWidget {
                   child: Row(
                     children: [
                       Text(
-                        Validate.formatMonney(product.price_off ?? 0),
+                        Helper.formatMonney(product.price_off ?? 0),
                         style: const TextStyle(
                           color: Color(0xFF9B9B9B),
                           fontSize: 14,
@@ -235,7 +235,7 @@ class ProductContainer extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  Validate.formatMonney(product.price),
+                  Helper.formatMonney(product.price),
                   style: const TextStyle(
                     color: Color(0xFFDB3022),
                     fontSize: 14,

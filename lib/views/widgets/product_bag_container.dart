@@ -2,289 +2,257 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
-import '../../models/bag_models/bag_item.dart';
+import '../../models/home_models/cart.dart';
 import '../../models/shop_models/filters.dart';
 import '../../utils/color_app.dart';
+import '../../utils/helper.dart';
 import '../../view_models/tab_view_models/bag_tab_view_models/bag_tab_viewmodel.dart';
 import 'button_primary.dart';
+import 'image_container.dart';
 
 // ignore: must_be_immutable
 class ProductBagContainer extends StatelessWidget {
   ProductBagContainer({
     super.key,
-    required this.bagModel,
+    required this.cart,
     this.isPay = false,
   });
-  final BagItem bagModel;
+  final Cart cart;
   bool isPay;
-  final BagTabController bagTabViewModel = Get.find<BagTabController>();
-  final RxBool isShowDelete = false.obs;
+  final BagTabViewmodel _bagTabViewModel = Get.find<BagTabViewmodel>();
+  // final RxBool isShowDelete = false.obs;
+  // final controller = SlidableController();
 
-  void onShowDelete() {
-    isShowDelete.value = !isShowDelete.value;
-  }
+  // void onShowDelete() {
+  //   isShowDelete.value = !isShowDelete.value;
+  // }
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(8),
-          child: Container(
-            decoration: const BoxDecoration(color: Colors.white),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Image.asset(
-                  bagModel.product.listImage.first,
-                  width: Get.width * 0.3,
-                  fit: BoxFit.cover,
-                ),
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.all(11),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  bagModel.product.name,
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                    color: ColorApp.black,
+    return Slidable(
+      endActionPane: ActionPane(
+        motion: const BehindMotion(),
+        children: [
+          SlidableAction(
+            onPressed: (_) async =>
+                await _bagTabViewModel.handleLoadDeleteCart(cart.id),
+            backgroundColor: ColorApp.primary,
+            foregroundColor: Colors.white,
+            icon: Icons.delete,
+            label: 'Xóa',
+          ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: Container(
+          decoration: const BoxDecoration(color: Colors.white),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ImageContainer(
+                image: cart.image_url,
+                width: Get.width * 0.3,
+                height: Get.width * 0.3,
+                replaceImage: '',
+              ),
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.all(11),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                cart.name,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: ColorApp.black,
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () => onShowSelect(idProduct: cart.id),
+                                child: Container(
+                                  padding: const EdgeInsets.all(4),
+                                  color: ColorApp.gray.withOpacity(0.1),
+                                  child: Row(
+                                    children: [
+                                      RichText(
+                                        text: TextSpan(
+                                          text: 'Phân loại: ',
+                                          style: const TextStyle(
+                                            fontSize: 11,
+                                            fontWeight: FontWeight.w400,
+                                            color: ColorApp.black,
+                                          ),
+                                          children: [
+                                            TextSpan(
+                                              text: cart.color.name,
+                                            ),
+                                            const TextSpan(text: ', '),
+                                            TextSpan(
+                                              text: cart.size.size,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      const SizedBox(width: 5),
+                                      SvgPicture.asset(
+                                          'assets/icons/arrow-down.svg'),
+                                    ],
                                   ),
                                 ),
-                                InkWell(
-                                  onTap: () =>
-                                      onShowSelect(idProduct: bagModel.id),
-                                  child: Container(
-                                    padding: const EdgeInsets.all(4),
-                                    color: ColorApp.gray.withOpacity(0.1),
-                                    child: Row(
-                                      children: [
-                                        RichText(
-                                          text: TextSpan(
-                                            text: 'Phân loại: ',
-                                            style: const TextStyle(
-                                              fontSize: 11,
-                                              fontWeight: FontWeight.w400,
-                                              color: ColorApp.black,
-                                            ),
-                                            children: [
-                                              TextSpan(
-                                                  text: bagModel
-                                                      .selectColor.color),
-                                              const TextSpan(text: ', '),
-                                              TextSpan(
-                                                  text:
-                                                      bagModel.selectSize.size),
-                                            ],
+                              )
+                            ],
+                          ),
+                          Visibility(
+                            visible: isPay == false,
+                            child: IconButton(
+                              onPressed: () {},
+                              style: IconButton.styleFrom(
+                                minimumSize: Size.zero,
+                                padding: EdgeInsets.zero,
+                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              ),
+                              icon:
+                                  SvgPicture.asset('assets/icons/dot-menu.svg'),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      isPay == false
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Container(
+                                      width: 36,
+                                      height: 36,
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.white,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            blurRadius: 8,
+                                            offset: const Offset(0, 4),
+                                            color: const Color(0xFF000000)
+                                                .withOpacity(0.1),
                                           ),
-                                        ),
-                                        const SizedBox(width: 5),
-                                        SvgPicture.asset(
-                                            'assets/icons/arrow-down.svg'),
-                                      ],
+                                        ],
+                                      ),
+                                      child: IconButton(
+                                        onPressed: () => _bagTabViewModel
+                                            .handleCount(id: cart.id, type: ''),
+                                        icon: SvgPicture.asset(
+                                            'assets/icons/minus.svg'),
+                                      ),
                                     ),
+                                    const SizedBox(width: 16),
+                                    Text(
+                                      cart.quantity.toString(),
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                        color: ColorApp.black,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 16),
+                                    Container(
+                                      width: 36,
+                                      height: 36,
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.white,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            blurRadius: 8,
+                                            offset: const Offset(0, 4),
+                                            color: const Color(0xFF000000)
+                                                .withOpacity(0.1),
+                                          ),
+                                        ],
+                                      ),
+                                      child: IconButton(
+                                        onPressed: () =>
+                                            _bagTabViewModel.handleCount(
+                                          id: cart.id,
+                                          type: 'add',
+                                        ),
+                                        icon: SvgPicture.asset(
+                                            'assets/icons/add.svg'),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Text(
+                                  Helper.formatMonney(cart.price),
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: ColorApp.primary,
                                   ),
                                 )
                               ],
-                            ),
-                            Visibility(
-                              visible: isPay == false,
-                              child: IconButton(
-                                onPressed: () => onShowDelete(),
-                                style: IconButton.styleFrom(
-                                  minimumSize: Size.zero,
-                                  padding: EdgeInsets.zero,
-                                  tapTargetSize:
-                                      MaterialTapTargetSize.shrinkWrap,
+                            )
+                          : Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text(
+                                  'x${cart.quantity}',
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400,
+                                    color: ColorApp.black,
+                                  ),
                                 ),
-                                icon: SvgPicture.asset(
-                                    'assets/icons/dot-menu.svg'),
-                              ),
+                              ],
                             ),
-                          ],
-                        ),
-                        const SizedBox(height: 12),
-                        isPay == false
-                            ? Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Container(
-                                        width: 36,
-                                        height: 36,
-                                        alignment: Alignment.center,
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Colors.white,
-                                          boxShadow: [
-                                            BoxShadow(
-                                              blurRadius: 8,
-                                              offset: const Offset(0, 4),
-                                              color: const Color(0xFF000000)
-                                                  .withOpacity(0.1),
-                                            ),
-                                          ],
-                                        ),
-                                        child: IconButton(
-                                          onPressed: () =>
-                                              bagTabViewModel.handleCount(
-                                                  id: bagModel.id, type: ''),
-                                          icon: SvgPicture.asset(
-                                              'assets/icons/minus.svg'),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 16),
-                                      Text(
-                                        bagModel.count.toString(),
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                          color: ColorApp.black,
-                                        ),
-                                      ),
-                                      const SizedBox(width: 16),
-                                      Container(
-                                        width: 36,
-                                        height: 36,
-                                        alignment: Alignment.center,
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Colors.white,
-                                          boxShadow: [
-                                            BoxShadow(
-                                              blurRadius: 8,
-                                              offset: const Offset(0, 4),
-                                              color: const Color(0xFF000000)
-                                                  .withOpacity(0.1),
-                                            ),
-                                          ],
-                                        ),
-                                        child: IconButton(
-                                          onPressed: () =>
-                                              bagTabViewModel.handleCount(
-                                            id: bagModel.id,
-                                            type: 'add',
-                                          ),
-                                          icon: SvgPicture.asset(
-                                              'assets/icons/add.svg'),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Text(
-                                    '${bagModel.product.price}\$',
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
-                                      color: ColorApp.black,
-                                    ),
-                                  )
-                                ],
-                              )
-                            : Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Text(
-                                    'x${bagModel.count}',
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400,
-                                      color: ColorApp.black,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                      ],
-                    ),
+                    ],
                   ),
-                )
-              ],
-            ),
+                ),
+              )
+            ],
           ),
         ),
-        Obx(
-          () => Visibility(
-            visible: isShowDelete.value,
-            child: Positioned(
-              top: 10,
-              right: 35,
-              child: Container(
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 25,
-                      offset: const Offset(0, 1),
-                      color: const Color(0xFF000000).withOpacity(0.14),
-                    )
-                  ],
-                  borderRadius: BorderRadius.circular(8),
-                  color: Colors.white,
-                ),
-                child: TextButton(
-                  onPressed: () {},
-                  style: TextButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    minimumSize: Size.zero,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 34,
-                      vertical: 17,
-                    ),
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  ),
-                  child: const Text(
-                    'Xóa khỏi giỏ hàng',
-                    style: TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.w500,
-                      color: ColorApp.black,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        )
-      ],
+      ),
     );
   }
 
   Future<void> onShowSelect({required int idProduct}) async {
-    int idColor = bagModel.selectColor.id;
-    int idSize = bagModel.selectSize.id;
+    int idColor = cart.color.id;
+    int idSize = cart.size.id;
 
     RxList<Filters> listSize = <Filters>[
-      ...bagModel.product.listSize.map(
+      ...cart.sizes.map(
         (item) => Filters(
           id: item.id,
           title: item.size,
-          isSelect: (bagModel.selectSize.id == item.id),
+          isSelect: (idSize == item.id),
         ),
       )
     ].obs;
 
     RxList<Filters> listColor = <Filters>[
-      ...bagModel.product.listColor.map(
+      ...cart.colors.map(
         (item) => Filters(
           id: item.id,
           title: item.color,
-          colorValue: item.image,
-          isSelect: bagModel.selectColor.id == item.id,
+          colorValue: item.color,
+          isSelect: idColor == item.id,
         ),
       )
     ].obs;
@@ -306,7 +274,7 @@ class ProductBagContainer extends StatelessWidget {
     }
 
     void handleSubmit() {
-      bagTabViewModel.handleSelect(
+      _bagTabViewModel.handleSelect(
         id: idProduct,
         idColor: idColor,
         idSize: idSize,
@@ -376,19 +344,12 @@ class ProductBagContainer extends StatelessWidget {
                               mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Visibility(
-                                  visible: item.colorValue != null,
-                                  maintainSize: false,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(right: 4),
-                                    child: Image.asset(
-                                      '${item.colorValue}',
-                                      width: Get.width * 0.05,
-                                      height: Get.width * 0.05,
-                                      // fit: BoxFit.cover,
-                                    ),
-                                  ),
+                                Container(
+                                  width: 15,
+                                  height: 15,
+                                  color: Helper.hexToColor(item.colorValue!),
                                 ),
+                                const SizedBox(width: 5),
                                 Text(
                                   item.title,
                                   style: TextStyle(
