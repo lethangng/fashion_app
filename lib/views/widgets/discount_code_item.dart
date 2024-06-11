@@ -32,7 +32,6 @@ class DiscountCodeItem extends StatelessWidget {
           ],
         ),
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               width: Get.width * 0.25,
@@ -75,7 +74,8 @@ class DiscountCodeItem extends StatelessWidget {
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
+                      // mainAxisSize: MainAxisSize.min,
+                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
                           coupon.name,
@@ -92,11 +92,7 @@ class DiscountCodeItem extends StatelessWidget {
                             fontWeight: FontWeight.w400,
                             color: ColorApp.black,
                           ),
-                        )
-                      ],
-                    ),
-                    Column(
-                      children: [
+                        ),
                         Text(
                           'HSD: ${coupon.expired}',
                           style: const TextStyle(
@@ -105,31 +101,30 @@ class DiscountCodeItem extends StatelessWidget {
                             color: ColorApp.gray,
                           ),
                         ),
-                        const SizedBox(height: 4),
-                        FilledButton(
-                          onPressed: event,
-                          style: FilledButton.styleFrom(
-                            backgroundColor: ColorApp.primary,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25),
-                            ),
-                            minimumSize: Size.zero,
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 4,
-                              horizontal: 15,
-                            ),
-                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          ),
-                          child: const Text(
-                            'Áp dụng',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
                       ],
+                    ),
+                    FilledButton(
+                      onPressed: event,
+                      style: FilledButton.styleFrom(
+                        backgroundColor: ColorApp.primary,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25),
+                        ),
+                        minimumSize: Size.zero,
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 4,
+                          horizontal: 15,
+                        ),
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      ),
+                      child: const Text(
+                        'Áp dụng',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   ],
                 ),

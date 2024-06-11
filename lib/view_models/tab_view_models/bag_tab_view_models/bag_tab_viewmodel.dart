@@ -3,43 +3,21 @@ import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../../configs/configs.dart';
-import '../../../models/bag_models/discount_code.dart';
 import '../../../models/home_models/cart.dart';
 import '../../../models/home_models/coupon.dart';
 import '../../../models/request/request_data.dart';
 import '../../../services/repository/access_server_repository.dart';
 import '../../../services/response/api_response.dart';
-import '../../../utils/color_app.dart';
+
 import '../../../utils/helper.dart';
-import '../../controllers/user_controller.dart';
 
 class BagTabViewmodel extends GetxController {
-  RxInt totalPrice = 0.obs;
-
-  RxList<DiscountCode> listDiscountCode = <DiscountCode>[
-    DiscountCode(
-      id: 0,
-      sale: 10,
-      backgroundColor: ColorApp.primary,
-      saleColor: ColorApp.white,
-      name: 'Ưu đãi cá nhân',
-      code: 'mypromocode2020',
-      time: 'còn 6 ngày',
-    ),
-    DiscountCode(
-      id: 1,
-      sale: 15,
-      backgroundColor: ColorApp.black,
-      saleColor: ColorApp.white,
-      name: 'Giảm giá mùa hè',
-      code: 'summer2020',
-      time: 'còn 23 ngày',
-    ),
-  ].obs;
+  final RxInt totalPrice = 0.obs;
+  final RxInt discount = 0.obs;
+  int totalPriceValue = 0;
 
   final AccessServerRepository _accessServerRepository =
       AccessServerRepository();
-  final UserController _userController = Get.find<UserController>();
   final RxList<Cart> listCart = <Cart>[].obs;
   final RxList<Coupon> listCoupon = <Coupon>[].obs;
 
@@ -56,6 +34,20 @@ class BagTabViewmodel extends GetxController {
 
   int _page = 1;
   int _pageCoupon = 1;
+
+  final Rx<Coupon?> selectCoupon = Rx<Coupon?>(null);
+
+  void handlePrice() {}
+
+  void handleSetCoupon(Coupon? value) {
+    if (value != null) {
+      // discountCodeController.text = value.code;
+      discount.value = value.coupon_type == 0
+          ? value.price
+          : (totalPrice.value * (value.price / 100)).round();
+    }
+    selectCoupon.value = value;
+  }
 
   void setCartRes(ApiResponse<List<Cart>> res) {
     cartRes.value = res;
@@ -79,7 +71,7 @@ class BagTabViewmodel extends GetxController {
       listCart.addAll(data);
       listCart.refresh();
 
-      totalPrice.value = handleTotalPrice();
+      handleTotalPrice();
     } catch (e, s) {
       s.printError();
       setCartRes(ApiResponse.error(e.toString()));
@@ -94,7 +86,6 @@ class BagTabViewmodel extends GetxController {
     RequestData resquestData = RequestData(
       query: Configs.getCart(
         page: _page,
-        user_id: _userController.userRes.value.data!.id,
         // limit: '',
       ),
       data: Helper.toMapString(data),
@@ -199,12 +190,12 @@ class BagTabViewmodel extends GetxController {
     super.onInit();
   }
 
-  int handleTotalPrice() {
-    int totalPrice = 0;
+  void handleTotalPrice() {
+    totalPriceValue = 0;
     for (var item in listCart) {
-      totalPrice += item.quantity * item.price;
+      totalPriceValue += item.quantity * item.price;
     }
-    return totalPrice;
+    totalPrice.value = totalPriceValue - discount.value;
   }
 
   void handleCount({required int id, required String type}) {
@@ -220,7 +211,7 @@ class BagTabViewmodel extends GetxController {
       }
     }
     listCart.refresh();
-    totalPrice.value = handleTotalPrice();
+    handleTotalPrice();
   }
 
   void handleSelect({

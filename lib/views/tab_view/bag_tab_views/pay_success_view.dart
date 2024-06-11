@@ -31,8 +31,15 @@ class PaySuccessView extends StatelessWidget {
               const SizedBox(height: 9),
               const Text(
                 textAlign: TextAlign.center,
-                '''Đơn hàng của bạn sẽ được giao sớm.
-          Cảm ơn bạn đã chọn ứng dụng của chúng tôi!''',
+                'Đơn hàng của bạn sẽ được giao sớm.',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xFF000000),
+                ),
+              ),
+              const Text(
+                'Cảm ơn bạn đã chọn ứng dụng của chúng tôi!',
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
@@ -49,7 +56,7 @@ class PaySuccessView extends StatelessWidget {
                 child: SizedBox(
                   width: Get.width * 0.9,
                   child: OutlinedButton(
-                    onPressed: () => Get.toNamed(Routes.home),
+                    onPressed: () => Get.offAllNamed(Routes.home),
                     style: OutlinedButton.styleFrom(
                       side: BorderSide.none,
                       shape: RoundedRectangleBorder(

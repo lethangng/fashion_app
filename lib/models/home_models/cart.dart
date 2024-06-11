@@ -125,6 +125,18 @@ class Cart {
     );
   }
 
+  Map<String, dynamic> toOrderProduct() {
+    return <String, dynamic>{
+      'product_id': product_id,
+      'price': price,
+      'quantity': quantity,
+      'extra_product': {
+        'size': size.id,
+        'color': color.id,
+      }
+    };
+  }
+
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,

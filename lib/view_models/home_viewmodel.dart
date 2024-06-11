@@ -6,10 +6,8 @@ import '../models/request/request_data.dart';
 import '../services/repository/access_server_repository.dart';
 import '../services/response/api_response.dart';
 import '../utils/helper.dart';
-import 'controllers/user_controller.dart';
 
 class HomeController extends GetxController {
-  final UserController _userController = Get.find<UserController>();
   final RxList<Product> listProductSale = <Product>[].obs;
   final RxList<Product> listProductNewest = <Product>[].obs;
 
@@ -53,7 +51,7 @@ class HomeController extends GetxController {
         page: 1,
         limit: 6,
         newest: true,
-        user_id: _userController.userRes.value.data!.id,
+        // user_id: _userController.userRes.value.data!.id,
       ),
       data: Helper.toMapString(data),
     );
@@ -86,7 +84,7 @@ class HomeController extends GetxController {
         page: 1,
         limit: 6,
         sale: true,
-        user_id: _userController.userRes.value.data!.id,
+        // user_id: _userController.userRes.value.data!.id,
       ),
       data: Helper.toMapString(data),
     );

@@ -25,6 +25,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.11.0"
+  badges:
+    dependency: "direct main"
+    description:
+      name: badges
+      sha256: a7b6bbd60dce418df0db3058b53f9d083c22cdb5132a052145dc267494df0b84
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.2"
   boolean_selector:
     dependency: transitive
     description:
@@ -989,14 +997,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.5.0"
-  zoom_tap_animation:
-    dependency: "direct main"
-    description:
-      name: zoom_tap_animation
-      sha256: d9f7a73cab65aa1546ba6886b5e21d3c8ccccb34e4e5f770301c306d4868bee0
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.0"
 sdks:
   dart: ">=3.4.0-267.0.dev <4.0.0"
   flutter: ">=3.19.0"

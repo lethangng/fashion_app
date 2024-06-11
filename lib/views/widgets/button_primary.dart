@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 
 import '../../utils/color_app.dart';
-import '../../utils/text_themes.dart';
 
 class ButtonPrimary extends StatelessWidget {
   const ButtonPrimary({
@@ -11,6 +10,9 @@ class ButtonPrimary extends StatelessWidget {
     this.background = ColorApp.primary,
     this.isUpperCase = false,
     this.size = double.infinity,
+    this.fontSize = 14,
+    this.padding = 14,
+    this.color = ColorApp.white,
     this.event,
   });
 
@@ -18,6 +20,9 @@ class ButtonPrimary extends StatelessWidget {
   final Color background;
   final bool isUpperCase;
   final double size;
+  final double fontSize;
+  final double padding;
+  final Color color;
   final void Function()? event;
 
   @override
@@ -32,14 +37,19 @@ class ButtonPrimary extends StatelessWidget {
             borderRadius: BorderRadius.circular(25),
           ),
           minimumSize: Size.zero,
-          padding: const EdgeInsets.symmetric(
-            vertical: 14,
+          padding: EdgeInsets.symmetric(
+            vertical: padding,
           ),
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
         ),
         child: Text(
           isUpperCase ? title.toUpperCase() : title,
-          style: TextThemes.text_14_500.copyWith(color: Colors.white),
+          // style: TextThemes.text_14_500.copyWith(color: Colors.white),
+          style: TextStyle(
+            fontSize: fontSize,
+            fontWeight: FontWeight.w500,
+            color: color,
+          ),
         ),
       ),
     );

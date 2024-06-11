@@ -7,12 +7,10 @@ import '../../../../models/request/request_data.dart';
 import '../../../../services/repository/access_server_repository.dart';
 import '../../../../services/response/api_response.dart';
 import '../../../../utils/helper.dart';
-import '../../../controllers/user_controller.dart';
 
 class MenTabViewmodel extends GetxController {
   final AccessServerRepository _accessServerRepository =
       AccessServerRepository();
-  final UserController _userController = Get.find<UserController>();
   final RxList<Product> listProduct = <Product>[].obs;
 
   final Rx<ApiResponse<List<Product>>> productRes =
@@ -49,7 +47,6 @@ class MenTabViewmodel extends GetxController {
     RequestData resquestData = RequestData(
       query: Configs.getListProduct(
         page: _page,
-        user_id: _userController.userRes.value.data!.id,
         category_id: 1,
       ),
       data: Helper.toMapString(data),

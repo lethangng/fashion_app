@@ -34,9 +34,14 @@ class UserController extends GetxController {
     }
   }
 
-  Future<void> handleGetUser({String? uId}) async {
+  Future<void> handleGetUser() async {
+    if (AuthService.user == null) {
+      setUserRes(ApiResponse.completed(null));
+      return;
+    }
+
     Map<String, dynamic> data = {
-      'u_id': uId ?? AuthService.user?.uid ?? 'KKOAW8GqDRXGAvjPZ4biVrWpzho2',
+      'u_id': AuthService.user!.uid,
       // 'u_id': uId ?? 'KKOAW8GqDRXGAvjPZ4biVrWpzho2',
     };
 

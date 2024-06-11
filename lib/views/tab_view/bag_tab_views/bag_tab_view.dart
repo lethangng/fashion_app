@@ -3,11 +3,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '../../../app/routes.dart';
+import '../../../models/home_models/coupon.dart';
 import '../../../services/response/api_status.dart';
 import '../../../utils/color_app.dart';
 import '../../../utils/helper.dart';
 import '../../../view_models/tab_view_models/bag_tab_view_models/bag_tab_viewmodel.dart';
 import '../../widgets/discount_code_item.dart';
+import '../../widgets/list_empty.dart';
 import '../../widgets/loadmore.dart';
 import '../../widgets/product_bag_container.dart';
 import '../../widgets/show_dialog_error.dart';
@@ -46,21 +48,15 @@ class BagTabView extends StatelessWidget {
                 }
 
                 if (_bagTabViewModel.cartRes.value.status == Status.completed) {
-                  return _bagTabViewModel.listCart.isEmpty
-                      ? const Center(
-                          child: Text(
-                            'Chưa có sản phẩm nào trong giỏ hàng',
-                            style: TextStyle(
-                              color: ColorApp.black,
-                              fontSize: 16,
-                            ),
-                          ),
-                        )
-                      : Loadmore(
-                          refreshController: _bagTabViewModel.refreshController,
-                          onLoading: _bagTabViewModel.onLoading,
-                          onRefresh: _bagTabViewModel.onRefresh,
-                          widget: ListView.builder(
+                  return Loadmore(
+                    refreshController: _bagTabViewModel.refreshController,
+                    onLoading: _bagTabViewModel.onLoading,
+                    onRefresh: _bagTabViewModel.onRefresh,
+                    widget: _bagTabViewModel.listCart.isEmpty
+                        ? const ListEmpty(
+                            title: 'Chưa có sản phẩm nào trong giỏ hàng',
+                          )
+                        : ListView.builder(
                             itemCount: _bagTabViewModel.listCart.length,
                             padding: EdgeInsets.only(top: appBarHeight),
                             itemBuilder: (BuildContext context, int index) {
@@ -72,7 +68,7 @@ class BagTabView extends StatelessWidget {
                               );
                             },
                           ),
-                        );
+                  );
                 }
                 return const Center(
                   child: CircularProgressIndicator(
@@ -83,73 +79,111 @@ class BagTabView extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          Row(
-            children: [
-              Expanded(
-                child: Container(
-                  width: Get.width,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        blurRadius: 8,
-                        offset: const Offset(0, 1),
-                        color: const Color(0xFF000000).withOpacity(0.05),
-                      ),
-                    ],
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: TextField(
-                    controller: discountCodeController,
-                    style: const TextStyle(
-                      color: ColorApp.black,
+          GestureDetector(
+            onTap: () {
+              _bagTabViewModel.onRefreshCoupon();
+              onShowSelectDiscountCode();
+              discountCodeController.clear();
+            },
+            child: Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    width: Get.width,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          blurRadius: 8,
+                          offset: const Offset(0, 1),
+                          color: const Color(0xFF000000).withOpacity(0.05),
+                        ),
+                      ],
+                      borderRadius: BorderRadius.circular(8),
                     ),
-                    onTap: () {
-                      _bagTabViewModel.onRefreshCoupon();
-                      onShowSelectDiscountCode();
-                    },
-                    readOnly: true,
-                    textAlignVertical: TextAlignVertical.center,
-                    textAlign: TextAlign.left,
-                    decoration: const InputDecoration(
-                      isDense: true, // Cho chu can giua theo chieu doc
-                      hintText: 'Nhập mã giảm giá',
-                      hintStyle: TextStyle(
-                        color: ColorApp.colorGrey2,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                      ),
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 12,
-                      ),
+                    child: Obx(
+                      () {
+                        Coupon? coupon = _bagTabViewModel.selectCoupon.value;
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 13,
+                          ),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(coupon == null
+                                    ? 'Chọn hoặc nhập mã giảm giá'
+                                    : 'Đã áp dụng mã: ${coupon.name}'),
+                              ),
+                              Visibility(
+                                visible: coupon != null,
+                                child: IconButton(
+                                  onPressed: () =>
+                                      _bagTabViewModel.handleSetCoupon(null),
+                                  style: IconButton.styleFrom(
+                                    minimumSize: Size.zero,
+                                    padding: EdgeInsets.zero,
+                                    tapTargetSize:
+                                        MaterialTapTargetSize.shrinkWrap,
+                                  ),
+                                  icon: const Icon(Icons.close),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(width: 8),
-              Container(
-                width: 36,
-                height: 36,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: ColorApp.black,
-                ),
-                child: SvgPicture.asset('assets/icons/arrow-right.svg'),
-              )
-            ],
+                const SizedBox(width: 8),
+                Container(
+                  width: 36,
+                  height: 36,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: ColorApp.black,
+                  ),
+                  child: SvgPicture.asset('assets/icons/arrow-right.svg'),
+                )
+              ],
+            ),
           ),
           const SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text(
-                'Tổng: ',
+                'Giảm giá:',
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
-                  color: ColorApp.gray,
+                  color: ColorApp.black,
+                ),
+              ),
+              Obx(
+                () => Text(
+                  '-${Helper.formatMonney(_bagTabViewModel.discount.value)}',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                    color: ColorApp.primary,
+                  ),
+                ),
+              )
+            ],
+          ),
+          const SizedBox(height: 14),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Tổng:',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: ColorApp.black,
                 ),
               ),
               Obx(
@@ -158,12 +192,13 @@ class BagTabView extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
-                    color: ColorApp.black,
+                    color: ColorApp.primary,
                   ),
                 ),
               )
             ],
           ),
+
           const SizedBox(height: 16),
           SizedBox(
             width: double.infinity,
@@ -311,7 +346,11 @@ class BagTabView extends StatelessWidget {
                                 padding: const EdgeInsets.only(bottom: 24),
                                 child: DiscountCodeItem(
                                   coupon: _bagTabViewModel.listCoupon[index],
-                                  event: () {},
+                                  event: () {
+                                    _bagTabViewModel.handleSetCoupon(
+                                        _bagTabViewModel.listCoupon[index]);
+                                    Get.back();
+                                  },
                                 ),
                               );
                             },

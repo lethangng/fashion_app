@@ -56,7 +56,7 @@ class Routes {
     GetPage(name: brand, page: () => BrandScreen()),
     GetPage(name: reviews, page: () => ReviewsScreen()),
     GetPage(name: address, page: () => AddressView()),
-    GetPage(name: addAddress, page: () => const EditAddressView()),
+    GetPage(name: addAddress, page: () => EditAddressView()),
     GetPage(name: pay, page: () => PayView()),
     GetPage(name: paySuccess, page: () => const PaySuccessView()),
     GetPage(name: historyView, page: () => HistoryView()),

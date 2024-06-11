@@ -12,11 +12,14 @@ import '../../../services/repository/access_server_repository.dart';
 import '../../../services/response/api_response.dart';
 import '../../../utils/helper.dart';
 import '../../controllers/user_controller.dart';
+import '../favorite_tab_viewmodel.dart';
 
 class ProductDetailViewmodel extends GetxController {
   final AccessServerRepository _accessServerRepository =
       AccessServerRepository();
   final UserController _userController = Get.find<UserController>();
+  final FavoriteTabViewmodel _favoriteTabViewmodel =
+      Get.find<FavoriteTabViewmodel>();
   final Rx<ApiResponse<ProductDetail>> productDetailRes =
       ApiResponse<ProductDetail>.loading().obs;
 
@@ -85,7 +88,7 @@ class ProductDetailViewmodel extends GetxController {
     RequestData resquestData = RequestData(
       query: Configs.getDetailProduct(
         id: productId,
-        user_id: _userController.userRes.value.data!.id,
+        // user_id: _userController.userRes.value.data!.id,
       ),
       data: Helper.toMapString(data),
     );
@@ -139,6 +142,7 @@ class ProductDetailViewmodel extends GetxController {
         colorText: Colors.white,
         backgroundColor: Colors.black,
       );
+      await _favoriteTabViewmodel.onRefresh();
     } catch (e, s) {
       s.printError();
       setAddFavoriteRes(ApiResponse.error(e.toString()));

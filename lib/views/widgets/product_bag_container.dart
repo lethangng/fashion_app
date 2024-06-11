@@ -68,52 +68,61 @@ class ProductBagContainer extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                cart.name,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  color: ColorApp.black,
-                                ),
-                              ),
-                              InkWell(
-                                onTap: () => onShowSelect(idProduct: cart.id),
-                                child: Container(
-                                  padding: const EdgeInsets.all(4),
-                                  color: ColorApp.gray.withOpacity(0.1),
-                                  child: Row(
-                                    children: [
-                                      RichText(
-                                        text: TextSpan(
-                                          text: 'Phân loại: ',
-                                          style: const TextStyle(
-                                            fontSize: 11,
-                                            fontWeight: FontWeight.w400,
-                                            color: ColorApp.black,
-                                          ),
-                                          children: [
-                                            TextSpan(
-                                              text: cart.color.name,
-                                            ),
-                                            const TextSpan(text: ', '),
-                                            TextSpan(
-                                              text: cart.size.size,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      const SizedBox(width: 5),
-                                      SvgPicture.asset(
-                                          'assets/icons/arrow-down.svg'),
-                                    ],
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Flexible(
+                                  child: Text(
+                                    cart.name,
+                                    maxLines: 1,
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                      color: ColorApp.black,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
                                   ),
                                 ),
-                              )
-                            ],
+                                InkWell(
+                                  onTap: () => isPay == false
+                                      ? onShowSelect(idProduct: cart.id)
+                                      : null,
+                                  child: Container(
+                                    padding: const EdgeInsets.all(4),
+                                    color: ColorApp.gray.withOpacity(0.1),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        RichText(
+                                          text: TextSpan(
+                                            text: 'Phân loại: ',
+                                            style: const TextStyle(
+                                              fontSize: 11,
+                                              fontWeight: FontWeight.w400,
+                                              color: ColorApp.black,
+                                            ),
+                                            children: [
+                                              TextSpan(
+                                                text: cart.color.name,
+                                              ),
+                                              const TextSpan(text: ', '),
+                                              TextSpan(
+                                                text: cart.size.size,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        const SizedBox(width: 5),
+                                        SvgPicture.asset(
+                                            'assets/icons/arrow-down.svg'),
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                           Visibility(
                             visible: isPay == false,
@@ -205,12 +214,22 @@ class ProductBagContainer extends StatelessWidget {
                                     fontWeight: FontWeight.w500,
                                     color: ColorApp.primary,
                                   ),
-                                )
+                                ),
                               ],
                             )
                           : Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
+                                Text(
+                                  Helper.formatMonney(
+                                      cart.price * cart.quantity),
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: ColorApp.primary,
+                                  ),
+                                ),
+                                const Spacer(),
                                 Text(
                                   'x${cart.quantity}',
                                   style: const TextStyle(
@@ -250,7 +269,7 @@ class ProductBagContainer extends StatelessWidget {
       ...cart.colors.map(
         (item) => Filters(
           id: item.id,
-          title: item.color,
+          title: item.name,
           colorValue: item.color,
           isSelect: idColor == item.id,
         ),

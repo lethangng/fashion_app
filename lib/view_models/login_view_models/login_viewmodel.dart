@@ -44,7 +44,9 @@ class LoginViewModel extends GetxController {
       try {
         formError.refresh();
         await _authController.authenticationWithPassword(
-            email: email, password: password);
+          email: email,
+          password: password,
+        );
       } on AuthException catch (e) {
         formError.value.email = e.toString();
         formError.value.password = e.toString();
