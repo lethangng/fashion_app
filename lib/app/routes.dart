@@ -61,7 +61,7 @@ class Routes {
     GetPage(name: paySuccess, page: () => const PaySuccessView()),
     GetPage(name: historyView, page: () => HistoryView()),
     GetPage(name: orderDetail, page: () => OrderDetailView()),
-    GetPage(name: setting, page: () => const SettingView()),
+    GetPage(name: setting, page: () => SettingView()),
     GetPage(name: changeInfo, page: () => const ChangeInfoView()),
     GetPage(name: changePassword, page: () => ChangePasswordView()),
     GetPage(name: search, page: () => SearchScreen()),

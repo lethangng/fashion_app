@@ -7,12 +7,14 @@ class Configs {
   static final User? _user = Get.find<UserController>().userRes.value.data;
   static String baseUrl = 'http://192.168.1.9:8000/api';
   static String checkLogin = '/check-login';
-  static String getUserInfo = '/user-info';
+  static String getUserInfo = '/user/user-info';
   static String addFavoriteProduct = '/favorite/add';
   static String addCart = '/cart/add';
   static String deleteCart = '/cart/delete';
   static String addAddress = '/delivery-address/add';
   static String addOrder = '/order/add';
+  static String updateInfo = '/user/update-info';
+  static String uploadImage = '/user/upload-image';
 
   static String getFavorite({
     required int page,

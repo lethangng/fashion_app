@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../configs/configs.dart';
@@ -20,13 +19,13 @@ class UserController extends GetxController {
   }
 
   Future<void> _fetchUserDetail(RequestData req) async {
-    setUserRes(ApiResponse.loading());
     try {
+      setUserRes(ApiResponse.loading());
       final Map<String, dynamic> data =
           await _accessServerRepository.postData(req);
 
       User user = User.fromMap(data);
-      debugPrint(user.toString());
+      printInfo(info: user.toString());
 
       setUserRes(ApiResponse.completed(user));
     } catch (e) {

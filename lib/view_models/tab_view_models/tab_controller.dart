@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class TabViewModel extends GetxController {
-  RxBool showMenu = false.obs;
+  // final RxBool showMenu = false.obs;
 
-  PageController pageController = PageController(initialPage: 0);
-  RxInt currentPage = 0.obs;
-
+  final PageController pageController = PageController(initialPage: 0);
+  final RxInt currentPage = 0.obs;
 
   void goToTab(int page) {
     currentPage.value = page;
@@ -22,9 +21,9 @@ class TabViewModel extends GetxController {
     );
   }
 
-  void handleShowMenu() {
-    showMenu.value = !showMenu.value;
-  }
+  // void handleShowMenu() {
+  //   showMenu.value = !showMenu.value;
+  // }
 
   @override
   void onClose() {

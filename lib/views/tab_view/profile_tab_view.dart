@@ -5,139 +5,132 @@ import 'package:get/get.dart';
 import '../../app/routes.dart';
 import '../../services/auth/auth_service.dart';
 import '../../utils/color_app.dart';
-import '../../utils/text_themes.dart';
+import '../../view_models/controllers/user_controller.dart';
+import '../../view_models/tab_view_models/bag_tab_view_models/address_viewmodel.dart';
+import '../widgets/avatar_container.dart';
 import '../widgets/button_primary.dart';
+import '../widgets/button_second.dart';
 
 class ProfileTabView extends StatelessWidget {
-  const ProfileTabView({super.key});
+  ProfileTabView({super.key});
+  final UserController _userController = Get.find<UserController>();
+  final AddressController _addressViewModel = Get.put(AddressController());
 
   @override
   Widget build(BuildContext context) {
     final appBarHeight = AppBar().preferredSize.height;
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 14),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(height: appBarHeight + 18),
-          const Text(
-            'Thông tin cá nhân',
-            style: TextStyle(
-              fontSize: 34,
-              fontWeight: FontWeight.bold,
-              color: ColorApp.black,
-            ),
-          ),
-          const SizedBox(height: 18),
-          const Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CircleAvatar(
-                backgroundColor: Colors.grey,
-                radius: 64 / 2,
-                backgroundImage: AssetImage('assets/images/avatar-profile.png'),
-              ),
-              SizedBox(width: 18),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 14),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: appBarHeight),
+            // const Text(
+            //   'Thông tin cá nhân',
+            //   style: TextStyle(
+            //     fontSize: 34,
+            //     fontWeight: FontWeight.bold,
+            //     color: ColorApp.black,
+            //   ),
+            // ),
+            // const SizedBox(height: 18),
+            Obx(
+              () => Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    'Matilda Brown',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                      color: ColorApp.black,
-                    ),
+                  AvatarContainer(
+                    image: _userController.userRes.value.data!.image,
+                    radius: 64,
+                    replaceImage: 'assets/images/avatar-profile.png',
                   ),
-                  Text(
-                    'matildabrown@mail.com',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: ColorApp.gray,
-                    ),
-                  ),
+                  const SizedBox(width: 18),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        _userController.userRes.value.data!.fullname,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                          color: ColorApp.black,
+                        ),
+                      ),
+                      Text(
+                        _userController.userRes.value.data!.email,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: ColorApp.gray,
+                        ),
+                      ),
+                    ],
+                  )
                 ],
-              )
-            ],
-          ),
-          const SizedBox(height: 28),
-          Container(
-            height: 1,
-            width: double.infinity,
-            color: ColorApp.gray,
-          ),
-          rowInfo(
-            title: 'Đơn hàng',
-            desc: 'Đã có ${12} đơn hàng',
-            event: () => Get.toNamed(Routes.historyView),
-          ),
-          Container(
-            height: 1,
-            width: double.infinity,
-            color: ColorApp.gray,
-          ),
-          rowInfo(
-            title: 'Thông báo',
-            desc: 'Có ${10} thông báo mới',
-            event: () => Get.toNamed(Routes.historyView),
-          ),
-          Container(
-            height: 1,
-            width: double.infinity,
-            color: ColorApp.gray,
-          ),
-          rowInfo(
-              title: 'Địa chỉ giao hàng',
-              desc: '${3} địa chỉ',
-              event: () => Get.toNamed(Routes.address)),
-          Container(
-            height: 1,
-            width: double.infinity,
-            color: ColorApp.gray,
-          ),
-          rowInfo(
-            title: 'Cài đặt',
-            desc: 'Thông tin cá nhân, mật khẩu',
-            event: () => Get.toNamed(Routes.setting),
-          ),
-          Container(
-            height: 1,
-            width: double.infinity,
-            color: ColorApp.gray,
-          ),
-          const SizedBox(height: 24),
-          SizedBox(
-            width: double.infinity,
-            child: OutlinedButton(
-              onPressed: () => Get.toNamed(Routes.changePassword),
-              style: OutlinedButton.styleFrom(
-                side: const BorderSide(
-                  color: ColorApp.black,
-                  width: 1,
-                ),
-                minimumSize: Size.zero,
-                padding: const EdgeInsets.symmetric(
-                  vertical: 14,
-                ),
-                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              ),
-              child: Text(
-                'Đổi mật khẩu',
-                style: TextThemes.text_14_500.copyWith(color: ColorApp.black),
               ),
             ),
-          ),
-          const SizedBox(height: 24),
-          ButtonPrimary(
-            title: 'Đăng xuất',
-            isUpperCase: true,
-            event: () async {
-              await AuthService.logout();
-              Get.offAllNamed(Routes.login);
-            },
-          ),
-        ],
+            const SizedBox(height: 28),
+            Container(
+              height: 1,
+              width: double.infinity,
+              color: ColorApp.gray,
+            ),
+            rowInfo(
+              title: 'Đơn hàng',
+              desc: 'Đã có ${12} đơn hàng',
+              event: () => Get.toNamed(Routes.historyView),
+            ),
+            // Container(
+            //   height: 1,
+            //   width: double.infinity,
+            //   color: ColorApp.gray,
+            // ),
+            // rowInfo(
+            //   title: 'Thông báo',
+            //   desc: 'Có ${10} thông báo mới',
+            //   event: () => Get.toNamed(Routes.historyView),
+            // ),
+            Container(
+              height: 1,
+              width: double.infinity,
+              color: ColorApp.gray,
+            ),
+            rowInfo(
+                title: 'Địa chỉ nhận hàng',
+                desc: '${_addressViewModel.listData.length} địa chỉ',
+                event: () => Get.toNamed(Routes.address)),
+            Container(
+              height: 1,
+              width: double.infinity,
+              color: ColorApp.gray,
+            ),
+            rowInfo(
+              title: 'Cài đặt',
+              desc: 'Thông tin cá nhân',
+              event: () => Get.toNamed(Routes.setting),
+            ),
+            Container(
+              height: 1,
+              width: double.infinity,
+              color: ColorApp.gray,
+            ),
+            const SizedBox(height: 30),
+            ButtonSecond(
+              title: 'Đổi mật khẩu',
+              isUpperCase: true,
+              event: () => Get.toNamed(Routes.changePassword),
+            ),
+            const SizedBox(height: 20),
+            ButtonPrimary(
+              title: 'Đăng xuất',
+              isUpperCase: true,
+              event: () async {
+                await AuthService.logout();
+                Get.offAllNamed(Routes.login);
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -169,13 +162,14 @@ class ProfileTabView extends StatelessWidget {
                 Text(
                   desc,
                   style: const TextStyle(
-                    fontSize: 11,
+                    fontSize: 13,
                     fontWeight: FontWeight.w400,
                     color: ColorApp.gray,
                   ),
                 ),
               ],
             ),
+            // const Spacer(),
             // IconButton(
             //   onPressed: event,
             //   style: IconButton.styleFrom(

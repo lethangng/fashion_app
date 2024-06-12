@@ -33,18 +33,26 @@ class MainWrapper extends StatelessWidget {
           ShopTabView(),
           BagTabView(),
           FavoritesTabView(),
-          const ProfileTabView(),
+          ProfileTabView(),
         ],
       ),
       bottomNavigationBar: Obx(
         () => BottomNavigationBar(
           items: <BottomNavigationBarItem>[
-            const BottomNavigationBarItem(
-              icon: Icon(Icons.home_outlined),
+            BottomNavigationBarItem(
+              icon: Icon(
+                _tabViewModel.currentPage.value == 0
+                    ? Icons.home
+                    : Icons.home_outlined,
+              ),
               label: 'Trang chủ',
             ),
-            const BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_cart_outlined),
+            BottomNavigationBarItem(
+              icon: Icon(
+                _tabViewModel.currentPage.value == 1
+                    ? Icons.shopping_cart
+                    : Icons.shopping_cart_outlined,
+              ),
               label: 'Cửa hàng',
             ),
             BottomNavigationBarItem(
@@ -56,7 +64,11 @@ class MainWrapper extends StatelessWidget {
                 badgeStyle: const badges.BadgeStyle(
                   badgeColor: Colors.blue,
                 ),
-                child: const Icon(Icons.shopping_bag_outlined),
+                child: Icon(
+                  _tabViewModel.currentPage.value == 2
+                      ? Icons.shopping_bag
+                      : Icons.shopping_bag_outlined,
+                ),
               ),
               label: 'Giỏ hàng',
             ),
@@ -69,13 +81,21 @@ class MainWrapper extends StatelessWidget {
                 badgeStyle: const badges.BadgeStyle(
                   badgeColor: Colors.blue,
                 ),
-                child: const Icon(Icons.favorite_border),
+                child: Icon(
+                  _tabViewModel.currentPage.value == 3
+                      ? Icons.favorite
+                      : Icons.favorite_border,
+                ),
               ),
               label: 'Yêu thích',
             ),
-            const BottomNavigationBarItem(
-              icon: Icon(Icons.person_outline),
-              label: 'Cá nhân',
+            BottomNavigationBarItem(
+              icon: Icon(
+                _tabViewModel.currentPage.value == 4
+                    ? Icons.person
+                    : Icons.person_outline,
+              ),
+              label: 'Tôi',
             ),
           ],
           currentIndex: _tabViewModel.currentPage.value,

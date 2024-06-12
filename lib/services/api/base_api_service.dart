@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import '../../configs/configs.dart';
 
 abstract class BaseApiService {
@@ -8,5 +10,11 @@ abstract class BaseApiService {
   Future<dynamic> postResponse({
     required String url,
     required Object bodyData,
+  });
+
+  Future<dynamic> uploadFileResponse({
+    required String url,
+    required Map<String, String> bodyData,
+    required File file,
   });
 }
