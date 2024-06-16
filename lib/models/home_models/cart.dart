@@ -3,8 +3,8 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
-import 'color_model.dart';
-import 'size_model.dart';
+import 'product_color.dart';
+import 'product_size.dart';
 
 class ExtraProduct {
   final int size;
@@ -68,10 +68,10 @@ class Cart {
   final int price;
   final String image_url;
   // final ExtraProduct extra_product;
-  SizeModel size;
-  ColorModel color;
-  final List<SizeModel> sizes;
-  final List<ColorModel> colors;
+  ProductSize size;
+  ProductColor color;
+  final List<ProductSize> sizes;
+  final List<ProductColor> colors;
   int quantity;
 
   Cart({
@@ -101,10 +101,10 @@ class Cart {
     int? price_off,
     int? price,
     String? image_url,
-    SizeModel? size,
-    ColorModel? color,
-    List<SizeModel>? sizes,
-    List<ColorModel>? colors,
+    ProductSize? size,
+    ProductColor? color,
+    List<ProductSize>? sizes,
+    List<ProductColor>? colors,
     int? quantity,
   }) {
     return Cart(
@@ -167,16 +167,16 @@ class Cart {
       price_off: map['price_off'] as int,
       price: map['price'] as int,
       image_url: map['image_url'] as String,
-      size: SizeModel.fromMap(map['size'] as Map<String, dynamic>),
-      color: ColorModel.fromMap(map['color'] as Map<String, dynamic>),
-      sizes: List<SizeModel>.from(
-        (map['sizes'] as List).map<SizeModel>(
-          (x) => SizeModel.fromMap(x as Map<String, dynamic>),
+      size: ProductSize.fromMap(map['size'] as Map<String, dynamic>),
+      color: ProductColor.fromMap(map['color'] as Map<String, dynamic>),
+      sizes: List<ProductSize>.from(
+        (map['sizes'] as List).map<ProductSize>(
+          (x) => ProductSize.fromMap(x as Map<String, dynamic>),
         ),
       ),
-      colors: List<ColorModel>.from(
-        (map['colors'] as List).map<ColorModel>(
-          (x) => ColorModel.fromMap(x as Map<String, dynamic>),
+      colors: List<ProductColor>.from(
+        (map['colors'] as List).map<ProductColor>(
+          (x) => ProductColor.fromMap(x as Map<String, dynamic>),
         ),
       ),
       quantity: map['quantity'] as int,

@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-// import '../../models/home_models/product.dart';
-// import '../../models/shop_models/category.dart';
-import 'shop_tab_view_models/search_view_controller.dart';
-
 class ShopTabViewModel extends GetxController
     with GetSingleTickerProviderStateMixin {
   late TabController tabController;
@@ -24,7 +20,6 @@ class ShopTabViewModel extends GetxController
       vsync: this,
     );
     tabController.animateTo(0);
-    Get.put(SearchViewController());
     super.onInit();
   }
 

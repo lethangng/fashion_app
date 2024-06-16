@@ -4,6 +4,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_html_table/flutter_html_table.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
@@ -13,7 +14,7 @@ import '../../../models/shop_models/filters.dart';
 import '../../../services/response/api_status.dart';
 import '../../../utils/color_app.dart';
 import '../../../utils/helper.dart';
-import '../../../view_models/home_viewmodel.dart';
+// import '../../../view_models/home_viewmodel.dart';
 import '../../../view_models/tab_view_models/shop_tab_view_models/product_detail_viewmodel.dart';
 import '../../widgets/button_primary.dart';
 import '../../widgets/button_second.dart';
@@ -33,7 +34,7 @@ class ProductDetailScreen extends StatelessWidget {
   ProductDetailScreen({super.key});
   final ProductDetailViewmodel _productDetailViewModel =
       Get.put(ProductDetailViewmodel());
-  final HomeController _homeViewModel = Get.put(HomeController());
+  // final HomeController _homeViewModel = Get.put(HomeController());
 
   @override
   Widget build(BuildContext context) {
@@ -306,49 +307,50 @@ class ProductDetailScreen extends StatelessWidget {
                                 ? null
                                 : Get.height * 0.4,
                             child: Html(
-                              anchorKey: staticAnchorKey,
+                              // anchorKey: staticAnchorKey,
                               data: productDetail.desc,
+                              shrinkWrap: true,
                               style: {
                                 "table": Style(
-                                  backgroundColor: const Color.fromARGB(
-                                      0x50, 0xee, 0xee, 0xee),
+                                  height: Height.auto(),
+                                  width: Width.auto(),
+                                ),
+                                "tr": Style(
+                                  height: Height.auto(),
+                                  width: Width.auto(),
                                 ),
                                 "th": Style(
                                   padding: HtmlPaddings.all(6),
-                                  backgroundColor: Colors.grey,
+                                  height: Height.auto(),
+                                  border: const Border(
+                                    left: BorderSide(
+                                        color: Colors.black, width: 0.5),
+                                    bottom: BorderSide(
+                                        color: Colors.black, width: 0.5),
+                                    top: BorderSide(
+                                        color: Colors.black, width: 0.5),
+                                  ),
                                 ),
                                 "td": Style(
                                   padding: HtmlPaddings.all(6),
+                                  height: Height.auto(),
                                   border: const Border(
-                                    bottom: BorderSide(color: Colors.grey),
+                                    left: BorderSide(
+                                        color: Colors.black, width: 0.5),
+                                    bottom: BorderSide(
+                                        color: Colors.black, width: 0.5),
+                                    top: BorderSide(
+                                        color: Colors.black, width: 0.5),
+                                    right: BorderSide(
+                                        color: Colors.black, width: 0.5),
                                   ),
                                 ),
-                                // 'img': Style(
-                                //   width: Width(double.infinity),
-                                // ),
-                              },
-                              extensions: [
-                                TagWrapExtension(
-                                  tagsToWrap: {"table"},
-                                  builder: (child) {
-                                    return SingleChildScrollView(
-                                      scrollDirection: Axis.horizontal,
-                                      child: child,
-                                    );
-                                  },
+                                "col": Style(
+                                  height: Height.auto(),
+                                  width: Width.auto(),
                                 ),
-                              ],
-                              onLinkTap: (url, _, __) {
-                                debugPrint("Opening $url...");
                               },
-                              onCssParseError: (css, messages) {
-                                debugPrint("css that errored: $css");
-                                debugPrint("error messages:");
-                                for (var element in messages) {
-                                  debugPrint(element.toString());
-                                }
-                                return '';
-                              },
+                              extensions: const [TableHtmlExtension()],
                             ),
                           ),
                         ),
@@ -535,23 +537,41 @@ class ProductDetailScreen extends StatelessWidget {
                           ],
                         ),
                         const SizedBox(height: 12),
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: _homeViewModel.listProductSale
-                                .map(
-                                  (item) => Container(
-                                    margin: const EdgeInsets.only(right: 12),
-                                    width: Get.width * 0.4,
-                                    child: ProductContainer(
-                                      product: item,
-                                      productType: ProductType.product,
-                                    ),
-                                  ),
-                                )
-                                .toList(),
-                          ),
-                        ),
+                        Obx(() {
+                          if (_productDetailViewModel.productRes.value.status ==
+                              Status.error) {
+                            showDialogError(
+                                error: _productDetailViewModel
+                                    .productRes.value.message!);
+                          }
+
+                          if (_productDetailViewModel.productRes.value.status ==
+                              Status.completed) {
+                            return SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: _productDetailViewModel.listProduct
+                                    .map(
+                                      (item) => Container(
+                                        margin:
+                                            const EdgeInsets.only(right: 12),
+                                        width: Get.width * 0.4,
+                                        child: ProductContainer(
+                                          product: item,
+                                          productType: ProductType.product,
+                                        ),
+                                      ),
+                                    )
+                                    .toList(),
+                              ),
+                            );
+                          }
+                          return const Center(
+                            child: CircularProgressIndicator(
+                              color: ColorApp.primary,
+                            ),
+                          );
+                        }),
                       ],
                     ),
                   ),

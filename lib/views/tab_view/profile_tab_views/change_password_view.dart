@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '../../../app/routes.dart';
+import '../../../services/response/api_status.dart';
 import '../../../utils/color_app.dart';
 import '../../../view_models/profile_view_models/change_password_viewmodel.dart';
 import '../../widgets/button_primary.dart';
@@ -11,12 +12,12 @@ import '../../widgets/text_input_container.dart';
 class ChangePasswordView extends StatelessWidget {
   ChangePasswordView({super.key});
 
-  final ChangePasswordViewModel changePasswordViewModel =
+  final ChangePasswordViewModel _changePasswordViewModel =
       Get.put(ChangePasswordViewModel());
 
-  final TextEditingController oldPasswordController = TextEditingController();
-  final TextEditingController newPasswordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
+  final TextEditingController _oldPasswordController = TextEditingController();
+  final TextEditingController _newPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
       TextEditingController();
 
   @override
@@ -24,7 +25,7 @@ class ChangePasswordView extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFF9F9F9),
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         title: const Text(
           'Đổi mật khẩu',
           style: TextStyle(
@@ -39,87 +40,102 @@ class ChangePasswordView extends StatelessWidget {
           icon: SvgPicture.asset('assets/icons/arrow-back.svg'),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          children: [
-            const SizedBox(height: 24),
-            Obx(
-              () => TextInputContainer(
-                textController: oldPasswordController,
-                title: 'Mật khẩu cũ',
-                des: 'Nhập mật khẩu cũ',
-                isLast: changePasswordViewModel.isLast.value,
-                isPassword: true,
-                event: () => changePasswordViewModel.handleShowPassword(
-                    passwordType: PasswordType.oldPassword),
-                showPassword:
-                    changePasswordViewModel.passwordShow['oldPassword'],
-                errorString:
-                    changePasswordViewModel.formError.value.oldPassword,
-              ),
-            ),
-            const SizedBox(height: 10),
-            Align(
-              alignment: Alignment.centerRight,
-              child: InkWell(
-                customBorder: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            children: [
+              const SizedBox(height: 24),
+              Obx(
+                () => TextInputContainer(
+                  textController: _oldPasswordController,
+                  title: 'Mật khẩu cũ',
+                  des: 'Nhập mật khẩu cũ',
+                  isLast: _changePasswordViewModel.isLast.value,
+                  isPassword: true,
+                  event: () => _changePasswordViewModel.handleShowPassword(
+                      passwordType: PasswordType.oldPassword),
+                  showPassword:
+                      _changePasswordViewModel.passwordShow['oldPassword'],
+                  errorString:
+                      _changePasswordViewModel.formError.value.oldPassword,
                 ),
-                onTap: () => Get.toNamed(Routes.forgotPassword),
-                child: const Text(
-                  'Quên mật khẩu?',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    color: ColorApp.gray,
+              ),
+              const SizedBox(height: 10),
+              Align(
+                alignment: Alignment.centerRight,
+                child: InkWell(
+                  customBorder: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  onTap: () => Get.toNamed(Routes.forgotPassword),
+                  child: const Text(
+                    'Quên mật khẩu?',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: ColorApp.gray,
+                    ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(height: 15),
-            Obx(
-              () => TextInputContainer(
-                textController: newPasswordController,
-                title: 'Mật khẩu mới',
-                des: 'Nhập mật khẩu mới',
-                isLast: changePasswordViewModel.isLast.value,
-                isPassword: true,
-                event: () => changePasswordViewModel.handleShowPassword(
-                    passwordType: PasswordType.newPassword),
-                showPassword:
-                    changePasswordViewModel.passwordShow['newPassword'],
-                errorString:
-                    changePasswordViewModel.formError.value.newPassword,
+              const SizedBox(height: 15),
+              Obx(
+                () => TextInputContainer(
+                  textController: _newPasswordController,
+                  title: 'Mật khẩu mới',
+                  des: 'Nhập mật khẩu mới',
+                  isLast: _changePasswordViewModel.isLast.value,
+                  isPassword: true,
+                  event: () => _changePasswordViewModel.handleShowPassword(
+                      passwordType: PasswordType.newPassword),
+                  showPassword:
+                      _changePasswordViewModel.passwordShow['newPassword'],
+                  errorString:
+                      _changePasswordViewModel.formError.value.newPassword,
+                ),
               ),
-            ),
-            const SizedBox(height: 24),
-            Obx(
-              () => TextInputContainer(
-                textController: confirmPasswordController,
-                title: 'Nhập lại mật khẩu',
-                des: 'Nhập lại mật khẩu',
-                isLast: changePasswordViewModel.isLast.value,
-                isPassword: true,
-                event: () => changePasswordViewModel.handleShowPassword(
-                    passwordType: PasswordType.confirmPassword),
-                showPassword:
-                    changePasswordViewModel.passwordShow['confirmPassword'],
-                errorString:
-                    changePasswordViewModel.formError.value.confirmPassword,
+              const SizedBox(height: 24),
+              Obx(
+                () => TextInputContainer(
+                  textController: _confirmPasswordController,
+                  title: 'Nhập lại mật khẩu',
+                  des: 'Nhập lại mật khẩu',
+                  isLast: _changePasswordViewModel.isLast.value,
+                  isPassword: true,
+                  event: () => _changePasswordViewModel.handleShowPassword(
+                      passwordType: PasswordType.confirmPassword),
+                  showPassword:
+                      _changePasswordViewModel.passwordShow['confirmPassword'],
+                  errorString:
+                      _changePasswordViewModel.formError.value.confirmPassword,
+                ),
               ),
-            ),
-            const SizedBox(height: 24),
-            ButtonPrimary(
-              title: 'Lưu',
-              isUpperCase: true,
-              event: () => changePasswordViewModel.validate(
-                oldPasswordController.text,
-                newPasswordController.text,
-                confirmPasswordController.text,
+              const SizedBox(height: 24),
+              Obx(
+                () {
+                  if (_changePasswordViewModel.changePasswordRes.value.status ==
+                      Status.loading) {
+                    return const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(color: ColorApp.primary),
+                    );
+                  }
+
+                  return ButtonPrimary(
+                    title: 'Cập nhật',
+                    isUpperCase: true,
+                    event: () => _changePasswordViewModel.validate(
+                      _oldPasswordController.text,
+                      _newPasswordController.text,
+                      _confirmPasswordController.text,
+                    ),
+                  );
+                },
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

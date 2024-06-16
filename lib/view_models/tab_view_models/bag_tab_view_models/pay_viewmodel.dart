@@ -83,14 +83,11 @@ class PayController extends GetxController {
   }
 
   Future<void> handleLoadAddOrder() async {
-    String deliveryAddress =
-        '${deliveryAddressRes.value.data!.address}, ${deliveryAddressRes.value.data!.city}';
-
     List orderProducts =
         _bagTabViewmodel.listCart.map((cart) => cart.toOrderProduct()).toList();
 
     Map<String, dynamic> data = {
-      'delivery_address': deliveryAddress,
+      'delivery_address': deliveryAddressRes.value.data!.address,
       'user_id': _userController.userRes.value.data!.id,
       'order_products': json.encode(orderProducts),
       'price_off': _bagTabViewmodel.discount.value,

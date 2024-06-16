@@ -1,90 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../models/bag_models/bag_item.dart';
-import '../../models/bag_models/product.dart';
-import '../../models/profile_models/order.dart';
+import 'history_tabs/cancelled_tab_viewmodel.dart';
+import 'history_tabs/delivered_tab_viewmodel.dart';
+import 'history_tabs/processing_tab_viewmodel.dart';
 
 class HistoryViewModel extends GetxController
     with GetSingleTickerProviderStateMixin {
   late TabController tabController;
 
+  final DeliveredTabViewmodel _deliveredTabViewmodel =
+      Get.put(DeliveredTabViewmodel());
+  final ProcessingTabViewmodel _processingTabViewmodel =
+      Get.put(ProcessingTabViewmodel());
+  final CancelledTabViewmodel _cancelledTabViewmodel =
+      Get.put(CancelledTabViewmodel());
+
   final List<Tab> listTap = <Tab>[
-    const Tab(text: 'Đã giao hàng'),
+    const Tab(text: 'Đã giao'),
     const Tab(text: 'Đang xử lý'),
     const Tab(text: 'Đã hủy'),
   ];
 
-  final List<Order> listOrderDelivered = <Order>[
-    Order(
-      id: 0,
-      idOrder: 'IW3475453455',
-      listBagItem: [
-        BagItem(
-          id: 0,
-          product: Product(
-            id: 0,
-            name: 'Pullover',
-            listImage: ['assets/images/product-bag-1.png', ''],
-            desc: '',
-            price: 51,
-            priceSale: 45,
-            listBrand: [Brand(id: 0, brand: 'Mango')],
-            isOutOfStock: false,
-            listColor: [
-              ProductColor(
-                  id: 0,
-                  color: 'Xanh',
-                  image: 'assets/images/product-bag-1.png'),
-              ProductColor(
-                  id: 1,
-                  color: 'Xám',
-                  image: 'assets/images/product-bag-2.png'),
-            ],
-            listSize: [
-              ProductSize(id: 0, size: 'M'),
-              ProductSize(id: 1, size: 'L'),
-              ProductSize(id: 2, size: 'XL'),
-            ],
-          ),
-          selectColor: ProductColor(id: 0, color: 'Xanh'),
-          selectSize: ProductSize(id: 1, size: 'L'),
-          count: 1,
-        ),
-        BagItem(
-          id: 1,
-          product: Product(
-            id: 0,
-            name: 'T-Shirt',
-            listImage: ['assets/images/product-bag-2.png', ''],
-            desc: '',
-            price: 30,
-            listBrand: [Brand(id: 0, brand: 'Mango')],
-            isOutOfStock: false,
-            listColor: [
-              ProductColor(
-                  id: 0,
-                  color: 'Xanh',
-                  image: 'assets/images/product-bag-1.png'),
-              ProductColor(id: 1, color: 'Xám'),
-            ],
-            listSize: [
-              ProductSize(id: 0, size: 'M'),
-              ProductSize(id: 1, size: 'L'),
-              ProductSize(id: 2, size: 'XL'),
-            ],
-          ),
-          selectColor: ProductColor(id: 0, color: 'Xanh'),
-          selectSize: ProductSize(id: 1, size: 'L'),
-          count: 1,
-        ),
-      ],
-      time: '05-12-2019',
-      count: 3,
-      totalPrice: 112,
-      orderType: OrderType.delivered,
-    )
-  ];
+  Future<void> refreshData() async {
+    _deliveredTabViewmodel.onRefresh();
+    _processingTabViewmodel.onRefresh();
+    _cancelledTabViewmodel.onRefresh();
+  }
 
   @override
   void onInit() {

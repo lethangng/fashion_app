@@ -1,14 +1,14 @@
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import '../../../../configs/configs.dart';
-import '../../../../models/home_models/product.dart';
-import '../../../../models/request/request_data.dart';
-import '../../../../services/repository/access_server_repository.dart';
-import '../../../../services/response/api_response.dart';
-import '../../../../utils/helper.dart';
+import '../../../configs/configs.dart';
+import '../../../models/home_models/product.dart';
+import '../../../models/request/request_data.dart';
+import '../../../services/repository/access_server_repository.dart';
+import '../../../services/response/api_response.dart';
+import '../../../utils/helper.dart';
 
-class WomenTabViewmodel extends GetxController {
+class ListProductViewmodel extends GetxController {
   final AccessServerRepository _accessServerRepository =
       AccessServerRepository();
   final RxList<Product> listProduct = <Product>[].obs;
@@ -21,21 +21,25 @@ class WomenTabViewmodel extends GetxController {
 
   int _page = 1;
 
-  void setProductRes(ApiResponse<List<Product>> res) {
+  late final int listProductType;
+  late final String title;
+
+  void setFavoritesRes(ApiResponse<List<Product>> res) {
     productRes.value = res;
   }
 
   Future<void> _fetchData(RequestData req) async {
     try {
+      // setFavoritesRes(ApiResponse.loading());
       final List res = await _accessServerRepository.getData(req);
       List<Product> data = res.map((item) => Product.fromMap(item)).toList();
 
-      setProductRes(ApiResponse.completed(data));
+      setFavoritesRes(ApiResponse.completed(data));
       listProduct.addAll(data);
       listProduct.refresh();
     } catch (e, s) {
       s.printError();
-      setProductRes(ApiResponse.error(e.toString()));
+      setFavoritesRes(ApiResponse.error(e.toString()));
     }
   }
 
@@ -47,7 +51,9 @@ class WomenTabViewmodel extends GetxController {
     RequestData resquestData = RequestData(
       query: Configs.getListProduct(
         page: _page,
-        category_id: 2,
+        limit: 6,
+        newest: listProductType == 0 ? true : null,
+        sale: listProductType == 1 ? true : null,
       ),
       data: Helper.toMapString(data),
     );
@@ -70,6 +76,9 @@ class WomenTabViewmodel extends GetxController {
 
   @override
   void onInit() {
+    listProductType = Get.arguments['listProductType'];
+    title = listProductType == 0 ? 'Mới nhất' : 'Khuyến mãi';
+
     _handleLoad();
     super.onInit();
   }

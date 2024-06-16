@@ -5,14 +5,23 @@ import 'package:get/get.dart';
 import '../../app/routes.dart';
 import '../../models/profile_models/order.dart';
 import '../../utils/color_app.dart';
+import '../../utils/helper.dart';
+import 'order_product_item.dart';
+
+class HistoryOrderType {
+  final String title;
+  final Color color;
+
+  HistoryOrderType({required this.title, required this.color});
+}
 
 class HistoryContainerItem extends StatelessWidget {
   const HistoryContainerItem({
     super.key,
-    required this.orderType,
+    required this.order,
   });
 
-  final OrderType orderType;
+  final Order order;
 
   @override
   Widget build(BuildContext context) {
@@ -41,11 +50,11 @@ class HistoryContainerItem extends StatelessWidget {
             children: [
               rowInfo(
                 title: 'Mã đơn hàng: ',
-                value: 'IW3475453455',
+                value: '${order.id}',
               ),
-              const Text(
-                '05-12-2019',
-                style: TextStyle(
+              Text(
+                order.created_at,
+                style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
                   color: ColorApp.gray,
@@ -54,78 +63,31 @@ class HistoryContainerItem extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 13),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Image.asset(
-                'assets/images/product-2.png',
-                width: Get.width * 0.3,
-                height: Get.width * 0.3,
-                fit: BoxFit.cover,
-              ),
-              const SizedBox(width: 8),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Pullover',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                      color: ColorApp.black,
-                    ),
-                  ),
-                  const Text(
-                    'Mango',
-                    style: TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.w400,
-                      color: ColorApp.gray,
-                    ),
-                  ),
-                  const SizedBox(height: 15),
-                  Row(
-                    children: [
-                      rowInfo(
-                        title: 'Màu: ',
-                        value: 'Xám',
-                      ),
-                      const SizedBox(width: 22),
-                      rowInfo(
-                        title: 'Cỡ: ',
-                        value: 'L',
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 7),
-                  rowInfo(
-                    title: 'Số lượng: ',
-                    value: '1',
-                  ),
-                ],
-              ),
-            ],
-          ),
-          const SizedBox(height: 4),
+          OrderProductItem(orderProduct: order.order_info),
+          const SizedBox(height: 8),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               rowInfo(
                 title: 'Sản phẩm: ',
-                value: '3',
+                value: order.count.toString(),
               ),
               rowInfo(
                 title: 'Tổng tiền: ',
-                value: '112\$',
+                value: Helper.formatMonney(order.total_price),
+                isMoney: true,
               ),
             ],
           ),
-          const SizedBox(height: 14),
+          const SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               OutlinedButton(
-                onPressed: () => Get.toNamed(Routes.orderDetail),
+                onPressed: () => Get.toNamed(
+                  Routes.orderDetail,
+                  arguments: {'orderId': order.id},
+                ),
                 style: OutlinedButton.styleFrom(
                   side: const BorderSide(color: ColorApp.black),
                 ),
@@ -139,11 +101,11 @@ class HistoryContainerItem extends StatelessWidget {
                 ),
               ),
               Text(
-                orderTypeValue(orderType: orderType)['title'],
+                order.status_title,
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
-                  color: orderTypeValue(orderType: orderType)['color'],
+                  color: orderTypeColor(order.status),
                 ),
               )
             ],
@@ -153,28 +115,20 @@ class HistoryContainerItem extends StatelessWidget {
     );
   }
 
-  Map<String, dynamic> orderTypeValue({required OrderType orderType}) {
-    if (orderType == OrderType.delivered) {
-      return {
-        'title': 'Đã giao hàng',
-        'color': ColorApp.success,
-      };
-    } else if (orderType == OrderType.processing) {
-      return {
-        'title': 'Đang xử lý',
-        'color': ColorApp.origin,
-      };
+  Color orderTypeColor(int status) {
+    if (status == 5) {
+      return ColorApp.primary;
+    } else if (status == 4) {
+      return ColorApp.success;
     } else {
-      return {
-        'title': 'Đã hủy',
-        'color': ColorApp.primary,
-      };
+      return ColorApp.origin;
     }
   }
 
   Widget rowInfo({
     required String title,
     required String value,
+    bool isMoney = false,
   }) {
     return RichText(
       text: TextSpan(
@@ -187,9 +141,9 @@ class HistoryContainerItem extends StatelessWidget {
         children: [
           TextSpan(
             text: value,
-            style: const TextStyle(
+            style: TextStyle(
               fontWeight: FontWeight.w500,
-              color: ColorApp.black,
+              color: isMoney ? ColorApp.primary : ColorApp.black,
             ),
           )
         ],

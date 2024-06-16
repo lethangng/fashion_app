@@ -8,6 +8,9 @@ class User {
   final String email;
   final String? phone_number;
   final String? image;
+  // final String? password;
+  // final int total_order;
+  // final int total_delevery_address;
   final String login_type;
 
   User({

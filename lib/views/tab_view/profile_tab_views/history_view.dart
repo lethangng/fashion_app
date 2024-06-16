@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
-import '../../../models/profile_models/order.dart';
 import '../../../utils/color_app.dart';
 import '../../../view_models/profile_view_models/history_viewmodel.dart';
-import '../../widgets/history_container_item.dart';
+import 'history_tabs/cancelled_tab.dart';
+import 'history_tabs/delivered_tab.dart';
+import 'history_tabs/processing_tab.dart';
 
 class HistoryView extends StatelessWidget {
   HistoryView({super.key});
-  final HistoryViewModel historyViewModel = Get.put(HistoryViewModel());
+  final HistoryViewModel _historyViewModel = Get.put(HistoryViewModel());
 
   @override
   Widget build(BuildContext context) {
@@ -17,12 +18,12 @@ class HistoryView extends StatelessWidget {
       backgroundColor: const Color(0xFFF9F9F9),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: SvgPicture.asset('assets/icons/search.svg'),
-          ),
-        ],
+        // actions: [
+        //   IconButton(
+        //     onPressed: () {},
+        //     icon: SvgPicture.asset('assets/icons/search.svg'),
+        //   ),
+        // ],
         leading: IconButton(
           onPressed: () => Get.back(),
           icon: SvgPicture.asset('assets/icons/arrow-back.svg'),
@@ -47,9 +48,9 @@ class HistoryView extends StatelessWidget {
           Container(
             decoration: const BoxDecoration(color: Color(0xFFFFFFFF)),
             child: TabBar(
-              controller: historyViewModel.tabController,
+              controller: _historyViewModel.tabController,
               isScrollable: false,
-              tabs: historyViewModel.listTap,
+              tabs: _historyViewModel.listTap,
               physics: const BouncingScrollPhysics(),
               labelColor: const Color(0xFFDB3022),
               dividerColor: Colors.transparent,
@@ -64,56 +65,11 @@ class HistoryView extends StatelessWidget {
           ),
           Expanded(
             child: TabBarView(
-              controller: historyViewModel.tabController,
+              controller: _historyViewModel.tabController,
               children: [
-                ListView.builder(
-                  itemCount: 4,
-                  padding: const EdgeInsets.only(
-                    left: 14,
-                    right: 14,
-                    top: 16,
-                  ),
-                  itemBuilder: (BuildContext context, int index) {
-                    return const Padding(
-                      padding: EdgeInsets.only(bottom: 24),
-                      child: HistoryContainerItem(
-                        orderType: OrderType.delivered,
-                      ),
-                    );
-                  },
-                ),
-                ListView.builder(
-                  itemCount: 4,
-                  padding: const EdgeInsets.only(
-                    left: 14,
-                    right: 14,
-                    top: 16,
-                  ),
-                  itemBuilder: (BuildContext context, int index) {
-                    return const Padding(
-                      padding: EdgeInsets.only(bottom: 24),
-                      child: HistoryContainerItem(
-                        orderType: OrderType.processing,
-                      ),
-                    );
-                  },
-                ),
-                ListView.builder(
-                  itemCount: 4,
-                  padding: const EdgeInsets.only(
-                    left: 14,
-                    right: 14,
-                    top: 16,
-                  ),
-                  itemBuilder: (BuildContext context, int index) {
-                    return const Padding(
-                      padding: EdgeInsets.only(bottom: 24),
-                      child: HistoryContainerItem(
-                        orderType: OrderType.cancelled,
-                      ),
-                    );
-                  },
-                ),
+                DeliveredTab(),
+                ProcessingTab(),
+                CancelledTab(),
               ],
             ),
           ),

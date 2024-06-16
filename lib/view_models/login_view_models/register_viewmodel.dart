@@ -1,6 +1,13 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../app/routes.dart';
+import '../../configs/configs.dart';
 import '../../models/login_models/form_data_error.dart';
+import '../../models/request/request_data.dart';
+import '../../services/repository/access_server_repository.dart';
+import '../../services/response/api_response.dart';
+import '../../utils/helper.dart';
 import '../../utils/validate.dart';
 
 enum PasswordType {
@@ -9,12 +16,13 @@ enum PasswordType {
 }
 
 class RegisterViewModel extends GetxController {
-  final Rx<FormDataError> formError = FormDataError(
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-  ).obs;
+  final AccessServerRepository _accessServerRepository =
+      AccessServerRepository();
+
+  final Rx<ApiResponse<bool>> registerRes =
+      ApiResponse<bool>.completed(null).obs;
+
+  final Rx<FormDataError> formError = FormDataError().obs;
 
   final RxBool isLast = true.obs;
 
@@ -22,6 +30,54 @@ class RegisterViewModel extends GetxController {
     'password': false,
     'confirmPassword': false,
   }.obs;
+
+  void setRegisterRes(ApiResponse<bool> res) {
+    registerRes.value = res;
+  }
+
+  Future<void> _fetchData(RequestData req) async {
+    try {
+      setRegisterRes(ApiResponse.loading());
+
+      await _accessServerRepository.postData(req);
+
+      setRegisterRes(ApiResponse.completed(true));
+
+      Get.snackbar(
+        'Thông báo',
+        'Đăng ký thành công',
+        icon: const Icon(Icons.check, color: Colors.green),
+        colorText: Colors.white,
+        backgroundColor: Colors.black87,
+      );
+
+      // Tới màn hình Home
+      Get.offAllNamed(Routes.login);
+    } catch (e, s) {
+      s.printError();
+      formError.value.email = e.toString();
+      setRegisterRes(ApiResponse.completed(null));
+    }
+  }
+
+  Future<void> handleLoad({
+    required String fullname,
+    required String email,
+    required String password,
+  }) async {
+    Map<String, dynamic> data = {
+      'fullname': fullname,
+      'email': email,
+      'password': password,
+    };
+
+    RequestData resquestData = RequestData(
+      query: Configs.register,
+      data: Helper.toMapString(data),
+    );
+
+    await _fetchData(resquestData);
+  }
 
   void handleShowPassword({required PasswordType passwordType}) {
     if (passwordType == PasswordType.password) {
@@ -73,14 +129,12 @@ class RegisterViewModel extends GetxController {
     }
 
     formError.refresh();
-    if (formError.value ==
-        FormDataError(
-          name: '',
-          email: '',
-          password: '',
-          confirmPassword: '',
-        )) {
-      //
+    if (formError.value == FormDataError()) {
+      handleLoad(
+        fullname: name,
+        email: email,
+        password: password,
+      );
     }
   }
 }

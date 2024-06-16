@@ -26,7 +26,6 @@ class SettingView extends StatelessWidget {
     final returnedImage =
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (returnedImage == null) return;
-    printInfo(info: returnedImage.path);
     _settingViewmodel.setSelectImage(File(returnedImage.path));
   }
 
@@ -87,7 +86,7 @@ class SettingView extends StatelessWidget {
                           ? AvatarContainer(
                               image: _userController.userRes.value.data!.image,
                               radius: 100,
-                              replaceImage: 'assets/images/avatar-profile.png',
+                              replaceImage: 'assets/images/avatar-image.jpg',
                             )
                           : ClipOval(
                               child: Image.file(

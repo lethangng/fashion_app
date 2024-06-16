@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 
 import '../../../configs/configs.dart';
 import '../../../models/home_models/evaluate.dart';
+import '../../../models/home_models/product.dart';
 import '../../../models/home_models/product_detail.dart';
 import '../../../models/request/request_data.dart';
 import '../../../services/repository/access_server_repository.dart';
@@ -20,6 +21,7 @@ class ProductDetailViewmodel extends GetxController {
   final UserController _userController = Get.find<UserController>();
   final FavoriteTabViewmodel _favoriteTabViewmodel =
       Get.find<FavoriteTabViewmodel>();
+
   final Rx<ApiResponse<ProductDetail>> productDetailRes =
       ApiResponse<ProductDetail>.loading().obs;
 
@@ -27,6 +29,11 @@ class ProductDetailViewmodel extends GetxController {
   final Rx<ApiResponse<bool>> addCartRes = ApiResponse<bool>.loading().obs;
   final Rx<ApiResponse<List<Evaluate>>> evaluateRes =
       ApiResponse<List<Evaluate>>.loading().obs;
+
+  final Rx<ApiResponse<List<Product>>> productRes =
+      ApiResponse<List<Product>>.loading().obs;
+
+  final RxList<Product> listProduct = <Product>[].obs;
 
   final RxList<Evaluate> listEvaluate = <Evaluate>[].obs;
 
@@ -46,6 +53,10 @@ class ProductDetailViewmodel extends GetxController {
     isShow.value = !isShow.value;
   }
 
+  void setProductRes(ApiResponse<List<Product>> res) {
+    productRes.value = res;
+  }
+
   void setProductDetailRes(ApiResponse<ProductDetail> res) {
     productDetailRes.value = res;
   }
@@ -60,6 +71,35 @@ class ProductDetailViewmodel extends GetxController {
 
   void setEvaluateRes(ApiResponse<List<Evaluate>> res) {
     evaluateRes.value = res;
+  }
+
+  Future<void> _fetchDataRecommendations(RequestData req) async {
+    try {
+      final List res = await _accessServerRepository.getData(req);
+      List<Product> data = res.map((item) => Product.fromMap(item)).toList();
+
+      setProductRes(ApiResponse.completed(data));
+      listProduct.addAll(data);
+      listProduct.refresh();
+    } catch (e, s) {
+      s.printError();
+      setProductRes(ApiResponse.error(e.toString()));
+    }
+  }
+
+  Future<void> _handleLoadRecommendations() async {
+    Map<String, dynamic> data = {
+      //
+    };
+
+    RequestData resquestData = RequestData(
+      query: Configs.getRecommendationsProduct(
+        product_id: productId,
+      ),
+      data: Helper.toMapString(data),
+    );
+
+    await _fetchDataRecommendations(resquestData);
   }
 
   Future<void> _fetchData(RequestData req) async {
@@ -131,7 +171,8 @@ class ProductDetailViewmodel extends GetxController {
   Future<void> _fetchDataAddFavorite(RequestData req) async {
     try {
       setAddFavoriteRes(ApiResponse.loading());
-      Map<String, dynamic> map = await _accessServerRepository.postData(req);
+      final Map<String, dynamic> map =
+          await _accessServerRepository.postData(req);
       isFavorite.value = !isFavorite.value;
 
       setAddFavoriteRes(ApiResponse.completed(true));
@@ -140,7 +181,7 @@ class ProductDetailViewmodel extends GetxController {
         '${map['msg']}',
         icon: const Icon(Icons.check, color: Colors.green),
         colorText: Colors.white,
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.black87,
       );
       await _favoriteTabViewmodel.onRefresh();
     } catch (e, s) {
@@ -174,7 +215,7 @@ class ProductDetailViewmodel extends GetxController {
         '${map['msg']}',
         // icon: const Icon(Icons.check, color: Colors.green),
         colorText: Colors.white,
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.black87,
       );
     } catch (e, s) {
       s.printError();
@@ -205,8 +246,14 @@ class ProductDetailViewmodel extends GetxController {
   }
 
   Future<void> initData() async {
+    // await Future.wait([
+    //   handleLoad(),
+    //   _handleLoadEvaluate(),
+    //   _handleLoadRecommendations(),
+    // ]);
     await handleLoad();
     await _handleLoadEvaluate();
+    await _handleLoadRecommendations();
   }
 
   @override

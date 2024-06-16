@@ -21,6 +21,7 @@ import '../views/tab_view/shop_tab_view/filters_screen.dart';
 import '../views/tab_view/shop_tab_view/product_detail_screen.dart';
 import '../views/tab_view/shop_tab_view/reviews_screen.dart';
 import '../views/tab_view/shop_tab_view/search_screen.dart';
+import '../views/tab_view/shop_tab_view/tabs/list_product_screen.dart';
 
 class Routes {
   static const splashScreen = '/';
@@ -43,6 +44,7 @@ class Routes {
   static const changePassword = '/change-password';
   static const search = '/search';
   static const productDetail = '/product-detail';
+  static const listProduct = '/list-product';
 
   static final routes = [
     // GetPage(name: splashScreen, page: () => SearchScreen()),
@@ -66,5 +68,6 @@ class Routes {
     GetPage(name: changePassword, page: () => ChangePasswordView()),
     GetPage(name: search, page: () => SearchScreen()),
     GetPage(name: productDetail, page: () => ProductDetailScreen()),
+    GetPage(name: listProduct, page: () => ListProductScreen()),
   ];
 }

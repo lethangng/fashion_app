@@ -21,7 +21,7 @@ class Product {
     required this.status,
     required this.newest,
     required this.brand,
-    this.sell_off,
+    required this.sell_off,
     this.price_off,
     required this.price,
     required this.image_url,

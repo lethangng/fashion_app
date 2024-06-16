@@ -113,7 +113,7 @@ class BagTabView extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: Text(coupon == null
-                                    ? 'Chọn hoặc nhập mã giảm giá'
+                                    ? 'Chọn mã giảm giá'
                                     : 'Đã áp dụng mã: ${coupon.name}'),
                               ),
                               Visibility(
@@ -249,63 +249,63 @@ class BagTabView extends StatelessWidget {
                 color: const Color(0xFF979797),
               ),
             ),
-            const SizedBox(height: 32),
-            Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    width: Get.width,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          blurRadius: 8,
-                          offset: const Offset(0, 1),
-                          color: const Color(0xFF000000).withOpacity(0.05),
-                        ),
-                      ],
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: TextField(
-                      controller: discountCodeController,
-                      style: const TextStyle(
-                        color: ColorApp.black,
-                      ),
-                      onTap: () {},
-                      textAlignVertical: TextAlignVertical.center,
-                      textAlign: TextAlign.left,
-                      decoration: const InputDecoration(
-                        isDense: true, // Cho chu can giua theo chieu doc
-                        hintText: 'Nhập mã giảm giá',
-                        hintStyle: TextStyle(
-                          color: ColorApp.colorGrey2,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                        ),
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: 20,
-                          vertical: 12,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Container(
-                  width: 36,
-                  height: 36,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: ColorApp.black,
-                  ),
-                  child: IconButton(
-                    onPressed: () {},
-                    icon: SvgPicture.asset('assets/icons/arrow-right.svg'),
-                  ),
-                )
-              ],
-            ),
+            // const SizedBox(height: 32),
+            // Row(
+            //   children: [
+            //     Expanded(
+            //       child: Container(
+            //         width: Get.width,
+            //         decoration: BoxDecoration(
+            //           color: Colors.white,
+            //           boxShadow: [
+            //             BoxShadow(
+            //               blurRadius: 8,
+            //               offset: const Offset(0, 1),
+            //               color: const Color(0xFF000000).withOpacity(0.05),
+            //             ),
+            //           ],
+            //           borderRadius: BorderRadius.circular(8),
+            //         ),
+            //         child: TextField(
+            //           controller: discountCodeController,
+            //           style: const TextStyle(
+            //             color: ColorApp.black,
+            //           ),
+            //           onTap: () {},
+            //           textAlignVertical: TextAlignVertical.center,
+            //           textAlign: TextAlign.left,
+            //           decoration: const InputDecoration(
+            //             isDense: true, // Cho chu can giua theo chieu doc
+            //             hintText: 'Nhập mã giảm giá',
+            //             hintStyle: TextStyle(
+            //               color: ColorApp.colorGrey2,
+            //               fontSize: 14,
+            //               fontWeight: FontWeight.w400,
+            //             ),
+            //             border: InputBorder.none,
+            //             contentPadding: EdgeInsets.symmetric(
+            //               horizontal: 20,
+            //               vertical: 12,
+            //             ),
+            //           ),
+            //         ),
+            //       ),
+            //     ),
+            //     const SizedBox(width: 8),
+            //     Container(
+            //       width: 36,
+            //       height: 36,
+            //       decoration: const BoxDecoration(
+            //         shape: BoxShape.circle,
+            //         color: ColorApp.black,
+            //       ),
+            //       child: IconButton(
+            //         onPressed: () {},
+            //         icon: SvgPicture.asset('assets/icons/arrow-right.svg'),
+            //       ),
+            //     )
+            //   ],
+            // ),
             const SizedBox(height: 15),
             const Align(
               alignment: Alignment.centerLeft,

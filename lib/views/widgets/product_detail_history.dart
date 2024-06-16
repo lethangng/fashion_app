@@ -2,16 +2,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../models/bag_models/bag_item.dart';
+import '../../models/home_models/cart.dart';
 import '../../utils/color_app.dart';
 import '../../utils/text_themes.dart';
+import 'image_container.dart';
 
 class ProductDetailHistory extends StatelessWidget {
   const ProductDetailHistory({
     super.key,
     required this.bagModel,
   });
-  final BagItem bagModel;
+  final Cart bagModel;
 
   @override
   Widget build(BuildContext context) {
@@ -22,10 +23,10 @@ class ProductDetailHistory extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.asset(
-              bagModel.product.listImage.first,
+            ImageContainer(
+              image: bagModel.image_url,
               width: Get.width * 0.3,
-              fit: BoxFit.cover,
+              replaceImage: '',
             ),
             Expanded(
               child: Container(
@@ -38,7 +39,7 @@ class ProductDetailHistory extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          bagModel.product.name,
+                          bagModel.name,
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
@@ -47,18 +48,21 @@ class ProductDetailHistory extends StatelessWidget {
                         ),
                         // const SizedBox(height: 2),
                         Text(
-                          bagModel.product.listBrand.first.brand,
+                          bagModel.brand,
                           style: TextThemes.textGray_11_400,
                         ),
                         const SizedBox(height: 7),
                         Row(
                           children: [
                             rowInfo(
-                                title: 'Màu: ',
-                                value: bagModel.selectColor.color),
+                              title: 'Màu sắc: ',
+                              value: bagModel.color.name,
+                            ),
                             const SizedBox(width: 22),
                             rowInfo(
-                                title: 'Cỡ: ', value: bagModel.selectSize.size),
+                              title: 'Kích thước: ',
+                              value: bagModel.color.name,
+                            ),
                           ],
                         ),
                         const SizedBox(height: 11),
@@ -67,9 +71,9 @@ class ProductDetailHistory extends StatelessWidget {
                           children: [
                             rowInfo(
                                 title: 'Số lượng: ',
-                                value: '${bagModel.count}'),
+                                value: '${bagModel.quantity}'),
                             Text(
-                              '${bagModel.count}\$',
+                              '${bagModel.quantity}\$',
                               style: TextThemes.text_14_500,
                             )
                           ],

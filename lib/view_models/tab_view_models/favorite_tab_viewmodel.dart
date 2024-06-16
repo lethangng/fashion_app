@@ -37,7 +37,7 @@ class FavoriteTabViewmodel extends GetxController {
 
   Future<void> _fetchData(RequestData req) async {
     try {
-      setFavoritesRes(ApiResponse.loading());
+      // setFavoritesRes(ApiResponse.loading());
       final List res = await _accessServerRepository.getData(req);
       List<Product> data = res.map((item) => Product.fromMap(item)).toList();
 

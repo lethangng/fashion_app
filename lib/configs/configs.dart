@@ -15,6 +15,43 @@ class Configs {
   static String addOrder = '/order/add';
   static String updateInfo = '/user/update-info';
   static String uploadImage = '/user/upload-image';
+  static String uploadStatusOrder = '/order/update';
+  static String cancelOrder = '/order/cancel';
+  static String addEvaluates = '/evaluates/add';
+  static String updateDeliveryAddress = '/delivery-address/update';
+  static String register = '/user/register';
+  static String changePassword = '/user/change-password';
+
+  static String getFilterProduct({
+    required int page,
+    required int limit,
+    required String product_name,
+    int? min_price,
+    int? max_price,
+    required String colors,
+    required String sizes,
+    required String brands,
+    required String categories,
+    required int sort,
+  }) {
+    return '/product/filter?page=$page&limit=$limit&product_name=$product_name&sort=$sort&min_price=${min_price ?? ''}&max_price=${max_price ?? ''}&colors=$colors&sizes=$sizes&brands=$brands&categories=$categories';
+  }
+
+  static String getBrand() {
+    return '/brands';
+  }
+
+  static String getColor() {
+    return '/color';
+  }
+
+  static String getSize() {
+    return '/size';
+  }
+
+  static String getCategory() {
+    return '/categories';
+  }
 
   static String getFavorite({
     required int page,
@@ -59,7 +96,13 @@ class Configs {
     bool? newest,
     int? category_id,
   }) {
-    return '/product?page=$page&user_id=${_user?.id ?? ''}&limit=${limit ?? ''}&newest=${newest ?? ''}&category_id=${category_id ?? ''}';
+    return '/product?page=$page&user_id=${_user?.id ?? ''}&limit=${limit ?? ''}&newest=${newest ?? ''}&sale=${sale ?? ''}&category_id=${category_id ?? ''}';
+  }
+
+  static String getRecommendationsProduct({
+    required int product_id,
+  }) {
+    return '/product?product_id=$product_id&user_id=${_user?.id ?? ''}';
   }
 
   static String getDetailProduct({
@@ -67,5 +110,18 @@ class Configs {
     // int? user_id,
   }) {
     return '/product/detail?id=$id&user_id=${_user?.id ?? ''}';
+  }
+
+  static String getOrder({
+    required int page,
+    required int user_id,
+    required int status,
+    required int limit,
+  }) {
+    return '/order?page=$page&user_id=$user_id&status=$status&limit=$limit';
+  }
+
+  static String getDetailOrder({required int id}) {
+    return '/order/detail?id=$id';
   }
 }

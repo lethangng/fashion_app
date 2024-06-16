@@ -55,33 +55,6 @@ class AddressView extends StatelessWidget {
 
         if (_addressViewModel.deliveryAddressRes.value.status ==
             Status.completed) {
-          // return Loadmore(
-          //   refreshController: _addressViewModel.refreshController,
-          //   onLoading: _addressViewModel.onLoading,
-          //   onRefresh: _addressViewModel.onRefresh,
-          //   widget: _addressViewModel.listCart.isEmpty
-          //       ? const Center(
-          //           child: Text(
-          //             'Chưa có sản phẩm nào trong giỏ hàng',
-          //             style: TextStyle(
-          //               color: ColorApp.black,
-          //               fontSize: 16,
-          //             ),
-          //           ),
-          //         )
-          //       : ListView.builder(
-          //           itemCount: _addressViewModel.listCart.length,
-          //           padding: EdgeInsets.only(top: appBarHeight),
-          //           itemBuilder: (BuildContext context, int index) {
-          //             return Padding(
-          //               padding: const EdgeInsets.only(bottom: 24),
-          //               child: ProductBagContainer(
-          //                 cart: _addressViewModel.listCart[index],
-          //               ),
-          //             );
-          //           },
-          //         ),
-          // );
           return ListView.builder(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             itemCount: _addressViewModel.listData.length,

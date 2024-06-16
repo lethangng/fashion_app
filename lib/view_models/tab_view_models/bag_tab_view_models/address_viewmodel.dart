@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../configs/configs.dart';
-import '../../../models/bag_models/address.dart';
 import '../../../models/home_models/delivery_address.dart';
 import '../../../models/request/request_data.dart';
 import '../../../services/repository/access_server_repository.dart';
@@ -11,40 +10,6 @@ import '../../../utils/helper.dart';
 import '../../controllers/user_controller.dart';
 
 class AddressController extends GetxController {
-  RxList<Address> listDataAddress = <Address>[
-    Address(
-      id: 0,
-      name: 'Jane Doe',
-      address: '3 Newbridge Court',
-      city: 'Chino Hills',
-      isDefault: true,
-    ),
-    Address(
-      id: 1,
-      name: 'Jane Doe',
-      address: '3 Newbridge Court',
-      city: 'Chino Hills',
-      isDefault: false,
-    ),
-    Address(
-      id: 2,
-      name: 'Jane Doe',
-      address: '3 Newbridge Court',
-      city: 'Chino Hills',
-      isDefault: false,
-    ),
-  ].obs;
-
-  void onSelectAddress(int id) {
-    for (var item in listDataAddress) {
-      item.isDefault = false;
-      if (item.id == id) {
-        item.isDefault = true;
-      }
-    }
-    listDataAddress.refresh();
-  }
-
   final UserController _userController = Get.find<UserController>();
 
   final AccessServerRepository _accessServerRepository =
@@ -58,12 +23,59 @@ class AddressController extends GetxController {
   final Rx<ApiResponse<bool>> addAddressRes =
       ApiResponse<bool>.completed(null).obs;
 
+  final Rx<ApiResponse<bool>> updateAddressRes =
+      ApiResponse<bool>.completed(null).obs;
+
   void setDeliveryAddressRes(ApiResponse<List<DeliveryAddress>> res) {
     deliveryAddressRes.value = res;
   }
 
   void setAddAddressRes(ApiResponse<bool> res) {
     addAddressRes.value = res;
+  }
+
+  void setUpdateAddressRes(ApiResponse<bool> res) {
+    updateAddressRes.value = res;
+  }
+
+  Future<void> _fetchDataUpdateAddredd(RequestData req) async {
+    try {
+      setUpdateAddressRes(ApiResponse.loading());
+      Map<String, dynamic> map = await _accessServerRepository.postData(req);
+      setUpdateAddressRes(ApiResponse.completed(true));
+
+      Get.snackbar(
+        'Thông báo',
+        '${map['msg']}',
+        colorText: Colors.white,
+        backgroundColor: Colors.black45,
+      );
+
+      await onRefresh();
+    } catch (e, s) {
+      s.printError();
+      setUpdateAddressRes(ApiResponse.error(e.toString()));
+    }
+  }
+
+  Future<void> handleLoadUpdateAddredd({
+    required DeliveryAddress address,
+    required int isSelect,
+  }) async {
+    Map<String, dynamic> data = {
+      'id': address.id,
+      'address': address.address,
+      'fullname': address.fullname,
+      'phone_number': address.phone_number,
+      'is_select': isSelect,
+    };
+
+    RequestData resquestData = RequestData(
+      query: Configs.updateDeliveryAddress,
+      data: Helper.toMapString(data),
+    );
+
+    await _fetchDataUpdateAddredd(resquestData);
   }
 
   Future<void> _fetchData(RequestData req) async {
@@ -103,6 +115,7 @@ class AddressController extends GetxController {
       Map<String, dynamic> map = await _accessServerRepository.postData(req);
 
       setAddAddressRes(ApiResponse.completed(true));
+      Get.back();
       Get.snackbar(
         'Thông báo',
         '${map['msg']}',
@@ -118,7 +131,7 @@ class AddressController extends GetxController {
   }
 
   Future<void> handleLoadAddAddress({
-    required String city,
+    // required String city,
     required String address,
     required String fullname,
     required String phoneNumber,
@@ -127,7 +140,7 @@ class AddressController extends GetxController {
       'address': address,
       'fullname': fullname,
       'phone_number': phoneNumber,
-      'city': city,
+      // 'city': city,
       'user_id': _userController.userRes.value.data!.id,
     };
 

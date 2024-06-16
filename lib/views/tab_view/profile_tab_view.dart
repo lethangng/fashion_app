@@ -6,7 +6,6 @@ import '../../app/routes.dart';
 import '../../services/auth/auth_service.dart';
 import '../../utils/color_app.dart';
 import '../../view_models/controllers/user_controller.dart';
-import '../../view_models/tab_view_models/bag_tab_view_models/address_viewmodel.dart';
 import '../widgets/avatar_container.dart';
 import '../widgets/button_primary.dart';
 import '../widgets/button_second.dart';
@@ -14,7 +13,6 @@ import '../widgets/button_second.dart';
 class ProfileTabView extends StatelessWidget {
   ProfileTabView({super.key});
   final UserController _userController = Get.find<UserController>();
-  final AddressController _addressViewModel = Get.put(AddressController());
 
   @override
   Widget build(BuildContext context) {
@@ -26,15 +24,15 @@ class ProfileTabView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: appBarHeight),
-            // const Text(
-            //   'Thông tin cá nhân',
-            //   style: TextStyle(
-            //     fontSize: 34,
-            //     fontWeight: FontWeight.bold,
-            //     color: ColorApp.black,
-            //   ),
-            // ),
-            // const SizedBox(height: 18),
+            const Text(
+              'Thông tin cá nhân',
+              style: TextStyle(
+                fontSize: 34,
+                fontWeight: FontWeight.bold,
+                color: ColorApp.black,
+              ),
+            ),
+            const SizedBox(height: 18),
             Obx(
               () => Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -42,7 +40,7 @@ class ProfileTabView extends StatelessWidget {
                   AvatarContainer(
                     image: _userController.userRes.value.data!.image,
                     radius: 64,
-                    replaceImage: 'assets/images/avatar-profile.png',
+                    replaceImage: 'assets/images/avatar-image.jpg',
                   ),
                   const SizedBox(width: 18),
                   Column(
@@ -77,7 +75,9 @@ class ProfileTabView extends StatelessWidget {
             ),
             rowInfo(
               title: 'Đơn hàng',
-              desc: 'Đã có ${12} đơn hàng',
+              desc:
+                  // 'Đã có ${_userController.userRes.value.data!.total_order} đơn hàng',
+                  'Đơn hàng của bạn',
               event: () => Get.toNamed(Routes.historyView),
             ),
             // Container(
@@ -97,7 +97,9 @@ class ProfileTabView extends StatelessWidget {
             ),
             rowInfo(
                 title: 'Địa chỉ nhận hàng',
-                desc: '${_addressViewModel.listData.length} địa chỉ',
+                desc:
+                    // '${_userController.userRes.value.data!.total_order} địa chỉ',
+                    'Địa chỉ nhận hàng của bạn',
                 event: () => Get.toNamed(Routes.address)),
             Container(
               height: 1,
@@ -115,10 +117,15 @@ class ProfileTabView extends StatelessWidget {
               color: ColorApp.gray,
             ),
             const SizedBox(height: 30),
-            ButtonSecond(
-              title: 'Đổi mật khẩu',
-              isUpperCase: true,
-              event: () => Get.toNamed(Routes.changePassword),
+            Visibility(
+              visible:
+                  // _userController.userRes.value.data!.login_type == 'password',
+                  true,
+              child: ButtonSecond(
+                title: 'Đổi mật khẩu',
+                isUpperCase: true,
+                event: () => Get.toNamed(Routes.changePassword),
+              ),
             ),
             const SizedBox(height: 20),
             ButtonPrimary(

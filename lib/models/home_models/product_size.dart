@@ -1,20 +1,20 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-class SizeModel {
+class ProductSize {
   final int id;
   final String size;
 
-  SizeModel({
+  ProductSize({
     required this.id,
     required this.size,
   });
 
-  SizeModel copyWith({
+  ProductSize copyWith({
     int? id,
     String? size,
   }) {
-    return SizeModel(
+    return ProductSize(
       id: id ?? this.id,
       size: size ?? this.size,
     );
@@ -27,8 +27,8 @@ class SizeModel {
     };
   }
 
-  factory SizeModel.fromMap(Map<String, dynamic> map) {
-    return SizeModel(
+  factory ProductSize.fromMap(Map<String, dynamic> map) {
+    return ProductSize(
       id: map['id'] as int,
       size: map['size'] as String,
     );
@@ -36,14 +36,14 @@ class SizeModel {
 
   String toJson() => json.encode(toMap());
 
-  factory SizeModel.fromJson(String source) =>
-      SizeModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory ProductSize.fromJson(String source) =>
+      ProductSize.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() => 'SizeModel(id: $id, size: $size)';
 
   @override
-  bool operator ==(covariant SizeModel other) {
+  bool operator ==(covariant ProductSize other) {
     if (identical(this, other)) return true;
 
     return other.id == id && other.size == size;

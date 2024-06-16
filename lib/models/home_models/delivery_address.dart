@@ -3,17 +3,16 @@ import 'dart:convert';
 
 class DeliveryAddress {
   final int id;
-  final String fullname;
-  final String phone_number;
-  final String city;
-  final String address;
-  final int is_select;
+  String fullname;
+  String phone_number;
+  //  String city;
+  String address;
+  int is_select;
 
   DeliveryAddress({
     required this.id,
     required this.fullname,
     required this.phone_number,
-    required this.city,
     required this.address,
     required this.is_select,
   });
@@ -22,7 +21,6 @@ class DeliveryAddress {
     int? id,
     String? fullname,
     String? phone_number,
-    String? city,
     String? address,
     int? is_select,
   }) {
@@ -30,7 +28,6 @@ class DeliveryAddress {
       id: id ?? this.id,
       fullname: fullname ?? this.fullname,
       phone_number: phone_number ?? this.phone_number,
-      city: city ?? this.city,
       address: address ?? this.address,
       is_select: is_select ?? this.is_select,
     );
@@ -41,7 +38,6 @@ class DeliveryAddress {
       'id': id,
       'fullname': fullname,
       'phone_number': phone_number,
-      'city': city,
       'address': address,
       'is_select': is_select,
     };
@@ -52,7 +48,6 @@ class DeliveryAddress {
       id: map['id'] as int,
       fullname: map['fullname'] as String,
       phone_number: map['phone_number'] as String,
-      city: map['city'] as String,
       address: map['address'] as String,
       is_select: map['is_select'] as int,
     );
@@ -65,7 +60,7 @@ class DeliveryAddress {
 
   @override
   String toString() {
-    return 'DeliveryAddress(id: $id, fullname: $fullname, phone_number: $phone_number, city: $city, address: $address, is_select: $is_select)';
+    return 'DeliveryAddress(id: $id, fullname: $fullname, phone_number: $phone_number, address: $address, is_select: $is_select)';
   }
 
   @override
@@ -75,7 +70,6 @@ class DeliveryAddress {
     return other.id == id &&
         other.fullname == fullname &&
         other.phone_number == phone_number &&
-        other.city == city &&
         other.address == address &&
         other.is_select == is_select;
   }
@@ -85,7 +79,6 @@ class DeliveryAddress {
     return id.hashCode ^
         fullname.hashCode ^
         phone_number.hashCode ^
-        city.hashCode ^
         address.hashCode ^
         is_select.hashCode;
   }

@@ -2,19 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
-import '../../app/routes.dart';
-import '../../utils/text_themes.dart';
+// import '../../app/routes.dart';
+import '../../services/response/api_status.dart';
+import '../../utils/color_app.dart';
 import '../../view_models/login_view_models/register_viewmodel.dart';
+import '../widgets/button_primary.dart';
 import '../widgets/text_input_container.dart';
 
 class RegisterScreen extends StatelessWidget {
   RegisterScreen({super.key});
 
-  final RegisterViewModel signUpViewModel = Get.put(RegisterViewModel());
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
+  final RegisterViewModel _registerViewmodel = Get.put(RegisterViewModel());
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
       TextEditingController();
 
   @override
@@ -56,82 +58,85 @@ class RegisterScreen extends StatelessWidget {
               const SizedBox(height: 50),
               Obx(
                 () => TextInputContainer(
-                  textController: nameController,
+                  textController: _nameController,
                   title: 'Họ và tên',
                   des: 'Nhập họ và tên',
-                  isLast: signUpViewModel.isLast.value,
+                  isLast: _registerViewmodel.isLast.value,
                   isPassword: false,
-                  errorString: signUpViewModel.formError.value.name,
+                  errorString: _registerViewmodel.formError.value.name,
                 ),
               ),
               const SizedBox(height: 12),
               Obx(
                 () => TextInputContainer(
-                  textController: emailController,
+                  textController: _emailController,
                   title: 'Email',
                   des: 'Nhập email',
-                  isLast: signUpViewModel.isLast.value,
+                  isLast: _registerViewmodel.isLast.value,
                   isPassword: false,
-                  errorString: signUpViewModel.formError.value.email,
+                  errorString: _registerViewmodel.formError.value.email,
                 ),
               ),
               const SizedBox(height: 12),
               Obx(
                 () => TextInputContainer(
-                  textController: passwordController,
+                  textController: _passwordController,
                   title: 'Mật khẩu',
                   des: 'Nhập mật khẩu',
-                  isLast: signUpViewModel.isLast.value,
+                  isLast: _registerViewmodel.isLast.value,
                   isPassword: true,
-                  event: () => signUpViewModel.handleShowPassword(
+                  event: () => _registerViewmodel.handleShowPassword(
                       passwordType: PasswordType.password),
-                  showPassword: signUpViewModel.passwordShow['password'],
-                  errorString: signUpViewModel.formError.value.password,
+                  showPassword: _registerViewmodel.passwordShow['password'],
+                  errorString: _registerViewmodel.formError.value.password,
                 ),
               ),
               const SizedBox(height: 12),
               Obx(
                 () => TextInputContainer(
-                  textController: confirmPasswordController,
+                  textController: _confirmPasswordController,
                   title: 'Nhập lại mật khẩu',
                   des: 'Nhập lại mật khẩu',
-                  isLast: signUpViewModel.isLast.value,
+                  isLast: _registerViewmodel.isLast.value,
                   isPassword: true,
-                  event: () => signUpViewModel.handleShowPassword(
+                  event: () => _registerViewmodel.handleShowPassword(
                       passwordType: PasswordType.confirmPassword),
-                  showPassword: signUpViewModel.passwordShow['confirmPassword'],
-                  errorString: signUpViewModel.formError.value.confirmPassword,
+                  showPassword:
+                      _registerViewmodel.passwordShow['confirmPassword'],
+                  errorString:
+                      _registerViewmodel.formError.value.confirmPassword,
                 ),
               ),
               const SizedBox(height: 30),
-              Container(
-                width: double.infinity,
-                decoration: const BoxDecoration(
-                  color: Color(0xFFDB3022),
-                  borderRadius: BorderRadius.all(Radius.circular(4)),
-                ),
-                child: TextButton(
-                  onPressed: () => signUpViewModel.validate(
-                    nameController.text,
-                    emailController.text,
-                    passwordController.text,
-                    confirmPasswordController.text,
-                  ),
-                  child: const Text(
-                    'Đăng ký',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
+              Obx(
+                () {
+                  if (_registerViewmodel.registerRes.value.status ==
+                      Status.loading) {
+                    return const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(color: ColorApp.primary),
+                    );
+                  }
+
+                  return ButtonPrimary(
+                    title: 'Đăng ký',
+                    isUpperCase: true,
+                    event: () => _registerViewmodel.validate(
+                      _nameController.text,
+                      _emailController.text,
+                      _passwordController.text,
+                      _confirmPasswordController.text,
                     ),
-                  ),
-                ),
+                  );
+                },
               ),
               Row(
-                // crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   TextButton(
-                    onPressed: () => Get.toNamed(Routes.login),
+                    // onPressed: () => Get.toNamed(Routes.login),
+                    onPressed: () => Get.back(),
                     child: Row(
                       children: [
                         const Text(
@@ -151,36 +156,6 @@ class RegisterScreen extends StatelessWidget {
                     ),
                   ),
                 ],
-              ),
-              SizedBox(height: Get.height * 0.05),
-              SizedBox(
-                width: Get.width * 0.6,
-                child: Column(
-                  children: [
-                    Text(
-                      'Hoặc bạn cũng có thể đăng ký với',
-                      style: TextThemes.textBlack_14_400,
-                    ),
-                    const SizedBox(height: 16),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: loginContainer(
-                            image: 'assets/icons/google.svg',
-                            event: () {},
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: loginContainer(
-                            image: 'assets/icons/facebook.svg',
-                            event: () {},
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
               ),
               SizedBox(height: Get.height * 0.05)
             ],

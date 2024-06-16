@@ -45,6 +45,8 @@ class BagTabViewmodel extends GetxController {
       discount.value = value.coupon_type == 0
           ? value.price
           : (totalPrice.value * (value.price / 100)).round();
+    } else {
+      discount.value = 0;
     }
     selectCoupon.value = value;
   }
@@ -63,7 +65,7 @@ class BagTabViewmodel extends GetxController {
 
   Future<void> _fetchData(RequestData req) async {
     try {
-      setCartRes(ApiResponse.loading());
+      // setCartRes(ApiResponse.loading());
       final List res = await _accessServerRepository.getData(req);
       List<Cart> data = res.map((item) => Cart.fromMap(item)).toList();
 
@@ -194,6 +196,11 @@ class BagTabViewmodel extends GetxController {
     totalPriceValue = 0;
     for (var item in listCart) {
       totalPriceValue += item.quantity * item.price;
+    }
+    if (selectCoupon.value != null) {
+      if (totalPriceValue < selectCoupon.value!.for_sum) {
+        handleSetCoupon(null);
+      }
     }
     totalPrice.value = totalPriceValue - discount.value;
   }

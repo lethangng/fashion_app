@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import '../../app/routes.dart';
 import '../../models/home_models/delivery_address.dart';
 import '../../utils/color_app.dart';
+import '../../view_models/tab_view_models/bag_tab_view_models/address_viewmodel.dart';
 
 enum AddressType {
   pay,
@@ -12,7 +13,7 @@ enum AddressType {
 }
 
 class AddressContainer extends StatelessWidget {
-  const AddressContainer({
+  AddressContainer({
     super.key,
     required this.address,
     required this.event,
@@ -22,6 +23,7 @@ class AddressContainer extends StatelessWidget {
   final DeliveryAddress address;
   final void Function() event;
   final AddressType addressType;
+  final AddressController _addressController = Get.find<AddressController>();
 
   @override
   Widget build(BuildContext context) {
@@ -70,18 +72,12 @@ class AddressContainer extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 8),
-                RichText(
-                  text: TextSpan(
-                    text: address.address,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      color: ColorApp.black,
-                    ),
-                    children: [
-                      const TextSpan(text: ', '),
-                      TextSpan(text: address.city)
-                    ],
+                Text(
+                  address.address,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: ColorApp.black,
                   ),
                 ),
                 Visibility(
@@ -100,7 +96,10 @@ class AddressContainer extends StatelessWidget {
                               materialTapTargetSize:
                                   MaterialTapTargetSize.shrinkWrap,
                               onChanged: (value) {
-                                // _addressViewModel.onSelectAddress(address.id)
+                                _addressController.handleLoadUpdateAddredd(
+                                  address: address,
+                                  isSelect: value == true ? 1 : 0,
+                                );
                               },
                             ),
                           ),
@@ -125,6 +124,11 @@ class AddressContainer extends StatelessWidget {
             onPressed: () {
               if (addressType == AddressType.pay) {
                 Get.toNamed(Routes.address);
+              } else {
+                Get.toNamed(
+                  Routes.addAddress,
+                  arguments: {'address': address},
+                );
               }
             },
             style: TextButton.styleFrom(

@@ -69,7 +69,7 @@ class AuthController {
       await handleLogin('password');
 
       // Tới màn hình Home
-      Get.toNamed(Routes.home);
+      Get.offAllNamed(Routes.home);
     } catch (e) {
       printError(info: e.toString());
       rethrow;

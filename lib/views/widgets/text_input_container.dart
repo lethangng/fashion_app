@@ -70,6 +70,8 @@ class TextInputContainer extends StatelessWidget {
                         Expanded(
                           child: TextField(
                             controller: textController,
+                            onTapOutside: (event) =>
+                                FocusManager.instance.primaryFocus?.unfocus(),
                             keyboardType: TextInputType.multiline,
                             obscureText: isPassword && showPassword == false,
                             cursorColor: ColorApp.colorGrey2,
@@ -115,16 +117,16 @@ class TextInputContainer extends StatelessWidget {
                   ],
                 ),
               ),
-              Visibility(
-                visible: isLast == false,
-                child: SizedBox(width: isPassword ? 15 : 0),
-              ),
-              Visibility(
-                visible: isLast == false,
-                maintainSize: false,
-                child: SvgPicture.asset(
-                    'assets/icons/${(errorString.isEmpty) ? 'success' : 'error'}.svg'),
-              ),
+              // Visibility(
+              //   visible: isLast == false,
+              //   child: SizedBox(width: isPassword ? 15 : 0),
+              // ),
+              // Visibility(
+              //   visible: isLast == false,
+              //   maintainSize: false,
+              //   child: SvgPicture.asset(
+              //       'assets/icons/${(errorString.isEmpty) ? 'success' : 'error'}.svg'),
+              // ),
             ],
           ),
         ),

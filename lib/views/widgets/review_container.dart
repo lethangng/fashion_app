@@ -29,6 +29,7 @@ class ReviewContainer extends StatelessWidget {
         ],
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -42,6 +43,7 @@ class ReviewContainer extends StatelessWidget {
                     radius: 32,
                     replaceImage: 'assets/images/avatar-review.png',
                   ),
+                  const SizedBox(width: 5),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -84,31 +86,32 @@ class ReviewContainer extends StatelessWidget {
               children: [
                 Text(
                   '${evaluate.content}',
+                  textAlign: TextAlign.right,
                   style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
                     color: Color(0xFF222222),
                   ),
                 ),
-                const SizedBox(height: 10),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      Image.asset(
-                        'assets/images/review-1.png',
-                      ),
-                      const SizedBox(width: 16),
-                      Image.asset(
-                        'assets/images/review-1.png',
-                      ),
-                      const SizedBox(width: 16),
-                      Image.asset(
-                        'assets/images/review-1.png',
-                      ),
-                    ],
-                  ),
-                )
+                // const SizedBox(height: 10),
+                // SingleChildScrollView(
+                //   scrollDirection: Axis.horizontal,
+                //   child: Row(
+                //     children: [
+                //       Image.asset(
+                //         'assets/images/review-1.png',
+                //       ),
+                //       const SizedBox(width: 16),
+                //       Image.asset(
+                //         'assets/images/review-1.png',
+                //       ),
+                //       const SizedBox(width: 16),
+                //       Image.asset(
+                //         'assets/images/review-1.png',
+                //       ),
+                //     ],
+                //   ),
+                // )
               ],
             ),
           ),

@@ -4,18 +4,20 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '../../../app/routes.dart';
+import '../../../services/response/api_status.dart';
 import '../../../utils/color_app.dart';
-import '../../../view_models/home_viewmodel.dart';
-import '../../../view_models/tab_view_models/shop_tab_view_models/category_detail_controller.dart';
+import '../../../view_models/tab_view_models/shop_tab_view_models/filters_controller.dart';
 import '../../../view_models/tab_view_models/shop_tab_view_models/search_view_controller.dart';
+import '../../widgets/list_empty.dart';
+import '../../widgets/loadmore.dart';
 import '../../widgets/product_container.dart';
+import '../../widgets/show_dialog_error.dart';
 
 class CaegoryDetail extends StatelessWidget {
   CaegoryDetail({super.key});
-  final CategoryDetailController categoryDetailViewModel =
-      Get.put(CategoryDetailController());
-  final HomeController homeViewModel = Get.find<HomeController>();
-  final SearchViewController searchViewModel = Get.find<SearchViewController>();
+  final SearchViewController _searchViewModel =
+      Get.find<SearchViewController>();
+  final FiltersController _filtersViewmodel = Get.put(FiltersController());
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +31,6 @@ class CaegoryDetail extends StatelessWidget {
         title: Container(
           margin: const EdgeInsets.only(right: 16),
           padding: EdgeInsets.only(left: Get.width * 0.05, right: 10),
-          // padding: EdgeInsets.zero,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(57),
@@ -43,16 +44,17 @@ class CaegoryDetail extends StatelessWidget {
           ),
           child: TextField(
             readOnly: true,
-            onTap: () => Get.toNamed(Routes.search),
-            controller: searchViewModel.searchController,
-            // focusNode: searchViewViewModel.focus,
+            onTap: () => Get.back(),
+            controller: _searchViewModel.searchController,
+            // onTapOutside: (event) =>
+            //     FocusManager.instance.primaryFocus?.unfocus(),
             cursorColor: ColorApp.black,
             style: const TextStyle(color: ColorApp.black),
             textAlignVertical: TextAlignVertical.center,
             textAlign: TextAlign.left,
             decoration: InputDecoration(
               isDense: true, // Cho chu can giua theo chieu doc
-              hintText: 'Tìm kiếm',
+              hintText: 'Tìm kiếm....1',
               hintStyle: const TextStyle(
                 color: ColorApp.colorGrey2,
                 fontSize: 15,
@@ -68,7 +70,7 @@ class CaegoryDetail extends StatelessWidget {
                 ),
               ),
             ),
-            onSubmitted: (_) {},
+            // onSubmitted: (_) {},
             // => Get.toNamed(Routes.resultSearch),
           ),
         ),
@@ -96,28 +98,16 @@ class CaegoryDetail extends StatelessWidget {
             ),
             child: Column(
               children: [
-                // const SizedBox(height: 10),
-                // SingleChildScrollView(
-                //   scrollDirection: Axis.horizontal,
-                //   child: Row(
-                //     children: categoryDetailViewModel.listData
-                //         .map(
-                //           (item) => Padding(
-                //             padding: const EdgeInsets.only(right: 10),
-                //             child: chip(title: item.title, event: item.event),
-                //           ),
-                //         )
-                //         .toList(),
-                //   ),
-                // ),
-                // const SizedBox(height: 18),
                 Container(
                   decoration: const BoxDecoration(color: Color(0xFFF9F9F9)),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       TextButton(
-                        onPressed: () => Get.toNamed(Routes.filters),
+                        onPressed: () {
+                          Get.toNamed(Routes.filters);
+                          _filtersViewmodel.handleLoadData();
+                        },
                         child: Row(
                           children: [
                             SvgPicture.asset('assets/icons/filters-2.svg'),
@@ -139,7 +129,7 @@ class CaegoryDetail extends StatelessWidget {
                           const SizedBox(width: 6),
                           Obx(
                             () => Text(
-                              categoryDetailViewModel.sortValue.value,
+                              _filtersViewmodel.sortValue.value,
                               style: const TextStyle(
                                 color: Color(0xFF222222),
                                 fontSize: 14,
@@ -163,19 +153,41 @@ class CaegoryDetail extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: MasonryGridView.count(
-              padding: const EdgeInsets.all(16),
-              crossAxisCount: 2,
-              crossAxisSpacing: 12,
-              mainAxisSpacing: 16,
-              itemCount: homeViewModel.listProductSale.length,
-              itemBuilder: (context, index) {
-                return ProductContainer(
-                  product: homeViewModel.listProductSale[index],
-                  productType: ProductType.product,
+            child: Obx(() {
+              if (_filtersViewmodel.loadDataRes.value.status == Status.error) {
+                showDialogError(
+                    error: _filtersViewmodel.loadDataRes.value.message!);
+              }
+
+              if (_filtersViewmodel.loadDataRes.value.status ==
+                  Status.completed) {
+                return Loadmore(
+                  refreshController: _filtersViewmodel.refreshController,
+                  onLoading: _filtersViewmodel.onLoading,
+                  onRefresh: _filtersViewmodel.onRefresh,
+                  widget: _filtersViewmodel.listData.isEmpty
+                      ? const ListEmpty()
+                      : MasonryGridView.count(
+                          padding: const EdgeInsets.all(16),
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 12,
+                          mainAxisSpacing: 16,
+                          itemCount: _filtersViewmodel.listData.length,
+                          itemBuilder: (context, index) {
+                            return ProductContainer(
+                              product: _filtersViewmodel.listData[index],
+                              productType: ProductType.product,
+                            );
+                          },
+                        ),
                 );
-              },
-            ),
+              }
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: ColorApp.primary,
+                ),
+              );
+            }),
           ),
         ],
       ),
@@ -191,7 +203,7 @@ class CaegoryDetail extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const SizedBox(height: 5),
+            const SizedBox(height: 10),
             Container(
               width: Get.width * 0.2,
               height: 5,
@@ -209,19 +221,23 @@ class CaegoryDetail extends StatelessWidget {
                 fontWeight: FontWeight.w700,
               ),
             ),
-            const SizedBox(height: 33),
+            const SizedBox(height: 16),
+            const Divider(
+              height: 1,
+              color: Color(0xFF979797),
+            ),
             SizedBox(
               width: Get.width,
               child: Obx(
                 () => Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: categoryDetailViewModel.listSort
+                  children: _filtersViewmodel.listSort
                       .map(
                         (item) => SizedBox(
                           width: Get.width,
                           child: TextButton(
                             onPressed: () {
-                              categoryDetailViewModel.handleSelectSort(item.id);
+                              _filtersViewmodel.handleSelectSort(item.id);
                               Get.back();
                             },
                             style: TextButton.styleFrom(

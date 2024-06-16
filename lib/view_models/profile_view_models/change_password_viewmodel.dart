@@ -1,7 +1,14 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../configs/configs.dart';
 import '../../models/login_models/password_data_error.dart';
+import '../../models/request/request_data.dart';
+import '../../services/repository/access_server_repository.dart';
+import '../../services/response/api_response.dart';
+import '../../utils/helper.dart';
 import '../../utils/validate.dart';
+import '../controllers/user_controller.dart';
 
 enum PasswordType {
   oldPassword,
@@ -10,11 +17,14 @@ enum PasswordType {
 }
 
 class ChangePasswordViewModel extends GetxController {
-  final Rx<PasswordDataError> formError = PasswordDataError(
-    oldPassword: '',
-    newPassword: '',
-    confirmPassword: '',
-  ).obs;
+  final AccessServerRepository _accessServerRepository =
+      AccessServerRepository();
+
+  final UserController _userController = Get.find<UserController>();
+
+  final Rx<ApiResponse<bool>> changePasswordRes =
+      ApiResponse<bool>.completed(null).obs;
+  final Rx<PasswordDataError> formError = PasswordDataError().obs;
   final RxBool isLast = true.obs;
 
   final RxMap<String, dynamic> passwordShow = {
@@ -34,6 +44,50 @@ class ChangePasswordViewModel extends GetxController {
     passwordShow.refresh();
   }
 
+  void setChangePasswordRes(ApiResponse<bool> res) {
+    changePasswordRes.value = res;
+  }
+
+  Future<void> _fetchData(RequestData req) async {
+    try {
+      setChangePasswordRes(ApiResponse.loading());
+
+      await _accessServerRepository.postData(req);
+
+      setChangePasswordRes(ApiResponse.completed(true));
+
+      Get.snackbar(
+        'Thông báo',
+        'Cập nhật thành công',
+        icon: const Icon(Icons.check, color: Colors.green),
+        colorText: Colors.white,
+        backgroundColor: Colors.black87,
+      );
+    } catch (e, s) {
+      s.printError();
+      formError.value.oldPassword = e.toString();
+      setChangePasswordRes(ApiResponse.completed(null));
+    }
+  }
+
+  Future<void> handleLoad({
+    required String oldPassword,
+    required String newPassword,
+  }) async {
+    Map<String, dynamic> data = {
+      'u_id': _userController.userRes.value.data!.u_id,
+      'old_password': oldPassword,
+      'new_password': newPassword,
+    };
+
+    RequestData resquestData = RequestData(
+      query: Configs.changePassword,
+      data: Helper.toMapString(data),
+    );
+
+    await _fetchData(resquestData);
+  }
+
   void validate(
     String oldPassword,
     String newPassword,
@@ -44,6 +98,7 @@ class ChangePasswordViewModel extends GetxController {
       formError.value.oldPassword = 'Mật khẩu không được để trống';
     } else if (true) {
       // Goi API check password
+      formError.value.oldPassword = '';
     }
 
     if (newPassword.isEmpty) {
@@ -64,16 +119,16 @@ class ChangePasswordViewModel extends GetxController {
     } else if (!Validate.validateConfirmPassword(
         newPassword, confirmPassword)) {
       formError.value.confirmPassword = 'Mật khẩu nhập lại không đúng';
+    } else {
+      formError.value.confirmPassword = '';
     }
 
     formError.refresh();
-    if (formError.value ==
-        PasswordDataError(
-          oldPassword: '',
-          newPassword: '',
-          confirmPassword: '',
-        )) {
-      //
+    if (formError.value == PasswordDataError()) {
+      handleLoad(
+        oldPassword: oldPassword,
+        newPassword: newPassword,
+      );
     }
   }
 }

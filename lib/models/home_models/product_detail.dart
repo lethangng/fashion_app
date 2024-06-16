@@ -3,8 +3,8 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
-import 'color_model.dart';
-import 'size_model.dart';
+import 'product_color.dart';
+import 'product_size.dart';
 
 class ProductDetail {
   final int id;
@@ -18,8 +18,8 @@ class ProductDetail {
   final String image_url;
   final List<String> list_image_url;
   final String category;
-  final List<SizeModel> sizes;
-  final List<ColorModel> colors;
+  final List<ProductSize> sizes;
+  final List<ProductColor> colors;
   final bool favorite;
   final int count_evaluate;
   final int average_evaluate;
@@ -59,8 +59,8 @@ class ProductDetail {
     String? image_url,
     List<String>? list_image_url,
     String? category,
-    List<SizeModel>? sizes,
-    List<ColorModel>? colors,
+    List<ProductSize>? sizes,
+    List<ProductColor>? colors,
     bool? favorite,
     int? count_evaluate,
     int? average_evaluate,
@@ -127,14 +127,14 @@ class ProductDetail {
       image_url: map['image_url'] as String,
       list_image_url: map['list_image_url']?.cast<String>(),
       category: map['category'] as String,
-      sizes: List<SizeModel>.from(
-        (map['sizes'] as List).map<SizeModel>(
-          (x) => SizeModel.fromMap(x as Map<String, dynamic>),
+      sizes: List<ProductSize>.from(
+        (map['sizes'] as List).map<ProductSize>(
+          (x) => ProductSize.fromMap(x as Map<String, dynamic>),
         ),
       ),
-      colors: List<ColorModel>.from(
-        (map['colors'] as List).map<ColorModel>(
-          (x) => ColorModel.fromMap(x as Map<String, dynamic>),
+      colors: List<ProductColor>.from(
+        (map['colors'] as List).map<ProductColor>(
+          (x) => ProductColor.fromMap(x as Map<String, dynamic>),
         ),
       ),
       favorite: map['favorite'] as bool,

@@ -5,9 +5,9 @@ class PasswordDataError {
   String confirmPassword;
 
   PasswordDataError({
-    required this.oldPassword,
-    required this.newPassword,
-    required this.confirmPassword,
+    this.oldPassword = '',
+    this.newPassword = '',
+    this.confirmPassword = '',
   });
 
   @override

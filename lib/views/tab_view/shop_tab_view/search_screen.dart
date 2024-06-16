@@ -8,8 +8,7 @@ import '../../../view_models/tab_view_models/shop_tab_view_models/search_view_co
 
 class SearchScreen extends StatelessWidget {
   SearchScreen({super.key});
-
-  final SearchViewController searchViewModel = Get.find<SearchViewController>();
+  final SearchViewController _searchViewModel = Get.put(SearchViewController());
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +17,7 @@ class SearchScreen extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         titleSpacing: 0,
+        scrolledUnderElevation: 0,
         backgroundColor: Colors.transparent,
         title: Container(
           margin: const EdgeInsets.only(right: 16),
@@ -35,15 +35,16 @@ class SearchScreen extends StatelessWidget {
             ],
           ),
           child: TextField(
-            controller: searchViewModel.searchController,
-            // focusNode: searchViewViewModel.focus,
+            controller: _searchViewModel.searchController,
+            onTapOutside: (event) =>
+                FocusManager.instance.primaryFocus?.unfocus(),
             cursorColor: ColorApp.black,
             style: const TextStyle(color: ColorApp.black),
             textAlignVertical: TextAlignVertical.center,
             textAlign: TextAlign.left,
             decoration: InputDecoration(
               isDense: true, // Cho chu can giua theo chieu doc
-              hintText: 'Tìm kiếm',
+              hintText: 'Tìm kiếm...',
               hintStyle: const TextStyle(
                 color: ColorApp.colorGrey2,
                 fontSize: 15,
@@ -51,7 +52,11 @@ class SearchScreen extends StatelessWidget {
               ),
               border: InputBorder.none,
               suffixIcon: IconButton(
-                onPressed: () => Get.toNamed(Routes.categryDetail),
+                onPressed: () {
+                  if (_searchViewModel.searchController.text.isNotEmpty) {
+                    Get.toNamed(Routes.categryDetail);
+                  }
+                },
                 style: IconButton.styleFrom(
                   minimumSize: Size.zero,
                   padding: EdgeInsets.zero,
@@ -75,59 +80,82 @@ class SearchScreen extends StatelessWidget {
           icon: SvgPicture.asset('assets/icons/arrow-back.svg'),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 10),
-            const Text(
-              'Gần đây',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
-                color: ColorApp.black,
-              ),
-            ),
-            const SizedBox(height: 12),
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: [
-                chip(title: 'Áo sơ mi', event: () {}),
-                chip(title: 'Quần jean', event: () {}),
-                chip(title: 'Áo khoác gió nam', event: () {}),
-              ],
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'Các tìm kiếm phổ biến',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
-                color: ColorApp.black,
-              ),
-            ),
-            const SizedBox(height: 12),
-            ...searchViewModel.listSearch.map(
-              (item) => Padding(
-                padding: const EdgeInsets.only(bottom: 15),
-                child: GestureDetector(
-                  onTap: () {
-                    // print('ok');
-                  },
-                  child: Text(
-                    item,
-                    style: const TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w400,
-                      color: ColorApp.black,
-                    ),
-                  ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 10),
+              const Text(
+                'Gần đây',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w500,
+                  color: ColorApp.black,
                 ),
               ),
-            ),
-          ],
+              const SizedBox(height: 12),
+              ListView.builder(
+                itemCount: 3,
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemBuilder: (BuildContext context, int index) {
+                  return Container(
+                    decoration: const BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          width: 1,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ),
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Text('Áo phông nam'),
+                    ),
+                  );
+                },
+              ),
+              // ListView(
+              //   // spacing: 8,
+              //   // runSpacing: 8,
+              //   children: [
+              //     chip(title: 'Áo sơ mi', event: () {}),
+              //     chip(title: 'Quần jean', event: () {}),
+              //     chip(title: 'Áo khoác gió nam', event: () {}),
+              //   ],
+              // ),
+              // const SizedBox(height: 20),
+              // const Text(
+              //   'Các tìm kiếm phổ biến',
+              //   style: TextStyle(
+              //     fontSize: 20,
+              //     fontWeight: FontWeight.w500,
+              //     color: ColorApp.black,
+              //   ),
+              // ),
+              // const SizedBox(height: 12),
+              // ..._searchViewModel.listSearch.map(
+              //   (item) => Padding(
+              //     padding: const EdgeInsets.only(bottom: 15),
+              //     child: GestureDetector(
+              //       onTap: () {
+              //         // print('ok');
+              //       },
+              //       child: Text(
+              //         item,
+              //         style: const TextStyle(
+              //           fontSize: 15,
+              //           fontWeight: FontWeight.w400,
+              //           color: ColorApp.black,
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
+            ],
+          ),
         ),
       ),
     );
@@ -137,37 +165,30 @@ class SearchScreen extends StatelessWidget {
     required String title,
     required void Function()? event,
   }) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(33),
-        color: ColorApp.black,
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w400,
-              color: Colors.white,
-            ),
+    return Row(
+      // mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w400,
+            color: Colors.white,
           ),
-          const SizedBox(width: 3),
-          IconButton(
-            onPressed: event,
-            style: IconButton.styleFrom(
-              minimumSize: Size.zero,
-              padding: EdgeInsets.zero,
-              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            ),
-            icon: SvgPicture.asset(
-              'assets/icons/close-2.svg',
-            ),
-          )
-        ],
-      ),
+        ),
+        // const SizedBox(width: 3),
+        // IconButton(
+        //   onPressed: event,
+        //   style: IconButton.styleFrom(
+        //     minimumSize: Size.zero,
+        //     padding: EdgeInsets.zero,
+        //     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        //   ),
+        //   icon: SvgPicture.asset(
+        //     'assets/icons/close-2.svg',
+        //   ),
+        // )
+      ],
     );
   }
 }
