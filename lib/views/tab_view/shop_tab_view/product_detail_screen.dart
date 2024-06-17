@@ -17,7 +17,7 @@ import '../../../utils/helper.dart';
 // import '../../../view_models/home_viewmodel.dart';
 import '../../../view_models/tab_view_models/shop_tab_view_models/product_detail_viewmodel.dart';
 import '../../widgets/button_primary.dart';
-import '../../widgets/button_second.dart';
+// import '../../widgets/button_second.dart';
 import '../../widgets/image_container.dart';
 import '../../widgets/product_container.dart';
 import '../../widgets/review_container.dart';
@@ -601,20 +601,20 @@ class ProductDetailScreen extends StatelessWidget {
                   child: Row(
                     children: [
                       Expanded(
-                        child: ButtonSecond(
+                        child: ButtonPrimary(
                           title: 'Thêm vào giỏ hàng',
                           isUpperCase: true,
                           event: () async => await onShowSelect(AddType.cart),
                         ),
                       ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: ButtonPrimary(
-                          title: 'Mua ngay',
-                          isUpperCase: true,
-                          event: () async => await onShowSelect(AddType.pay),
-                        ),
-                      ),
+                      // const SizedBox(width: 16),
+                      // Expanded(
+                      //   child: ButtonPrimary(
+                      //     title: 'Mua ngay',
+                      //     isUpperCase: true,
+                      //     event: () async => await onShowSelect(AddType.pay),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),

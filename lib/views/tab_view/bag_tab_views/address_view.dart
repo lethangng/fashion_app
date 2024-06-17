@@ -35,7 +35,8 @@ class AddressView extends StatelessWidget {
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 50),
         child: FloatingActionButton(
-          onPressed: () => Get.toNamed(Routes.addAddress),
+          onPressed: () =>
+              Get.toNamed(Routes.addAddress, arguments: {'address': null}),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(50),
           ),

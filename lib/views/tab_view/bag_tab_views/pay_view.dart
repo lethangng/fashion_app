@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
+import '../../../app/routes.dart';
 import '../../../services/response/api_status.dart';
 import '../../../utils/color_app.dart';
 import '../../../utils/helper.dart';
@@ -46,7 +47,7 @@ class PayView extends StatelessWidget {
             children: [
               const SizedBox(height: 15),
               const Text(
-                'Địa chỉ giao hàng',
+                'Địa chỉ nhận hàng',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
@@ -57,8 +58,21 @@ class PayView extends StatelessWidget {
               Obx(() {
                 if (_payViewModel.deliveryAddressRes.value.status ==
                     Status.error) {
-                  showDialogError(
-                      error: _payViewModel.deliveryAddressRes.value.message!);
+                  return Column(
+                    children: [
+                      SizedBox(width: Get.width),
+                      const Text(
+                          'Bạn chưa có địa chỉ nhận hàng, vui lòng thêm'),
+                      const SizedBox(height: 10),
+                      ButtonPrimary(
+                        title: 'Thêm',
+                        size: Get.width * 0.4,
+                        event: () => Get.toNamed(Routes.address),
+                      ),
+                    ],
+                  );
+                  // showDialogError(
+                  //     error: _payViewModel.deliveryAddressRes.value.message!);
                 }
 
                 if (_payViewModel.deliveryAddressRes.value.status ==

@@ -7,10 +7,13 @@ import '../../services/auth/auth_service.dart';
 import '../../services/repository/access_server_repository.dart';
 import '../../services/response/api_response.dart';
 import '../../utils/helper.dart';
+import 'notification_controller.dart';
 
 class UserController extends GetxController {
   final AccessServerRepository _accessServerRepository =
       AccessServerRepository();
+  final NotificationController _notificationController =
+      Get.find<NotificationController>();
 
   final Rx<ApiResponse<User>> userRes = ApiResponse<User>.loading().obs;
 
@@ -39,9 +42,11 @@ class UserController extends GetxController {
       return;
     }
 
+    String? deviceToken = await _notificationController.getToken();
+
     Map<String, dynamic> data = {
       'u_id': AuthService.user!.uid,
-      // 'u_id': uId ?? 'KKOAW8GqDRXGAvjPZ4biVrWpzho2',
+      'device_token': deviceToken ?? '',
     };
 
     RequestData resquestData = RequestData(

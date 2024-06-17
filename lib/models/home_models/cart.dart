@@ -63,7 +63,7 @@ class Cart {
   final int product_id;
   final int status;
   final String brand;
-  final String sell_off;
+  final String? sell_off;
   final int price_off;
   final int price;
   final String image_url;
@@ -80,7 +80,7 @@ class Cart {
     required this.product_id,
     required this.status,
     required this.brand,
-    required this.sell_off,
+    this.sell_off,
     required this.price_off,
     required this.price,
     required this.image_url,
@@ -163,7 +163,7 @@ class Cart {
       product_id: map['product_id'] as int,
       status: map['status'] as int,
       brand: map['brand'] as String,
-      sell_off: map['sell_off'] as String,
+      sell_off: map['sell_off'] != null ? map['sell_off'] as String : null,
       price_off: map['price_off'] as int,
       price: map['price'] as int,
       image_url: map['image_url'] as String,

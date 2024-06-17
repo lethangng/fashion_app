@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
+// import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../app/routes.dart';
@@ -11,11 +11,13 @@ import '../../../services/repository/access_server_repository.dart';
 import '../../../services/response/api_response.dart';
 import '../../../utils/helper.dart';
 import '../../controllers/user_controller.dart';
+import 'address_viewmodel.dart';
 import 'bag_tab_viewmodel.dart';
 
 class PayController extends GetxController {
   final UserController _userController = Get.find<UserController>();
   final BagTabViewmodel _bagTabViewmodel = Get.find<BagTabViewmodel>();
+
   final AccessServerRepository _accessServerRepository =
       AccessServerRepository();
   final Rx<ApiResponse<DeliveryAddress>> deliveryAddressRes =
@@ -65,16 +67,16 @@ class PayController extends GetxController {
 
   Future<void> _fetchDataAddOrder(RequestData req) async {
     try {
-      Map<String, dynamic> map = await _accessServerRepository.postData(req);
+      await _accessServerRepository.postData(req);
 
       setAddOrderRes(ApiResponse.completed(true));
-      Get.snackbar(
-        'Thông báo',
-        '${map['msg']}',
-        // icon: const Icon(Icons.check, color: Colors.green),
-        colorText: Colors.white,
-        backgroundColor: Colors.black,
-      );
+      // Get.snackbar(
+      //   'Thông báo',
+      //   '${map['msg']}',
+      //   // icon: const Icon(Icons.check, color: Colors.green),
+      //   colorText: Colors.white,
+      //   backgroundColor: Colors.black,
+      // );
       Get.offAllNamed(Routes.paySuccess);
     } catch (e, s) {
       s.printError();
@@ -102,6 +104,7 @@ class PayController extends GetxController {
   }
 
   Future<void> initData() async {
+    Get.put(AddressController());
     await _handleLoad();
   }
 
