@@ -6,8 +6,8 @@ import 'package:get/get.dart';
 import '../../../app/routes.dart';
 import '../../../services/response/api_status.dart';
 import '../../../utils/color_app.dart';
-import '../../../view_models/tab_view_models/shop_tab_view_models/filters_controller.dart';
-import '../../../view_models/tab_view_models/shop_tab_view_models/search_view_controller.dart';
+import '../../../view_models/tab_view_models/shop_tab_view_models/filters_viewmodel.dart';
+import '../../../view_models/tab_view_models/shop_tab_view_models/search_view_viewmodel.dart';
 import '../../widgets/list_empty.dart';
 import '../../widgets/loadmore.dart';
 import '../../widgets/product_container.dart';
@@ -15,9 +15,8 @@ import '../../widgets/show_dialog_error.dart';
 
 class CaegoryDetail extends StatelessWidget {
   CaegoryDetail({super.key});
-  final SearchViewController _searchViewModel =
-      Get.find<SearchViewController>();
-  final FiltersController _filtersViewmodel = Get.put(FiltersController());
+  final SearchViewViewmodel _searchViewModel = Get.find<SearchViewViewmodel>();
+  final FiltersViewmodel _filtersViewmodel = Get.put(FiltersViewmodel());
 
   @override
   Widget build(BuildContext context) {

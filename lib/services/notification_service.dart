@@ -1,10 +1,12 @@
 import 'dart:io';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:firebase_core/firebase_core.dart';
 // import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
+import '../utils/helper.dart';
 import '../view_models/controllers/notification_controller.dart';
 // import 'package:flutter/material.dart';
 
@@ -69,26 +71,34 @@ class NotificationSetUp {
         createOrderNotifications(
           title: message.notification!.title,
           body: message.notification!.body,
-          image: message.notification!.android!.imageUrl,
+          // body: message.data.toString(),
+          // image: message.notification!.android!.imageUrl,
+          image: message.data['image'],
+          data: message.data,
         );
-        // createOrderNotifications(message);
       }
     });
   }
 
-  Future<void> createOrderNotifications(
-      {String? title, String? body, String? image}) async {
+  Future<void> createOrderNotifications({
+    String? title,
+    String? body,
+    String? image,
+    Map<String, dynamic>? data,
+  }) async {
     await AwesomeNotifications().createNotification(
-        content: NotificationContent(
-      id: 0,
-      channelKey: 'high_importance_channel',
-      title: title,
-      body: body,
-      bigPicture: image,
-      // largeIcon:
-      //     'https://storage.googleapis.com/cms-storage-bucket/0dbfcc7a59cd1cf16282.png',
-      notificationLayout: NotificationLayout.BigPicture,
-    ));
+      content: NotificationContent(
+        id: 0,
+        channelKey: 'high_importance_channel',
+        title: title,
+        body: body,
+        bigPicture: image,
+        payload: data != null ? Helper.toMapString(data) : {},
+        largeIcon: image,
+        notificationLayout: NotificationLayout.BigPicture,
+        hideLargeIconOnExpand: true,
+      ),
+    );
   }
 
   // void eventListenerCallback(BuildContext context) {
@@ -110,27 +120,10 @@ class NotificationSetUp {
 
 @pragma("vm:entry-point")
 Future<dynamic> myBackgroundMessageHandler(RemoteMessage message) async {
-  // await createOrderNotifications(message);
-  // await Firebase.initializeApp();
+  await Firebase.initializeApp();
   // await AwesomeNotifications().createNotificationFromJsonData(message.data);
 }
 
-// Future<void> createOrderNotifications(RemoteMessage message) async {
-//   await AwesomeNotifications().createNotification(
-//     content: NotificationContent(
-//       id: 0,
-//       channelKey: 'high_importance_channel',
-//       title: message.data['title'],
-//       // title: 'ok',
-//       body: message.data['body'],
-//       bigPicture: message.data['image'],
-//       notificationLayout: NotificationLayout.BigPicture,
-//       largeIcon: message.data['image'],
-//       payload: Map<String, String>.from(message.data),
-//       hideLargeIconOnExpand: true,
-//     ),
-//   );
-// }
 
 // class NotificationController {
 //   /// Use this method to detect when a new notification or a schedule is created

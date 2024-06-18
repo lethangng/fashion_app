@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
+import '../../services/response/api_status.dart';
+import '../../utils/color_app.dart';
 import '../../view_models/login_view_models/forgot_password_viewmodel.dart';
 import '../widgets/app_bar_container.dart';
 import '../widgets/button_primary.dart';
@@ -10,9 +12,9 @@ import '../widgets/text_input_container.dart';
 class ForgotPasswordScreen extends StatelessWidget {
   ForgotPasswordScreen({super.key});
 
-  final ForgotPasswordViewModel forgotPasswordViewModel =
+  final ForgotPasswordViewModel _forgotPasswordViewModel =
       Get.put(ForgotPasswordViewModel());
-  final TextEditingController emailController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -31,13 +33,6 @@ class ForgotPasswordScreen extends StatelessWidget {
               SizedBox(
                 height: size.height * 0.09,
               ),
-              // Center(
-              //   child: Image.asset(
-              //     'assets/images/sad.png',
-              //     height: size.height * 0.25,
-              //     fit: BoxFit.cover,
-              //   ),
-              // ),
               Center(
                 child: SvgPicture.asset(
                   'assets/icons/sad-icon.svg',
@@ -74,21 +69,34 @@ class ForgotPasswordScreen extends StatelessWidget {
               ),
               Obx(
                 () => TextInputContainer(
-                  textController: emailController,
+                  textController: _emailController,
                   title: 'Email',
                   des: 'Nhập email',
-                  isLast: forgotPasswordViewModel.isLast.value,
+                  isLast: _forgotPasswordViewModel.isLast.value,
                   isPassword: false,
-                  errorString: forgotPasswordViewModel.formError.value.email,
+                  errorString: _forgotPasswordViewModel.formError.value.email,
                 ),
               ),
               SizedBox(
                 height: size.height * 0.02,
               ),
-              ButtonPrimary(
-                title: 'Tiếp tục',
-                event: () =>
-                    forgotPasswordViewModel.validate(emailController.text),
+              Obx(
+                () {
+                  if (_forgotPasswordViewModel.resetPasswordRes.value.status ==
+                      Status.loading) {
+                    return const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(color: ColorApp.primary),
+                    );
+                  }
+
+                  return ButtonPrimary(
+                    title: 'Tiếp tục',
+                    event: () => _forgotPasswordViewModel
+                        .validate(_emailController.text),
+                  );
+                },
               ),
             ],
           ),

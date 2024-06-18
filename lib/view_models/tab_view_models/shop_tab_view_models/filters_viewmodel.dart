@@ -15,7 +15,7 @@ import '../../../models/shop_models/filters.dart';
 import '../../../services/repository/access_server_repository.dart';
 import '../../../services/response/api_response.dart';
 import '../../../utils/helper.dart';
-import 'search_view_controller.dart';
+import 'search_view_viewmodel.dart';
 
 enum FilterType {
   price,
@@ -25,9 +25,8 @@ enum FilterType {
   brand,
 }
 
-class FiltersController extends GetxController {
-  final SearchViewController _searchViewModel =
-      Get.find<SearchViewController>();
+class FiltersViewmodel extends GetxController {
+  final SearchViewViewmodel _searchViewModel = Get.find<SearchViewViewmodel>();
   RxList<CategorySort> listSort = [
     CategorySort(id: 0, title: 'Mới nhất', isSelect: true),
     CategorySort(id: 1, title: 'Cũ nhất', isSelect: false),

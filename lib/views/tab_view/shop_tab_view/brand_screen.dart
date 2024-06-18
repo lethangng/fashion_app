@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
-import '../../../view_models/tab_view_models/shop_tab_view_models/brand_controller.dart';
+import '../../../view_models/tab_view_models/shop_tab_view_models/brand_viewmodel.dart';
 
 class BrandScreen extends StatelessWidget {
   BrandScreen({super.key});

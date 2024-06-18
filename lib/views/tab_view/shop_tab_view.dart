@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 
 import '../../app/routes.dart';
 import '../../utils/color_app.dart';
-import '../../view_models/tab_view_models/shop_tab_view_models/search_view_controller.dart';
+import '../../view_models/tab_view_models/shop_tab_view_models/search_view_viewmodel.dart';
 import '../../view_models/tab_view_models/shop_tab_viewmodel.dart';
 import 'shop_tab_view/tabs/accessory_tab.dart';
 import 'shop_tab_view/tabs/kid_tab.dart';
@@ -14,7 +14,7 @@ import 'shop_tab_view/tabs/women_tab.dart';
 class ShopTabView extends StatelessWidget {
   ShopTabView({super.key});
   final ShopTabViewModel shopTabViewModel = Get.put(ShopTabViewModel());
-  final SearchViewController searchViewModel = Get.put(SearchViewController());
+  final SearchViewViewmodel searchViewModel = Get.put(SearchViewViewmodel());
 
   @override
   Widget build(BuildContext context) {

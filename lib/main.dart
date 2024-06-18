@@ -7,8 +7,6 @@ import 'app/app.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // await Firebase.initializeApp();
-
   // Xet mau trong suot cho thanh status bar
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(

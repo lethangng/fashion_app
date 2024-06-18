@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:badges/badges.dart' as badges;
 
-import '../../models/request/user.dart';
+import '../../services/auth/auth_service.dart';
 import '../../utils/color_app.dart';
-import '../../view_models/controllers/user_controller.dart';
 import '../../view_models/tab_view_models/bag_tab_view_models/bag_tab_viewmodel.dart';
 import '../../view_models/tab_view_models/favorite_tab_viewmodel.dart';
 import '../../view_models/tab_view_models/tab_controller.dart';
@@ -21,11 +20,9 @@ class MainWrapper extends StatelessWidget {
   final BagTabViewmodel _bagTabViewmodel = Get.put(BagTabViewmodel());
   final FavoriteTabViewmodel _favoriteTabViewmodel =
       Get.put(FavoriteTabViewmodel());
-  final UserController _userController = Get.find<UserController>();
 
   @override
   Widget build(BuildContext context) {
-    User? user = _userController.userRes.value.data;
     return Scaffold(
       // extendBody: true, // cho mau cua bottomNavigationBar thanh trong suot
       backgroundColor: const Color(0xFFf9f9f9),
@@ -36,11 +33,9 @@ class MainWrapper extends StatelessWidget {
         children: [
           HomeTabView(),
           ShopTabView(),
-          user == null ? const LoginEmpty() : BagTabView(),
-          user == null ? const LoginEmpty() : FavoritesTabView(),
-          user == null ? const LoginEmpty() : ProfileTabView(),
-          // FavoritesTabView(),
-          // ProfileTabView(),
+          AuthService.user != null ? BagTabView() : const LoginEmpty(),
+          AuthService.user != null ? FavoritesTabView() : const LoginEmpty(),
+          AuthService.user != null ? ProfileTabView() : const LoginEmpty(),
         ],
       ),
       bottomNavigationBar: Obx(

@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import '../../../services/response/api_status.dart';
 import '../../../utils/color_app.dart';
 import '../../../utils/helper.dart';
-import '../../../view_models/tab_view_models/shop_tab_view_models/filters_controller.dart';
+import '../../../view_models/tab_view_models/shop_tab_view_models/filters_viewmodel.dart';
 import '../../widgets/button_primary.dart';
 import '../../widgets/button_second.dart';
 import '../../widgets/show_dialog_error.dart';
@@ -13,7 +13,7 @@ import '../../widgets/show_dialog_error.dart';
 class FiltersScreen extends StatelessWidget {
   FiltersScreen({super.key});
   // final FiltersController _filtersViewModel = Get.put(FiltersController());
-  final FiltersController _filtersViewModel = Get.find<FiltersController>();
+  final FiltersViewmodel _filtersViewModel = Get.find<FiltersViewmodel>();
 
   @override
   Widget build(BuildContext context) {

@@ -21,6 +21,7 @@ class Configs {
   static String updateDeliveryAddress = '/delivery-address/update';
   static String register = '/user/register';
   static String changePassword = '/user/change-password';
+  static String resetPassword = '/user/reset-password';
 
   static String getFilterProduct({
     required int page,
