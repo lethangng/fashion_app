@@ -23,9 +23,9 @@ class ShopTabViewModel extends GetxController
     super.onInit();
   }
 
-  @override
-  void onClose() {
-    tabController.dispose();
-    super.onClose();
-  }
+  // @override
+  // void onClose() {
+  //   tabController.dispose();
+  //   super.onClose();
+  // }
 }

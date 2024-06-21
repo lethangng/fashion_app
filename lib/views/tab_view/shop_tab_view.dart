@@ -13,7 +13,7 @@ import 'shop_tab_view/tabs/women_tab.dart';
 
 class ShopTabView extends StatelessWidget {
   ShopTabView({super.key});
-  final ShopTabViewModel shopTabViewModel = Get.put(ShopTabViewModel());
+  final ShopTabViewModel _shopTabViewModel = Get.put(ShopTabViewModel());
   final SearchViewViewmodel searchViewModel = Get.put(SearchViewViewmodel());
 
   @override
@@ -88,9 +88,9 @@ class ShopTabView extends StatelessWidget {
             Container(
               decoration: const BoxDecoration(color: Color(0xFFFFFFFF)),
               child: TabBar(
-                controller: shopTabViewModel.tabController,
+                controller: _shopTabViewModel.tabController,
                 isScrollable: false,
-                tabs: shopTabViewModel.listTap,
+                tabs: _shopTabViewModel.listTap,
                 physics: const BouncingScrollPhysics(),
                 labelColor: const Color(0xFFDB3022),
                 dividerColor: Colors.transparent,
@@ -105,7 +105,7 @@ class ShopTabView extends StatelessWidget {
             ),
             Expanded(
               child: TabBarView(
-                controller: shopTabViewModel.tabController,
+                controller: _shopTabViewModel.tabController,
                 children: [
                   WomenTab(),
                   MenTab(),

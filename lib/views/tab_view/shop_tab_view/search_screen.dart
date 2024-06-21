@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '../../../app/routes.dart';
+import '../../../models/home_models/search_history.dart';
 import '../../../utils/color_app.dart';
 import '../../../view_models/tab_view_models/shop_tab_view_models/search_view_viewmodel.dart';
 
@@ -52,8 +53,9 @@ class SearchScreen extends StatelessWidget {
               ),
               border: InputBorder.none,
               suffixIcon: IconButton(
-                onPressed: () {
+                onPressed: () async {
                   if (_searchViewModel.searchController.text.isNotEmpty) {
+                    await _searchViewModel.insert();
                     Get.toNamed(Routes.categryDetail);
                   }
                 },
@@ -72,7 +74,11 @@ class SearchScreen extends StatelessWidget {
                 ),
               ),
             ),
-            onSubmitted: (_) => Get.toNamed(Routes.categryDetail),
+            // onSubmitted: (_) {
+            //   if (_searchViewModel.searchController.text.isNotEmpty) {
+            //     Get.toNamed(Routes.categryDetail);
+            //   }
+            // },
           ),
         ),
         leading: IconButton(
@@ -96,64 +102,16 @@ class SearchScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 12),
-              ListView.builder(
-                itemCount: 3,
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    decoration: const BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          width: 1,
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ),
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 10),
-                      child: Text('Áo phông nam'),
-                    ),
-                  );
-                },
+              Obx(
+                () => ListView.builder(
+                  itemCount: _searchViewModel.listSearchHistory.length,
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemBuilder: (BuildContext context, int index) {
+                    return chip(_searchViewModel.listSearchHistory[index]);
+                  },
+                ),
               ),
-              // ListView(
-              //   // spacing: 8,
-              //   // runSpacing: 8,
-              //   children: [
-              //     chip(title: 'Áo sơ mi', event: () {}),
-              //     chip(title: 'Quần jean', event: () {}),
-              //     chip(title: 'Áo khoác gió nam', event: () {}),
-              //   ],
-              // ),
-              // const SizedBox(height: 20),
-              // const Text(
-              //   'Các tìm kiếm phổ biến',
-              //   style: TextStyle(
-              //     fontSize: 20,
-              //     fontWeight: FontWeight.w500,
-              //     color: ColorApp.black,
-              //   ),
-              // ),
-              // const SizedBox(height: 12),
-              // ..._searchViewModel.listSearch.map(
-              //   (item) => Padding(
-              //     padding: const EdgeInsets.only(bottom: 15),
-              //     child: GestureDetector(
-              //       onTap: () {
-              //         // print('ok');
-              //       },
-              //       child: Text(
-              //         item,
-              //         style: const TextStyle(
-              //           fontSize: 15,
-              //           fontWeight: FontWeight.w400,
-              //           color: ColorApp.black,
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // ),
             ],
           ),
         ),
@@ -161,34 +119,50 @@ class SearchScreen extends StatelessWidget {
     );
   }
 
-  Widget chip({
-    required String title,
-    required void Function()? event,
-  }) {
-    return Row(
-      // mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          title,
-          style: const TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w400,
-            color: Colors.white,
+  // padding: const EdgeInsets.symmetric(vertical: 10),
+  Widget chip(SearchHistory searchHistory) {
+    return GestureDetector(
+      onTap: () {
+        _searchViewModel.searchController.text = searchHistory.content;
+        Get.toNamed(Routes.categryDetail);
+      },
+      child: Container(
+        decoration: const BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              width: 1,
+              color: Colors.grey,
+            ),
           ),
         ),
-        // const SizedBox(width: 3),
-        // IconButton(
-        //   onPressed: event,
-        //   style: IconButton.styleFrom(
-        //     minimumSize: Size.zero,
-        //     padding: EdgeInsets.zero,
-        //     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        //   ),
-        //   icon: SvgPicture.asset(
-        //     'assets/icons/close-2.svg',
-        //   ),
-        // )
-      ],
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  searchHistory.content,
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 5),
+              IconButton(
+                onPressed: () => _searchViewModel.delete(searchHistory.id!),
+                style: IconButton.styleFrom(
+                  minimumSize: Size.zero,
+                  padding: EdgeInsets.zero,
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                ),
+                icon: const Icon(Icons.close),
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

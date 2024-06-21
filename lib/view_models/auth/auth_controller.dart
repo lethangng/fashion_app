@@ -84,7 +84,7 @@ class AuthController {
       await handleLogin('google');
 
       // Tới màn hình Home
-      Get.toNamed(Routes.home);
+      Get.offAllNamed(Routes.home);
     } catch (e) {
       printError(info: e.toString());
     }
@@ -98,7 +98,7 @@ class AuthController {
       await handleLogin('facebook');
 
       // Tới màn hình Home
-      Get.toNamed(Routes.home);
+      Get.offAllNamed(Routes.home);
     } catch (e) {
       printError(info: e.toString());
     }

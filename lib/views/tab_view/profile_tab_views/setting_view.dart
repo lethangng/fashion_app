@@ -82,20 +82,31 @@ class SettingView extends StatelessWidget {
                   Obx(
                     () => GestureDetector(
                       onTap: () async => await _pickImageFromGallery(),
-                      child: _settingViewmodel.selectedImage.value == null
-                          ? AvatarContainer(
-                              image: _userController.userRes.value.data!.image,
-                              radius: 100,
-                              replaceImage: 'assets/images/avatar-image.jpg',
-                            )
-                          : ClipOval(
-                              child: Image.file(
-                                _settingViewmodel.selectedImage.value!,
-                                width: 100,
-                                height: 100,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
+                      child: Stack(
+                        children: [
+                          _settingViewmodel.selectedImage.value == null
+                              ? AvatarContainer(
+                                  image:
+                                      _userController.userRes.value.data!.image,
+                                  radius: 100,
+                                  replaceImage:
+                                      'assets/images/avatar-image.jpg',
+                                )
+                              : ClipOval(
+                                  child: Image.file(
+                                    _settingViewmodel.selectedImage.value!,
+                                    width: 100,
+                                    height: 100,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                          Positioned(
+                            right: 5,
+                            bottom: 5,
+                            child: SvgPicture.asset('assets/icons/camera.svg'),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],

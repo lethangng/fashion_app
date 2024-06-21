@@ -46,7 +46,7 @@ class RegisterScreen extends StatelessWidget {
                       Text(
                         'Tạo tài khoản mới',
                         style: TextStyle(
-                          fontSize: 34,
+                          fontSize: 30,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

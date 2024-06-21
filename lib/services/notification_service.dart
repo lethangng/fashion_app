@@ -18,7 +18,7 @@ class NotificationSetUp {
       'resource://drawable/res_launcher_icon',
       [
         NotificationChannel(
-          channelGroupKey: 'basic_channel_group',
+          // channelGroupKey: 'basic_channel_group',
           channelKey: 'high_importance_channel',
           channelName: 'Chat notifications',
           importance: NotificationImportance.Max,
@@ -33,11 +33,11 @@ class NotificationSetUp {
           channelDescription: 'Chat notifications.',
         ),
       ],
-      channelGroups: [
-        NotificationChannelGroup(
-            channelGroupKey: 'basic_channel_group',
-            channelGroupName: 'Basic group')
-      ],
+      // channelGroups: [
+      //   NotificationChannelGroup(
+      //       channelGroupKey: 'basic_channel_group',
+      //       channelGroupName: 'Basic group')
+      // ],
       debug: true,
     );
 

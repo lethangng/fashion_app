@@ -50,7 +50,7 @@ class LoginScreen extends StatelessWidget {
                       Text(
                         'Đăng nhập tài khoản',
                         style: TextStyle(
-                          fontSize: 34,
+                          fontSize: 30,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -125,6 +125,7 @@ class LoginScreen extends StatelessWidget {
 
                   return ButtonPrimary(
                     title: 'Đăng nhập',
+                    isUpperCase: true,
                     event: () => _loginViewModel.validate(
                       _emailController.text,
                       _passwordController.text,
@@ -164,55 +165,27 @@ class LoginScreen extends StatelessWidget {
                   children: [
                     Text(
                       'Hoặc bạn cũng có thể đăng nhập với',
+                      textAlign: TextAlign.center,
                       style: TextThemes.textBlack_14_400,
                     ),
                     const SizedBox(height: 16),
                     Row(
                       children: [
                         Expanded(
-                          child: Obx(
-                            () {
-                              if (_authController.loginRes.value.status ==
-                                  Status.loading) {
-                                return const SizedBox(
-                                  width: 20,
-                                  height: 20,
-                                  child: CircularProgressIndicator(
-                                      color: ColorApp.primary),
-                                );
-                              }
-
-                              return loginContainer(
-                                image: 'assets/icons/google.svg',
-                                event: () async {
-                                  await _authController
-                                      .authenticationWithGoogle();
-                                },
-                              );
+                          child: loginContainer(
+                            image: 'assets/icons/google.svg',
+                            event: () async {
+                              await _authController.authenticationWithGoogle();
                             },
                           ),
                         ),
                         const SizedBox(width: 16),
                         Expanded(
-                          child: Obx(
-                            () {
-                              if (_authController.loginRes.value.status ==
-                                  Status.loading) {
-                                return const SizedBox(
-                                  width: 20,
-                                  height: 20,
-                                  child: CircularProgressIndicator(
-                                      color: ColorApp.primary),
-                                );
-                              }
-
-                              return loginContainer(
-                                image: 'assets/icons/facebook.svg',
-                                event: () async {
-                                  await _authController
-                                      .authenticationWithFacebook();
-                                },
-                              );
+                          child: loginContainer(
+                            image: 'assets/icons/facebook.svg',
+                            event: () async {
+                              await _authController
+                                  .authenticationWithFacebook();
                             },
                           ),
                         ),

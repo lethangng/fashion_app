@@ -122,7 +122,7 @@ class FiltersViewmodel extends GetxController {
     }
   }
 
-  Future<void> _handleLoad() async {
+  Future<void> handleLoad() async {
     List<int> listBrandVal = [];
     List<int> listCategoryVal = [];
     List<int> listColorVal = [];
@@ -177,13 +177,13 @@ class FiltersViewmodel extends GetxController {
   Future<void> onRefresh() async {
     _page = 1;
     listData.value = [];
-    await _handleLoad();
+    await handleLoad();
     refreshController.refreshCompleted();
   }
 
   Future<void> onLoading() async {
     _page++;
-    await _handleLoad();
+    await handleLoad();
     refreshController.loadComplete();
   }
 
@@ -369,7 +369,7 @@ class FiltersViewmodel extends GetxController {
       item.isSelect = false;
     }
 
-    listPrice.first.isSelect = true;
+    // listPrice.first.isSelect = true;
     // listColors.first.isSelect = true;
     // listSizes.first.isSelect = true;
     // listCategory.first.isSelect = true;
@@ -398,11 +398,16 @@ class FiltersViewmodel extends GetxController {
     setLoadRes(ApiResponse.completed(true));
   }
 
-  Future<void> handleLoadFilter() async {}
+  Future<void> handleLoadFilter() async {
+    listData.clear();
+    Get.back();
+    setLoadDataRes(ApiResponse.loading());
+    await handleLoad();
+  }
 
   Future<void> initData() async {
     sortValue = listSort.first.title.obs;
-    await _handleLoad();
+    await handleLoad();
   }
 
   @override

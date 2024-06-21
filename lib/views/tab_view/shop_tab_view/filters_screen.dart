@@ -224,10 +224,10 @@ class FiltersScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 25),
-                const Expanded(
+                Expanded(
                   child: ButtonPrimary(
                     title: 'Áp dụng',
-                    // event: () => _filtersViewModel.handleLoad(),
+                    event: () => _filtersViewModel.handleLoadFilter(),
                   ),
                 ),
               ],

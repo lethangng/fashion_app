@@ -122,6 +122,7 @@ class PayView extends StatelessWidget {
               rowInfo(
                 title: 'Giảm giá',
                 monney: _bagTabViewModel.discount.value,
+                persent: true,
               ),
               const SizedBox(height: 20),
               rowInfo(
@@ -167,6 +168,7 @@ class PayView extends StatelessWidget {
   Widget rowInfo({
     required String title,
     required int monney,
+    bool persent = false,
   }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -180,7 +182,9 @@ class PayView extends StatelessWidget {
           ),
         ),
         Text(
-          Helper.formatMonney(monney),
+          persent
+              ? '-${Helper.formatMonney(monney)}'
+              : Helper.formatMonney(monney),
           style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w700,

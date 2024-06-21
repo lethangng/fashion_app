@@ -13,6 +13,7 @@ import '../../../services/repository/access_server_repository.dart';
 import '../../../services/response/api_response.dart';
 import '../../../utils/helper.dart';
 import '../../controllers/user_controller.dart';
+import '../bag_tab_view_models/bag_tab_viewmodel.dart';
 import '../favorite_tab_viewmodel.dart';
 
 class ProductDetailViewmodel extends GetxController {
@@ -21,6 +22,7 @@ class ProductDetailViewmodel extends GetxController {
   final UserController _userController = Get.find<UserController>();
   final FavoriteTabViewmodel _favoriteTabViewmodel =
       Get.find<FavoriteTabViewmodel>();
+  final BagTabViewmodel _bagTabViewmodel = Get.find<BagTabViewmodel>();
 
   final Rx<ApiResponse<ProductDetail>> productDetailRes =
       ApiResponse<ProductDetail>.loading().obs;
@@ -217,6 +219,8 @@ class ProductDetailViewmodel extends GetxController {
         colorText: Colors.white,
         backgroundColor: Colors.black87,
       );
+
+      await _bagTabViewmodel.onRefresh();
     } catch (e, s) {
       s.printError();
       setAddCartRes(ApiResponse.error(e.toString()));

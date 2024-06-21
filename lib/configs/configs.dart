@@ -5,8 +5,8 @@ import '../view_models/controllers/user_controller.dart';
 
 class Configs {
   static final User? _user = Get.find<UserController>().userRes.value.data;
-  static String baseUrl = 'http://192.168.1.9:8000/api';
-  static String checkLogin = '/check-login';
+  static String baseUrl = 'http://fashion-lt.id.vn/api';
+  static String checkLogin = '/user/check-login';
   static String getUserInfo = '/user/user-info';
   static String addFavoriteProduct = '/favorite/add';
   static String addCart = '/cart/add';

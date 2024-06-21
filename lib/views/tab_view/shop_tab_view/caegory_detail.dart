@@ -53,7 +53,7 @@ class CaegoryDetail extends StatelessWidget {
             textAlign: TextAlign.left,
             decoration: InputDecoration(
               isDense: true, // Cho chu can giua theo chieu doc
-              hintText: 'Tìm kiếm....1',
+              hintText: 'Tìm kiếm....',
               hintStyle: const TextStyle(
                 color: ColorApp.colorGrey2,
                 fontSize: 15,

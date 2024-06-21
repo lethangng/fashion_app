@@ -20,12 +20,14 @@ class Helper {
   }
 
   static String formatMonney(int amount) {
-    final formatter = NumberFormat.currency(
-      locale: 'vi_VN',
-      symbol: 'đ',
-      decimalDigits: 0,
-    );
-    return formatter.format(amount);
+    // final formatter = NumberFormat.currency(
+    //   locale: 'vi_VN',
+    //   symbol: 'đ',
+    //   decimalDigits: 0,
+    // );
+    final formatter = NumberFormat('#,##0', 'vi_VN');
+    formatter.maximumFractionDigits = 0;
+    return '${formatter.format(amount)}đ';
   }
 
   static String formatNumber(int number) {
