@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class TabViewModel extends GetxController {
-  // final RxBool showMenu = false.obs;
-
   final PageController pageController = PageController(initialPage: 0);
   final RxInt currentPage = 0.obs;
 
@@ -20,10 +18,6 @@ class TabViewModel extends GetxController {
       curve: Curves.ease,
     );
   }
-
-  // void handleShowMenu() {
-  //   showMenu.value = !showMenu.value;
-  // }
 
   @override
   void onClose() {

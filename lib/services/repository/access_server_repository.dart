@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../models/request/request_data.dart';
+import '../../models/request/user.dart';
 import '../../models/uploads/upload_file.dart';
+import '../../view_models/controllers/user_controller.dart';
 import '../api/api_endpoints.dart';
 import '../api/api_service.dart';
 import '../exceptions/app_exceptions.dart';
@@ -13,8 +16,9 @@ class AccessServerRepository implements BaseRepository<RequestData> {
   @override
   getData(RequestData data) async {
     try {
+      final User? user = Get.find<UserController>().userRes.value.data;
       dynamic response = await apiService.getResponse(
-        ApiEndPoints.endPoint(data.query),
+        ApiEndPoints.endPoint("${data.query}&user_id=${user?.id ?? ''}"),
       );
       if (response is List) {
         // List<DataMessage> jsonData =

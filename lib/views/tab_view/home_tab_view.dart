@@ -192,6 +192,7 @@ class HomeTabView extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 34,
                 fontWeight: FontWeight.bold,
+                color: ColorApp.primary,
               ),
             ),
             const Spacer(),

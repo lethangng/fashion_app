@@ -20,6 +20,8 @@ class OrderDetailView extends StatelessWidget {
   final OrderDetailViewmodel _orderDetailViewmodel =
       Get.put(OrderDetailViewmodel());
   final TextEditingController _elaluatesConroller = TextEditingController();
+  final TextEditingController _cancelElaluatesConroller =
+      TextEditingController();
   final RxInt _countStar = 3.obs;
 
   @override
@@ -270,6 +272,45 @@ class OrderDetailView extends StatelessWidget {
                           color: Colors.black,
                         ),
                       ),
+                      const SizedBox(height: 10),
+                      Container(
+                        height: Get.height * 0.2,
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4),
+                          color: ColorApp.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(0xFF000000).withOpacity(0.05),
+                              offset: const Offset(0, 1),
+                              blurRadius: 8,
+                            ),
+                          ],
+                        ),
+                        child: TextField(
+                          controller: _cancelElaluatesConroller,
+                          style: const TextStyle(color: Colors.black),
+                          onTapOutside: (event) =>
+                              FocusManager.instance.primaryFocus?.unfocus(),
+                          textAlignVertical: TextAlignVertical.center,
+                          textAlign: TextAlign.left,
+                          maxLines: null,
+                          keyboardType: TextInputType.multiline,
+                          decoration: InputDecoration(
+                            isDense: true, // Cho chu can giua theo chieu doc
+                            hintText: 'Nhập lý do...',
+                            hintStyle: const TextStyle(
+                              color: ColorApp.colorGrey2,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: Get.width * 0.01,
+                            ),
+                          ),
+                        ),
+                      ),
                       const SizedBox(height: 12),
                       Row(
                         children: [
@@ -284,8 +325,19 @@ class OrderDetailView extends StatelessWidget {
                             child: ButtonSecond(
                               title: 'Đồng ý',
                               event: () {
+                                if (_cancelElaluatesConroller.text.isEmpty) {
+                                  Get.snackbar(
+                                    'Thông báo',
+                                    'Vui lòng nhập lý do',
+                                    colorText: Colors.white,
+                                    backgroundColor: Colors.black87,
+                                  );
+                                  return;
+                                }
                                 Get.back();
-                                _orderDetailViewmodel.handleCancelOrderRes();
+                                _orderDetailViewmodel.handleCancelOrderRes(
+                                  _cancelElaluatesConroller.text,
+                                );
                               },
                             ),
                           ),

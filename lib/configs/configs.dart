@@ -1,11 +1,12 @@
-import 'package:get/get.dart';
+// import 'package:get/get.dart';
 
-import '../models/request/user.dart';
-import '../view_models/controllers/user_controller.dart';
+// import '../models/request/user.dart';
+// import '../view_models/controllers/user_controller.dart';
 
 class Configs {
-  static final User? _user = Get.find<UserController>().userRes.value.data;
+  // static final User? _user = Get.find<UserController>().userRes.value.data;
   static String baseUrl = 'http://fashion-lt.id.vn/api';
+  // static String baseUrl = 'http://192.168.1.3:8000/api';
   static String checkLogin = '/user/check-login';
   static String getUserInfo = '/user/user-info';
   static String addFavoriteProduct = '/favorite/add';
@@ -22,6 +23,7 @@ class Configs {
   static String register = '/user/register';
   static String changePassword = '/user/change-password';
   static String resetPassword = '/user/reset-password';
+  static String deleteDeliveryAddress = '/delivery-address/delete';
 
   static String getFilterProduct({
     required int page,
@@ -39,30 +41,30 @@ class Configs {
   }
 
   static String getBrand() {
-    return '/brands';
+    return '/brands?';
   }
 
   static String getColor() {
-    return '/color';
+    return '/color?';
   }
 
   static String getSize() {
-    return '/size';
+    return '/size?';
   }
 
   static String getCategory() {
-    return '/categories';
+    return '/categories?';
   }
 
   static String getFavorite({
     required int page,
     required int limit,
   }) {
-    return '/favorite?page=$page&limit=$limit&user_id=${_user?.id ?? ''}';
+    return '/favorite?page=$page&limit=$limit';
   }
 
   static String getDeliveryAddress({int? is_select}) {
-    return '/delivery-address?user_id=${_user?.id ?? ''}&is_select=${is_select ?? ''}';
+    return '/delivery-address?is_select=${is_select ?? ''}';
   }
 
   static String getCoupons({
@@ -77,7 +79,7 @@ class Configs {
     // required int user_id,
     int? limit,
   }) {
-    return '/cart?page=$page&user_id=${_user?.id ?? ''}&limit=${limit ?? ''}';
+    return '/cart?page=$page&limit=${limit ?? ''}';
   }
 
   static String getEvaluate({
@@ -97,20 +99,20 @@ class Configs {
     bool? newest,
     int? category_id,
   }) {
-    return '/product?page=$page&user_id=${_user?.id ?? ''}&limit=${limit ?? ''}&newest=${newest ?? ''}&sale=${sale ?? ''}&category_id=${category_id ?? ''}';
+    return '/product?page=$page&limit=${limit ?? ''}&newest=${newest ?? ''}&sale=${sale ?? ''}&category_id=${category_id ?? ''}';
   }
 
   static String getRecommendationsProduct({
     required int product_id,
   }) {
-    return '/product?product_id=$product_id&user_id=${_user?.id ?? ''}';
+    return '/product?product_id=$product_id';
   }
 
   static String getDetailProduct({
     required int id,
     // int? user_id,
   }) {
-    return '/product/detail?id=$id&user_id=${_user?.id ?? ''}';
+    return '/product/detail?id=$id';
   }
 
   static String getOrder({

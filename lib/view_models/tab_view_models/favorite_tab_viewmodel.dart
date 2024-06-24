@@ -78,7 +78,7 @@ class FavoriteTabViewmodel extends GetxController {
         '${map['msg']}',
         icon: const Icon(Icons.check, color: Colors.green),
         colorText: Colors.white,
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.black87,
       );
       await onRefresh();
     } catch (e, s) {

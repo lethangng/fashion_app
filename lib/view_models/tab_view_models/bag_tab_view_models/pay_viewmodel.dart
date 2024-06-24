@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 // import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../app/routes.dart';
@@ -70,13 +71,6 @@ class PayController extends GetxController {
       await _accessServerRepository.postData(req);
 
       setAddOrderRes(ApiResponse.completed(true));
-      // Get.snackbar(
-      //   'Thông báo',
-      //   '${map['msg']}',
-      //   // icon: const Icon(Icons.check, color: Colors.green),
-      //   colorText: Colors.white,
-      //   backgroundColor: Colors.black,
-      // );
       Get.offAllNamed(Routes.paySuccess);
     } catch (e, s) {
       s.printError();
@@ -85,6 +79,16 @@ class PayController extends GetxController {
   }
 
   Future<void> handleLoadAddOrder() async {
+    if (addOrderRes.value.data == null) {
+      Get.snackbar(
+        'Thông báo',
+        'Vui lòng chọn địa chỉ giao hàng.',
+        colorText: Colors.white,
+        backgroundColor: Colors.black,
+      );
+      return;
+    }
+
     List orderProducts =
         _bagTabViewmodel.listCart.map((cart) => cart.toOrderProduct()).toList();
 

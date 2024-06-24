@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import '../../services/response/api_status.dart';
 import '../../utils/color_app.dart';
 import '../../view_models/tab_view_models/favorite_tab_viewmodel.dart';
-import '../widgets/list_empty.dart';
+// import '../widgets/list_empty.dart';
 import '../widgets/loadmore.dart';
 import '../widgets/product_container.dart';
 import '../widgets/show_dialog_error.dart';
@@ -44,25 +44,27 @@ class FavoritesTabView extends StatelessWidget {
             refreshController: _favoriteTabViewmodel.refreshController,
             onLoading: _favoriteTabViewmodel.onLoading,
             onRefresh: _favoriteTabViewmodel.onRefresh,
-            widget: _favoriteTabViewmodel.listFavorite.isEmpty
-                ? const ListEmpty()
-                : MasonryGridView.count(
-                    padding: const EdgeInsets.all(16),
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 12,
-                    mainAxisSpacing: 16,
-                    itemCount: _favoriteTabViewmodel.listFavorite.length,
-                    itemBuilder: (context, index) {
-                      return ProductContainer(
-                        product: _favoriteTabViewmodel.listFavorite[index],
-                        productType: ProductType.favarite,
-                        eventDelete: () =>
-                            _favoriteTabViewmodel.handleLoadDeleteFavorite(
-                          _favoriteTabViewmodel.listFavorite[index].id,
-                        ),
-                      );
-                    },
+            widget:
+                // _favoriteTabViewmodel.listFavorite.isEmpty
+                //     ? const ListEmpty()
+                //     :
+                MasonryGridView.count(
+              padding: const EdgeInsets.all(16),
+              crossAxisCount: 2,
+              crossAxisSpacing: 12,
+              mainAxisSpacing: 16,
+              itemCount: _favoriteTabViewmodel.listFavorite.length,
+              itemBuilder: (context, index) {
+                return ProductContainer(
+                  product: _favoriteTabViewmodel.listFavorite[index],
+                  productType: ProductType.favarite,
+                  eventDelete: () =>
+                      _favoriteTabViewmodel.handleLoadDeleteFavorite(
+                    _favoriteTabViewmodel.listFavorite[index].id,
                   ),
+                );
+              },
+            ),
           );
         }
         return const Center(

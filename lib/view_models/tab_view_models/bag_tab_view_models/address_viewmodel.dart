@@ -26,6 +26,9 @@ class AddressController extends GetxController {
   final Rx<ApiResponse<bool>> updateAddressRes =
       ApiResponse<bool>.completed(null).obs;
 
+  final Rx<ApiResponse<bool>> deleteAddressRes =
+      ApiResponse<bool>.completed(null).obs;
+
   void setDeliveryAddressRes(ApiResponse<List<DeliveryAddress>> res) {
     deliveryAddressRes.value = res;
   }
@@ -36,6 +39,43 @@ class AddressController extends GetxController {
 
   void setUpdateAddressRes(ApiResponse<bool> res) {
     updateAddressRes.value = res;
+  }
+
+  void setDeleteAddressRes(ApiResponse<bool> res) {
+    deleteAddressRes.value = res;
+  }
+
+  Future<void> _fetchDataDeleteAddress(RequestData req) async {
+    try {
+      setDeleteAddressRes(ApiResponse.loading());
+      await _accessServerRepository.postData(req);
+      setDeleteAddressRes(ApiResponse.completed(true));
+
+      Get.snackbar(
+        'Thông báo',
+        'Xóa địa chỉ giao hàng thành công!',
+        colorText: Colors.white,
+        backgroundColor: Colors.black45,
+      );
+
+      await onRefresh();
+    } catch (e, s) {
+      s.printError();
+      setDeleteAddressRes(ApiResponse.error(e.toString()));
+    }
+  }
+
+  Future<void> handleLoadDeleteAddress(DeliveryAddress address) async {
+    Map<String, dynamic> data = {
+      'id': address.id,
+    };
+
+    RequestData resquestData = RequestData(
+      query: Configs.deleteDeliveryAddress,
+      data: Helper.toMapString(data),
+    );
+
+    await _fetchDataDeleteAddress(resquestData);
   }
 
   Future<void> _fetchDataUpdateAddredd(RequestData req) async {

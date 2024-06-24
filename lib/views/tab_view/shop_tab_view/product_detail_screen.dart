@@ -7,6 +7,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_html_table/flutter_html_table.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../app/routes.dart';
 import '../../../models/home_models/product_detail.dart';
@@ -36,6 +37,12 @@ class ProductDetailScreen extends StatelessWidget {
       Get.put(ProductDetailViewmodel());
   // final HomeController _homeViewModel = Get.put(HomeController());
 
+  Future<void> _launchUrl(url) async {
+    if (!await launchUrl(url)) {
+      throw Exception('Could not launch $url');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,8 +61,10 @@ class ProductDetailScreen extends StatelessWidget {
         centerTitle: true,
         actions: [
           IconButton(
-            onPressed: () {},
-            icon: SvgPicture.asset('assets/icons/share.svg'),
+            onPressed: () => _launchUrl(
+                Uri.parse('https://www.messenger.com/t/100054196028101')),
+            icon: SvgPicture.asset('assets/icons/Vector (2).svg'),
+            // icon: SvgPicture.asset('assets/icons/share.svg'),
           ),
         ],
         leading: IconButton(

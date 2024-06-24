@@ -41,7 +41,7 @@ class ReviewContainer extends StatelessWidget {
                   AvatarContainer(
                     image: evaluate.image_url,
                     radius: 32,
-                    replaceImage: 'assets/images/avatar-review.png',
+                    replaceImage: 'assets/images/avatar-image.jpg',
                   ),
                   const SizedBox(width: 5),
                   Column(

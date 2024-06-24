@@ -9,7 +9,7 @@ class ShopTabViewModel extends GetxController
     const Tab(text: 'Phụ nữ'),
     const Tab(text: 'Đàn ông'),
     const Tab(text: 'Trẻ em'),
-    const Tab(text: 'Phụ kiện'),
+    // const Tab(text: 'Phụ kiện'),
   ];
 
   @override

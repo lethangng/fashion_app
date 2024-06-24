@@ -119,8 +119,8 @@ class ProfileTabView extends StatelessWidget {
             const SizedBox(height: 30),
             Visibility(
               visible:
-                  // _userController.userRes.value.data!.login_type == 'password',
-                  true,
+                  _userController.userRes.value.data!.login_type == 'password',
+              // true,
               child: ButtonSecond(
                 title: 'Đổi mật khẩu',
                 isUpperCase: true,

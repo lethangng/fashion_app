@@ -124,19 +124,19 @@ class ProductBagContainer extends StatelessWidget {
                               ],
                             ),
                           ),
-                          Visibility(
-                            visible: isPay == false,
-                            child: IconButton(
-                              onPressed: () {},
-                              style: IconButton.styleFrom(
-                                minimumSize: Size.zero,
-                                padding: EdgeInsets.zero,
-                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              ),
-                              icon:
-                                  SvgPicture.asset('assets/icons/dot-menu.svg'),
-                            ),
-                          ),
+                          // Visibility(
+                          //   visible: isPay == false,
+                          //   child: IconButton(
+                          //     onPressed: () {},
+                          //     style: IconButton.styleFrom(
+                          //       minimumSize: Size.zero,
+                          //       padding: EdgeInsets.zero,
+                          //       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          //     ),
+                          //     icon:
+                          //         SvgPicture.asset('assets/icons/dot-menu.svg'),
+                          //   ),
+                          // ),
                         ],
                       ),
                       const SizedBox(height: 12),

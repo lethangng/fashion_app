@@ -9,7 +9,7 @@ import '../../../utils/color_app.dart';
 import '../../../utils/helper.dart';
 import '../../../view_models/tab_view_models/bag_tab_view_models/bag_tab_viewmodel.dart';
 import '../../widgets/discount_code_item.dart';
-import '../../widgets/list_empty.dart';
+// import '../../widgets/list_empty.dart';
 import '../../widgets/loadmore.dart';
 import '../../widgets/product_bag_container.dart';
 import '../../widgets/show_dialog_error.dart';
@@ -40,42 +40,53 @@ class BagTabView extends StatelessWidget {
           // ),
           // const SizedBox(height: 10),
           Expanded(
-            child: Obx(
-              () {
-                if (_bagTabViewModel.cartRes.value.status == Status.error) {
-                  showDialogError(
-                      error: _bagTabViewModel.cartRes.value.message!);
-                }
+            child: Container(
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("assets/images/9960438.png"),
+                  fit: BoxFit.contain,
+                ),
+              ),
+              child: Obx(
+                () {
+                  if (_bagTabViewModel.cartRes.value.status == Status.error) {
+                    showDialogError(
+                        error: _bagTabViewModel.cartRes.value.message!);
+                  }
 
-                if (_bagTabViewModel.cartRes.value.status == Status.completed) {
-                  return Loadmore(
-                    refreshController: _bagTabViewModel.refreshController,
-                    onLoading: _bagTabViewModel.onLoading,
-                    onRefresh: _bagTabViewModel.onRefresh,
-                    widget: _bagTabViewModel.listCart.isEmpty
-                        ? const ListEmpty(
-                            title: 'Chưa có sản phẩm nào trong giỏ hàng',
-                          )
-                        : ListView.builder(
-                            itemCount: _bagTabViewModel.listCart.length,
-                            padding: EdgeInsets.only(top: appBarHeight),
-                            itemBuilder: (BuildContext context, int index) {
-                              return Padding(
-                                padding: const EdgeInsets.only(bottom: 24),
-                                child: ProductBagContainer(
-                                  cart: _bagTabViewModel.listCart[index],
-                                ),
-                              );
-                            },
-                          ),
+                  if (_bagTabViewModel.cartRes.value.status ==
+                      Status.completed) {
+                    return Loadmore(
+                      refreshController: _bagTabViewModel.refreshController,
+                      onLoading: _bagTabViewModel.onLoading,
+                      onRefresh: _bagTabViewModel.onRefresh,
+                      widget:
+                          // _bagTabViewModel.listCart.isEmpty
+                          //     ? const ListEmpty(
+                          //         title: 'Chưa có sản phẩm nào trong giỏ hàng',
+                          //       )
+                          //     :
+                          ListView.builder(
+                        itemCount: _bagTabViewModel.listCart.length,
+                        padding: EdgeInsets.only(top: appBarHeight),
+                        itemBuilder: (BuildContext context, int index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 24),
+                            child: ProductBagContainer(
+                              cart: _bagTabViewModel.listCart[index],
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  }
+                  return const Center(
+                    child: CircularProgressIndicator(
+                      color: ColorApp.primary,
+                    ),
                   );
-                }
-                return const Center(
-                  child: CircularProgressIndicator(
-                    color: ColorApp.primary,
-                  ),
-                );
-              },
+                },
+              ),
             ),
           ),
           const SizedBox(height: 16),

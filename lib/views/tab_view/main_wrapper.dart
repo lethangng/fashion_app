@@ -105,6 +105,8 @@ class MainWrapper extends StatelessWidget {
           unselectedItemColor: ColorApp.black,
           showUnselectedLabels: true,
           onTap: (page) => _tabViewModel.goToTab(page),
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: Colors.white,
         ),
       ),
       // BottomAppBar(
