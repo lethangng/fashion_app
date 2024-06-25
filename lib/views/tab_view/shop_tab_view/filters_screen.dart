@@ -12,7 +12,6 @@ import '../../widgets/show_dialog_error.dart';
 
 class FiltersScreen extends StatelessWidget {
   FiltersScreen({super.key});
-  // final FiltersController _filtersViewModel = Get.put(FiltersController());
   final FiltersViewmodel _filtersViewModel = Get.find<FiltersViewmodel>();
 
   @override

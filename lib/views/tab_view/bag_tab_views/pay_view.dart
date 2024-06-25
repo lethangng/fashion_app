@@ -39,116 +39,52 @@ class PayView extends StatelessWidget {
           icon: SvgPicture.asset('assets/icons/arrow-back.svg'),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 15),
-              const Text(
-                'Địa chỉ nhận hàng',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: ColorApp.black,
-                ),
-              ),
-              const SizedBox(height: 20),
-              Obx(() {
-                if (_payViewModel.deliveryAddressRes.value.status ==
-                    Status.error) {
-                  return Column(
-                    children: [
-                      SizedBox(width: Get.width),
-                      const Text(
-                          'Bạn chưa có địa chỉ nhận hàng, vui lòng thêm'),
-                      const SizedBox(height: 10),
-                      ButtonPrimary(
-                        title: 'Thêm',
-                        size: Get.width * 0.4,
-                        event: () => Get.toNamed(Routes.address),
-                      ),
-                    ],
-                  );
-                  // showDialogError(
-                  //     error: _payViewModel.deliveryAddressRes.value.message!);
-                }
-
-                if (_payViewModel.deliveryAddressRes.value.status ==
-                    Status.completed) {
-                  return AddressContainer(
-                    address: _payViewModel.deliveryAddressRes.value.data!,
-                    event: () {},
-                    addressType: AddressType.pay,
-                  );
-                }
-                return const Center(
-                  child: CircularProgressIndicator(
-                    color: ColorApp.primary,
+      body: RefreshIndicator(
+        onRefresh: () => _payViewModel.handleLoad(),
+        color: ColorApp.primary,
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 15),
+                const Text(
+                  'Địa chỉ nhận hàng',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: ColorApp.black,
                   ),
-                );
-              }),
-              const SizedBox(height: 20),
-              ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: _bagTabViewModel.listCart.length,
-                padding: EdgeInsets.zero,
-                itemBuilder: (BuildContext context, int index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 24),
-                    child: ProductBagContainer(
-                      cart: _bagTabViewModel.listCart[index],
-                      isPay: true,
-                    ),
-                  );
-                },
-              ),
-              const SizedBox(height: 20),
-              const Text(
-                'Chi tiết thanh toán',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
                 ),
-              ),
-              const SizedBox(height: 10),
-              rowInfo(
-                title: 'Tổng tiền hàng',
-                monney: _bagTabViewModel.totalPriceValue,
-              ),
-              const SizedBox(height: 20),
-              rowInfo(
-                title: 'Giảm giá',
-                monney: _bagTabViewModel.discount.value,
-                persent: true,
-              ),
-              const SizedBox(height: 20),
-              rowInfo(
-                title: 'Phí vận chuyển',
-                monney: 0,
-              ),
-              const SizedBox(height: 20),
-              rowInfo(
-                title: 'Tổng thanh toán',
-                monney: _bagTabViewModel.totalPrice.value,
-              ),
-              const SizedBox(height: 23),
-              Obx(
-                () {
-                  if (_payViewModel.addOrderRes.value.status == Status.error) {
-                    showDialogError(
-                      error: _payViewModel.addOrderRes.value.message!,
+                const SizedBox(height: 20),
+                Obx(() {
+                  if (_payViewModel.deliveryAddressRes.value.status ==
+                      Status.error) {
+                    return Column(
+                      children: [
+                        SizedBox(width: Get.width),
+                        const Text(
+                            'Bạn chưa có địa chỉ nhận hàng, vui lòng thêm'),
+                        const SizedBox(height: 10),
+                        ButtonPrimary(
+                          title: 'Thêm',
+                          size: Get.width * 0.4,
+                          event: () => Get.toNamed(Routes.address),
+                        ),
+                      ],
                     );
+                    // showDialogError(
+                    //     error: _payViewModel.deliveryAddressRes.value.message!);
                   }
 
-                  if (_payViewModel.addOrderRes.value.status ==
+                  if (_payViewModel.deliveryAddressRes.value.status ==
                       Status.completed) {
-                    return ButtonPrimary(
-                      title: 'Đặt hàng',
-                      event: () => _payViewModel.handleLoadAddOrder(),
-                      fontSize: 16,
+                    return AddressContainer(
+                      address: _payViewModel.deliveryAddressRes.value.data!,
+                      event: () {},
+                      addressType: AddressType.pay,
                     );
                   }
                   return const Center(
@@ -156,9 +92,79 @@ class PayView extends StatelessWidget {
                       color: ColorApp.primary,
                     ),
                   );
-                },
-              ),
-            ],
+                }),
+                const SizedBox(height: 20),
+                ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: _bagTabViewModel.listCart.length,
+                  padding: EdgeInsets.zero,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 24),
+                      child: ProductBagContainer(
+                        cart: _bagTabViewModel.listCart[index],
+                        isPay: true,
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  'Chi tiết thanh toán',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                rowInfo(
+                  title: 'Tổng tiền hàng',
+                  monney: _bagTabViewModel.totalPriceValue,
+                ),
+                const SizedBox(height: 20),
+                rowInfo(
+                  title: 'Giảm giá',
+                  monney: _bagTabViewModel.discount.value,
+                  persent: true,
+                ),
+                const SizedBox(height: 20),
+                rowInfo(
+                  title: 'Phí vận chuyển',
+                  monney: 0,
+                ),
+                const SizedBox(height: 20),
+                rowInfo(
+                  title: 'Tổng thanh toán',
+                  monney: _bagTabViewModel.totalPrice.value,
+                ),
+                const SizedBox(height: 23),
+                Obx(
+                  () {
+                    if (_payViewModel.addOrderRes.value.status ==
+                        Status.error) {
+                      showDialogError(
+                        error: _payViewModel.addOrderRes.value.message!,
+                      );
+                    }
+
+                    if (_payViewModel.addOrderRes.value.status ==
+                        Status.completed) {
+                      return ButtonPrimary(
+                        title: 'Đặt hàng',
+                        event: () => _payViewModel.handleLoadAddOrder(),
+                        fontSize: 16,
+                      );
+                    }
+                    return const Center(
+                      child: CircularProgressIndicator(
+                        color: ColorApp.primary,
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -103,10 +103,7 @@ class CaegoryDetail extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       TextButton(
-                        onPressed: () {
-                          Get.toNamed(Routes.filters);
-                          _filtersViewmodel.handleLoadData();
-                        },
+                        onPressed: () => Get.toNamed(Routes.filters),
                         child: Row(
                           children: [
                             SvgPicture.asset('assets/icons/filters-2.svg'),

@@ -60,13 +60,7 @@ class BagTabView extends StatelessWidget {
                       refreshController: _bagTabViewModel.refreshController,
                       onLoading: _bagTabViewModel.onLoading,
                       onRefresh: _bagTabViewModel.onRefresh,
-                      widget:
-                          // _bagTabViewModel.listCart.isEmpty
-                          //     ? const ListEmpty(
-                          //         title: 'Chưa có sản phẩm nào trong giỏ hàng',
-                          //       )
-                          //     :
-                          ListView.builder(
+                      widget: ListView.builder(
                         itemCount: _bagTabViewModel.listCart.length,
                         padding: EdgeInsets.only(top: appBarHeight),
                         itemBuilder: (BuildContext context, int index) {

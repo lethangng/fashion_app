@@ -211,6 +211,7 @@ class SettingView extends StatelessWidget {
       ),
       child: TextField(
         controller: controller,
+        onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
         textAlignVertical: TextAlignVertical.center,
         textAlign: TextAlign.left,
         decoration: InputDecoration(

@@ -51,7 +51,7 @@ class PayController extends GetxController {
     }
   }
 
-  Future<void> _handleLoad() async {
+  Future<void> handleLoad() async {
     Map<String, dynamic> data = {
       //
     };
@@ -79,7 +79,7 @@ class PayController extends GetxController {
   }
 
   Future<void> handleLoadAddOrder() async {
-    if (addOrderRes.value.data == null) {
+    if (deliveryAddressRes.value.data == null) {
       Get.snackbar(
         'Thông báo',
         'Vui lòng chọn địa chỉ giao hàng.',
@@ -109,7 +109,7 @@ class PayController extends GetxController {
 
   Future<void> initData() async {
     Get.put(AddressController());
-    await _handleLoad();
+    await handleLoad();
   }
 
   @override

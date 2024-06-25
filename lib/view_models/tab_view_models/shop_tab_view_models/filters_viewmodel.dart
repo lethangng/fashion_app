@@ -408,6 +408,7 @@ class FiltersViewmodel extends GetxController {
   Future<void> initData() async {
     sortValue = listSort.first.title.obs;
     await handleLoad();
+    await handleLoadData();
   }
 
   @override
