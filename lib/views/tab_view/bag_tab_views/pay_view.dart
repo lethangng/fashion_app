@@ -8,7 +8,8 @@ import '../../../utils/color_app.dart';
 import '../../../utils/helper.dart';
 import '../../../view_models/tab_view_models/bag_tab_view_models/bag_tab_viewmodel.dart';
 import '../../../view_models/tab_view_models/bag_tab_view_models/pay_viewmodel.dart';
-import '../../widgets/address_container.dart';
+// import '../../widgets/address_container.dart';
+import '../../widgets/address_pay.dart';
 import '../../widgets/button_primary.dart';
 import '../../widgets/product_bag_container.dart';
 import '../../widgets/show_dialog_error.dart';
@@ -81,12 +82,11 @@ class PayView extends StatelessWidget {
 
                   if (_payViewModel.deliveryAddressRes.value.status ==
                       Status.completed) {
-                    return AddressContainer(
+                    return AddressPay(
                       address: _payViewModel.deliveryAddressRes.value.data!,
-                      event: () {},
-                      addressType: AddressType.pay,
                     );
                   }
+
                   return const Center(
                     child: CircularProgressIndicator(
                       color: ColorApp.primary,
@@ -104,7 +104,7 @@ class PayView extends StatelessWidget {
                       padding: const EdgeInsets.only(bottom: 24),
                       child: ProductBagContainer(
                         cart: _bagTabViewModel.listCart[index],
-                        isPay: true,
+                        productBagType: ProductBagType.pay,
                       ),
                     );
                   },

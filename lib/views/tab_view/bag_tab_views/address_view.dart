@@ -64,8 +64,6 @@ class AddressView extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 24),
                 child: AddressContainer(
                   address: _addressViewModel.listData[index],
-                  event: () {},
-                  addressType: AddressType.select,
                 ),
               );
             },

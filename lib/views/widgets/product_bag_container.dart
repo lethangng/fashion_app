@@ -1,8 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../../models/home_models/cart.dart';
 import '../../models/shop_models/filters.dart';
@@ -12,15 +12,20 @@ import '../../view_models/tab_view_models/bag_tab_view_models/bag_tab_viewmodel.
 import 'button_primary.dart';
 import 'image_container.dart';
 
+enum ProductBagType {
+  bag,
+  pay,
+}
+
 // ignore: must_be_immutable
 class ProductBagContainer extends StatelessWidget {
   ProductBagContainer({
     super.key,
     required this.cart,
-    this.isPay = false,
+    required this.productBagType,
   });
   final Cart cart;
-  bool isPay;
+  final ProductBagType productBagType;
   final BagTabViewmodel _bagTabViewModel = Get.find<BagTabViewmodel>();
   // final RxBool isShowDelete = false.obs;
   // final controller = SlidableController();
@@ -31,221 +36,227 @@ class ProductBagContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Slidable(
-      endActionPane: ActionPane(
-        motion: const BehindMotion(),
-        children: [
-          SlidableAction(
-            onPressed: (_) async =>
-                await _bagTabViewModel.handleLoadDeleteCart(cart.id),
-            backgroundColor: ColorApp.primary,
-            foregroundColor: Colors.white,
-            icon: Icons.delete,
-            label: 'Xóa',
-          ),
-        ],
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(8),
-        child: Container(
-          decoration: const BoxDecoration(color: Colors.white),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ImageContainer(
-                image: cart.image_url,
-                width: Get.width * 0.3,
-                height: Get.width * 0.3,
-                replaceImage: '',
-              ),
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.all(11),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Flexible(
-                                  child: Text(
-                                    cart.name,
-                                    maxLines: 1,
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600,
-                                      color: ColorApp.black,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ),
-                                ),
-                                InkWell(
-                                  onTap: () => isPay == false
-                                      ? onShowSelect(idProduct: cart.id)
-                                      : null,
-                                  child: Container(
-                                    padding: const EdgeInsets.all(4),
-                                    color: ColorApp.gray.withOpacity(0.1),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        RichText(
-                                          text: TextSpan(
-                                            text: 'Phân loại: ',
-                                            style: const TextStyle(
-                                              fontSize: 11,
-                                              fontWeight: FontWeight.w400,
-                                              color: ColorApp.black,
-                                            ),
-                                            children: [
-                                              TextSpan(
-                                                text: cart.color.name,
-                                              ),
-                                              const TextSpan(text: ', '),
-                                              TextSpan(
-                                                text: cart.size.size,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        const SizedBox(width: 5),
-                                        SvgPicture.asset(
-                                            'assets/icons/arrow-down.svg'),
-                                      ],
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                          // Visibility(
-                          //   visible: isPay == false,
-                          //   child: IconButton(
-                          //     onPressed: () {},
-                          //     style: IconButton.styleFrom(
-                          //       minimumSize: Size.zero,
-                          //       padding: EdgeInsets.zero,
-                          //       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          //     ),
-                          //     icon:
-                          //         SvgPicture.asset('assets/icons/dot-menu.svg'),
-                          //   ),
-                          // ),
-                        ],
-                      ),
-                      const SizedBox(height: 12),
-                      isPay == false
-                          ? Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    Container(
-                                      width: 36,
-                                      height: 36,
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Colors.white,
-                                        boxShadow: [
-                                          BoxShadow(
-                                            blurRadius: 8,
-                                            offset: const Offset(0, 4),
-                                            color: const Color(0xFF000000)
-                                                .withOpacity(0.1),
-                                          ),
-                                        ],
-                                      ),
-                                      child: IconButton(
-                                        onPressed: () => _bagTabViewModel
-                                            .handleCount(id: cart.id, type: ''),
-                                        icon: SvgPicture.asset(
-                                            'assets/icons/minus.svg'),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 16),
-                                    Text(
-                                      cart.quantity.toString(),
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500,
-                                        color: ColorApp.black,
-                                      ),
-                                    ),
-                                    const SizedBox(width: 16),
-                                    Container(
-                                      width: 36,
-                                      height: 36,
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Colors.white,
-                                        boxShadow: [
-                                          BoxShadow(
-                                            blurRadius: 8,
-                                            offset: const Offset(0, 4),
-                                            color: const Color(0xFF000000)
-                                                .withOpacity(0.1),
-                                          ),
-                                        ],
-                                      ),
-                                      child: IconButton(
-                                        onPressed: () =>
-                                            _bagTabViewModel.handleCount(
-                                          id: cart.id,
-                                          type: 'add',
-                                        ),
-                                        icon: SvgPicture.asset(
-                                            'assets/icons/add.svg'),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Text(
-                                  Helper.formatMonney(cart.price),
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                    color: ColorApp.primary,
-                                  ),
-                                ),
-                              ],
-                            )
-                          : Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Text(
-                                  Helper.formatMonney(
-                                      cart.price * cart.quantity),
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                    color: ColorApp.primary,
-                                  ),
-                                ),
-                                const Spacer(),
-                                Text(
-                                  'x${cart.quantity}',
+    return productBagType == ProductBagType.pay
+        ? container()
+        : Slidable(
+            endActionPane: ActionPane(
+              motion: const BehindMotion(),
+              children: [
+                SlidableAction(
+                  onPressed: (_) async =>
+                      await _bagTabViewModel.handleLoadDeleteCart(cart.id),
+                  backgroundColor: ColorApp.primary,
+                  foregroundColor: Colors.white,
+                  icon: Icons.delete,
+                  label: 'Xóa',
+                ),
+              ],
+            ),
+            child: container(),
+          );
+  }
+
+  Widget container() {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(8),
+      child: Container(
+        decoration: const BoxDecoration(color: Colors.white),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ImageContainer(
+              image: cart.image_url,
+              width: Get.width * 0.3,
+              height: Get.width * 0.3,
+              replaceImage: '',
+            ),
+            Expanded(
+              child: Container(
+                padding: const EdgeInsets.all(11),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Flexible(
+                                child: Text(
+                                  cart.name,
+                                  maxLines: 1,
                                   style: const TextStyle(
                                     fontSize: 16,
-                                    fontWeight: FontWeight.w400,
+                                    fontWeight: FontWeight.w600,
                                     color: ColorApp.black,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
-                              ],
-                            ),
-                    ],
-                  ),
+                              ),
+                              InkWell(
+                                onTap: () =>
+                                    productBagType == ProductBagType.bag
+                                        ? onShowSelect(idProduct: cart.id)
+                                        : null,
+                                child: Container(
+                                  padding: const EdgeInsets.all(4),
+                                  color: ColorApp.gray.withOpacity(0.1),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      RichText(
+                                        text: TextSpan(
+                                          text: 'Phân loại: ',
+                                          style: const TextStyle(
+                                            fontSize: 11,
+                                            fontWeight: FontWeight.w400,
+                                            color: ColorApp.black,
+                                          ),
+                                          children: [
+                                            TextSpan(
+                                              text: cart.color.name,
+                                            ),
+                                            const TextSpan(text: ', '),
+                                            TextSpan(
+                                              text: cart.size.size,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      const SizedBox(width: 5),
+                                      SvgPicture.asset(
+                                          'assets/icons/arrow-down.svg'),
+                                    ],
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        // Visibility(
+                        //   visible: isPay == false,
+                        //   child: IconButton(
+                        //     onPressed: () {},
+                        //     style: IconButton.styleFrom(
+                        //       minimumSize: Size.zero,
+                        //       padding: EdgeInsets.zero,
+                        //       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        //     ),
+                        //     icon:
+                        //         SvgPicture.asset('assets/icons/dot-menu.svg'),
+                        //   ),
+                        // ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    productBagType == ProductBagType.bag
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                    width: 36,
+                                    height: 36,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors.white,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          blurRadius: 8,
+                                          offset: const Offset(0, 4),
+                                          color: const Color(0xFF000000)
+                                              .withOpacity(0.1),
+                                        ),
+                                      ],
+                                    ),
+                                    child: IconButton(
+                                      onPressed: () => _bagTabViewModel
+                                          .handleCount(id: cart.id, type: ''),
+                                      icon: SvgPicture.asset(
+                                          'assets/icons/minus.svg'),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 16),
+                                  Text(
+                                    cart.quantity.toString(),
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: ColorApp.black,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 16),
+                                  Container(
+                                    width: 36,
+                                    height: 36,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors.white,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          blurRadius: 8,
+                                          offset: const Offset(0, 4),
+                                          color: const Color(0xFF000000)
+                                              .withOpacity(0.1),
+                                        ),
+                                      ],
+                                    ),
+                                    child: IconButton(
+                                      onPressed: () =>
+                                          _bagTabViewModel.handleCount(
+                                        id: cart.id,
+                                        type: 'add',
+                                      ),
+                                      icon: SvgPicture.asset(
+                                          'assets/icons/add.svg'),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Text(
+                                Helper.formatMonney(cart.price),
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: ColorApp.primary,
+                                ),
+                              ),
+                            ],
+                          )
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text(
+                                Helper.formatMonney(cart.price),
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: ColorApp.primary,
+                                ),
+                              ),
+                              const Spacer(),
+                              Text(
+                                'x${cart.quantity}',
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                  color: ColorApp.black,
+                                ),
+                              ),
+                            ],
+                          ),
+                  ],
                 ),
-              )
-            ],
-          ),
+              ),
+            )
+          ],
         ),
       ),
     );

@@ -18,14 +18,14 @@ class ApiService extends BaseApiService {
     dynamic responseJson;
     try {
       debugPrint(baseUrl + url);
-      final response = await http
-          .get(
-            Uri.parse(baseUrl + url),
-            // headers: baseHeader,
-          )
-          .timeout(
-            const Duration(seconds: 15),
-          );
+      final response = await http.get(
+        Uri.parse(baseUrl + url),
+        // headers: baseHeader,
+      )
+          // .timeout(
+          //   const Duration(seconds: 20),
+          // )
+          ;
       responseJson = returnResponse(response);
     } on SocketException {
       throw FetchDataException('No Internet Connection');

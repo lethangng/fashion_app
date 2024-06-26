@@ -98,7 +98,7 @@ class AuthService {
   static Future<UserCredential> signInWithFacebook() async {
     // Trigger the sign-in flow
     final LoginResult loginResult = await FacebookAuth.instance.login(
-      permissions: ['email'],
+      permissions: ['email', 'public_profile'],
     );
 
     // Create a credential from the access token

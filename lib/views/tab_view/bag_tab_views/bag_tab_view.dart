@@ -9,7 +9,6 @@ import '../../../utils/color_app.dart';
 import '../../../utils/helper.dart';
 import '../../../view_models/tab_view_models/bag_tab_view_models/bag_tab_viewmodel.dart';
 import '../../widgets/discount_code_item.dart';
-// import '../../widgets/list_empty.dart';
 import '../../widgets/loadmore.dart';
 import '../../widgets/product_bag_container.dart';
 import '../../widgets/show_dialog_error.dart';
@@ -65,9 +64,10 @@ class BagTabView extends StatelessWidget {
                         padding: EdgeInsets.only(top: appBarHeight),
                         itemBuilder: (BuildContext context, int index) {
                           return Padding(
-                            padding: const EdgeInsets.only(bottom: 24),
+                            padding: const EdgeInsets.only(bottom: 15),
                             child: ProductBagContainer(
                               cart: _bagTabViewModel.listCart[index],
+                              productBagType: ProductBagType.bag,
                             ),
                           );
                         },

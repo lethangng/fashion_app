@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -44,6 +45,9 @@ class FiltersViewmodel extends GetxController {
 
   late final RxString sortValue;
   int _page = 1;
+
+  final TextEditingController minPriceController = TextEditingController();
+  final TextEditingController maxPriceController = TextEditingController();
 
   RxList<Filters> listPrice = [
     Filters(
@@ -151,6 +155,13 @@ class FiltersViewmodel extends GetxController {
       if (item.isSelect) categorySort = item;
     }
 
+    int? minPrice = minPriceController.text.isNotEmpty
+        ? int.parse(minPriceController.text)
+        : null;
+    int? maxPrice = maxPriceController.text.isNotEmpty
+        ? int.parse(maxPriceController.text)
+        : null;
+
     Map<String, dynamic> data = {
       //
     };
@@ -161,8 +172,8 @@ class FiltersViewmodel extends GetxController {
         limit: 6,
         product_name: _searchViewModel.searchController.text,
         sort: categorySort!.id,
-        min_price: selectPrice?.minPrice,
-        max_price: selectPrice?.maxPrice,
+        min_price: minPrice ?? selectPrice?.minPrice,
+        max_price: maxPrice ?? selectPrice?.maxPrice,
         brands: json.encode(listBrandVal),
         categories: json.encode(listCategoryVal),
         colors: json.encode(listColorVal),
@@ -369,6 +380,9 @@ class FiltersViewmodel extends GetxController {
       item.isSelect = false;
     }
 
+    minPriceController.clear();
+    maxPriceController.clear();
+
     // listPrice.first.isSelect = true;
     // listColors.first.isSelect = true;
     // listSizes.first.isSelect = true;
@@ -402,7 +416,10 @@ class FiltersViewmodel extends GetxController {
     listData.clear();
     Get.back();
     setLoadDataRes(ApiResponse.loading());
-    await handleLoad();
+    await handleLoad(
+        // minPrice: minPrice,
+        // maxPrice: maxPrice,
+        );
   }
 
   Future<void> initData() async {

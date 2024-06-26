@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../app/routes.dart';
 import '../../services/auth/auth_service.dart';
@@ -13,6 +14,13 @@ import '../widgets/button_second.dart';
 class ProfileTabView extends StatelessWidget {
   ProfileTabView({super.key});
   final UserController _userController = Get.find<UserController>();
+
+  Future<void> _launchUrl(urlVal) async {
+    final Uri url = Uri.parse(urlVal);
+    if (!await launchUrl(url)) {
+      throw Exception('Could not launch $url');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +46,8 @@ class ProfileTabView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   AvatarContainer(
-                    image: _userController.userRes.value.data!.image,
+                    image: _userController.userRes.value.data?.image,
+                    // image: _ userController.userRes.value.data?.image,
                     radius: 64,
                     replaceImage: 'assets/images/avatar-image.jpg',
                   ),
@@ -116,6 +125,16 @@ class ProfileTabView extends StatelessWidget {
               width: double.infinity,
               color: ColorApp.gray,
             ),
+            rowInfoHelp(
+              title: 'Liên hệ',
+              desc: 'Liên hệ với chúng tôi',
+              event: () => Get.toNamed(Routes.setting),
+            ),
+            Container(
+              height: 1,
+              width: double.infinity,
+              color: ColorApp.gray,
+            ),
             const SizedBox(height: 30),
             Visibility(
               visible:
@@ -139,6 +158,117 @@ class ProfileTabView extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget rowInfoHelp({
+    required String title,
+    required String desc,
+    void Function()? event,
+  }) {
+    final RxBool isShow = false.obs;
+
+    void handleShow() {
+      isShow.value = !isShow.value;
+    }
+
+    return InkWell(
+      onTap: () => handleShow(),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        child: Obx(
+          () => Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: ColorApp.black,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        desc,
+                        style: const TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w400,
+                          color: ColorApp.gray,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Spacer(),
+                  SvgPicture.asset(
+                      'assets/icons/${isShow.value ? 'top' : 'top-2'}.svg'),
+                  const SizedBox(width: 5),
+                ],
+              ),
+              AnimatedSize(
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeInOut,
+                child: SizedBox(
+                  height: isShow.value ? null : 0,
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 20),
+                      SizedBox(
+                        width: Get.width * 0.8,
+                        child: const Divider(
+                          height: 1,
+                          color: ColorApp.primary,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          buttonHelp(
+                            icon: 'assets/images/help-1.png',
+                            event: () => _launchUrl(
+                                'https://www.facebook.com/?locale=vi_VN'),
+                          ),
+                          buttonHelp(
+                            icon: 'assets/images/help-3.png',
+                            event: () =>
+                                _launchUrl('mailto:lethangng@gmail.com'),
+                          ),
+                          buttonHelp(
+                            icon: 'assets/images/help-5.png',
+                            event: () => _launchUrl('tel:0987654321'),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  TextButton buttonHelp({
+    required String icon,
+    void Function()? event,
+  }) {
+    return TextButton(
+      onPressed: event,
+      style: TextButton.styleFrom(
+        minimumSize: Size.zero,
+        padding: EdgeInsets.zero,
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      ),
+      child: Image.asset(icon),
     );
   }
 

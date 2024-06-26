@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-// import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -12,7 +11,6 @@ import '../../../services/repository/access_server_repository.dart';
 import '../../../services/response/api_response.dart';
 import '../../../utils/helper.dart';
 import '../../controllers/user_controller.dart';
-import 'address_viewmodel.dart';
 import 'bag_tab_viewmodel.dart';
 
 class PayController extends GetxController {
@@ -34,8 +32,6 @@ class PayController extends GetxController {
   void setAddOrderRes(ApiResponse<bool> res) {
     addOrderRes.value = res;
   }
-
-  // final Rx<DeliveryAddress>? deliveryAddress = Rx<DeliveryAddress>(null).obs;
 
   Future<void> _fetchData(RequestData req) async {
     try {
@@ -108,7 +104,6 @@ class PayController extends GetxController {
   }
 
   Future<void> initData() async {
-    Get.put(AddressController());
     await handleLoad();
   }
 

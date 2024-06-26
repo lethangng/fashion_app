@@ -6,7 +6,7 @@
 class Configs {
   // static final User? _user = Get.find<UserController>().userRes.value.data;
   static String baseUrl = 'http://fashion-lt.id.vn/api';
-  // static String baseUrl = 'http://192.168.1.3:8000/api';
+  // static String baseUrl = 'http://192.168.58.16:8000/api';
   static String checkLogin = '/user/check-login';
   static String getUserInfo = '/user/user-info';
   static String addFavoriteProduct = '/favorite/add';

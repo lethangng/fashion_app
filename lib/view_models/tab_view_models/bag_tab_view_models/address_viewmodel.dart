@@ -8,9 +8,11 @@ import '../../../services/repository/access_server_repository.dart';
 import '../../../services/response/api_response.dart';
 import '../../../utils/helper.dart';
 import '../../controllers/user_controller.dart';
+import 'pay_viewmodel.dart';
 
 class AddressController extends GetxController {
   final UserController _userController = Get.find<UserController>();
+  final PayController _payViewModel = Get.put(PayController());
 
   final AccessServerRepository _accessServerRepository =
       AccessServerRepository();
@@ -92,6 +94,7 @@ class AddressController extends GetxController {
       );
 
       await onRefresh();
+      await _payViewModel.handleLoad();
     } catch (e, s) {
       s.printError();
       setUpdateAddressRes(ApiResponse.error(e.toString()));

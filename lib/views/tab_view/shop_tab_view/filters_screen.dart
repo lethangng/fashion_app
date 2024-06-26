@@ -65,20 +65,93 @@ class FiltersScreen extends StatelessWidget {
             children: [
               textContainer(title: 'Khoảng giá:'),
               containerSelect(
-                widget: Obx(
-                  () => Wrap(
-                    spacing: 16,
-                    runSpacing: 10,
-                    children: _filtersViewModel.listPrice
-                        .map((item) => chip(
-                              id: item.id,
-                              title: item.title,
-                              isSelect: item.isSelect,
-                              event: () {},
-                              type: FilterType.price,
-                            ))
-                        .toList(),
-                  ),
+                widget: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: Get.width * 0.35,
+                          child: TextField(
+                            controller: _filtersViewModel.minPriceController,
+                            keyboardType: TextInputType.number,
+                            onTapOutside: (event) =>
+                                FocusManager.instance.primaryFocus?.unfocus(),
+                            decoration: InputDecoration(
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                                borderSide: const BorderSide(
+                                  color: ColorApp.primary,
+                                  width: 2,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                                borderSide: const BorderSide(
+                                  color: ColorApp.primary,
+                                  width: 2,
+                                ),
+                              ),
+                              hintText: 'Tối thiểu...',
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: SizedBox(
+                            width: Get.width * 0.1,
+                            child: const Divider(
+                              height: 2,
+                              color: ColorApp.gray,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: Get.width * 0.35,
+                          child: TextField(
+                            controller: _filtersViewModel.maxPriceController,
+                            keyboardType: TextInputType.number,
+                            onTapOutside: (event) =>
+                                FocusManager.instance.primaryFocus?.unfocus(),
+                            decoration: InputDecoration(
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                                borderSide: const BorderSide(
+                                  color: ColorApp.primary,
+                                  width: 2,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                                borderSide: const BorderSide(
+                                  color: ColorApp.primary,
+                                  width: 2,
+                                ),
+                              ),
+                              hintText: 'Tối đa...',
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 15),
+                    Obx(
+                      () => Wrap(
+                        spacing: 16,
+                        runSpacing: 10,
+                        children: _filtersViewModel.listPrice
+                            .map((item) => chip(
+                                  id: item.id,
+                                  title: item.title,
+                                  isSelect: item.isSelect,
+                                  event: () {},
+                                  type: FilterType.price,
+                                ))
+                            .toList(),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               textContainer(title: 'Màu sắc:'),
@@ -226,7 +299,19 @@ class FiltersScreen extends StatelessWidget {
                 Expanded(
                   child: ButtonPrimary(
                     title: 'Áp dụng',
-                    event: () => _filtersViewModel.handleLoadFilter(),
+                    event: () {
+                      // int? minPrice = _minPriceController.text.isNotEmpty
+                      //     ? int.parse(_minPriceController.text)
+                      //     : null;
+                      // int? maxPrice = _maxPriceController.text.isNotEmpty
+                      //     ? int.parse(_maxPriceController.text)
+                      //     : null;
+
+                      _filtersViewModel.handleLoadFilter(
+                          // minPrice,
+                          // maxPrice,
+                          );
+                    },
                   ),
                 ),
               ],
