@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -28,6 +30,8 @@ class BagTabViewmodel extends GetxController {
       ApiResponse<List<Coupon>>.loading().obs;
 
   final Rx<ApiResponse<bool>> deleteCartRes = ApiResponse<bool>.loading().obs;
+  final Rx<ApiResponse<bool>> updateCartRes =
+      ApiResponse<bool>.completed(null).obs;
 
   final RefreshController refreshController =
       RefreshController(initialRefresh: false);
@@ -57,6 +61,10 @@ class BagTabViewmodel extends GetxController {
 
   void setDeleteCartRes(ApiResponse<bool> res) {
     deleteCartRes.value = res;
+  }
+
+  void setUpdateCartRes(ApiResponse<bool> res) {
+    updateCartRes.value = res;
   }
 
   void setCouponRes(ApiResponse<List<Coupon>> res) {
@@ -94,6 +102,52 @@ class BagTabViewmodel extends GetxController {
     );
 
     await _fetchData(resquestData);
+  }
+
+  Future<void> _fetchDataUpdateCart(RequestData req) async {
+    try {
+      setUpdateCartRes(ApiResponse.loading());
+      // final Map<String, dynamic> map =
+      //     await _accessServerRepository.postData(req);
+
+      await _accessServerRepository.postData(req);
+
+      setUpdateCartRes(ApiResponse.completed(true));
+
+      // Get.snackbar(
+      //   'Thông báo',
+      //   '${map['msg']}',
+      //   icon: const Icon(Icons.check, color: Colors.green),
+      //   colorText: Colors.white,
+      //   backgroundColor: Colors.black87,
+      // );
+
+      // await onRefresh();
+    } catch (e, s) {
+      s.printError();
+      setUpdateCartRes(ApiResponse.error(e.toString()));
+    }
+  }
+
+  Future<void> handleLoadUpdateCart({
+    required int cartId,
+    required int idSize,
+    required int idColor,
+  }) async {
+    Map<String, dynamic> data = {
+      'cart_id': cartId,
+      'extra_product': json.encode({
+        'size': idSize,
+        'color': idColor,
+      }),
+    };
+
+    RequestData resquestData = RequestData(
+      query: Configs.updateCart,
+      data: Helper.toMapString(data),
+    );
+
+    await _fetchDataUpdateCart(resquestData);
   }
 
   Future<void> _fetchDataDeteleCart(RequestData req) async {
@@ -221,11 +275,11 @@ class BagTabViewmodel extends GetxController {
     handleTotalPrice();
   }
 
-  void handleSelect({
+  Future<void> handleSelect({
     required int id,
     required int idColor,
     required int idSize,
-  }) {
+  }) async {
     for (var item in listCart) {
       if (item.id == id) {
         for (var itemSize in item.sizes) {
@@ -241,5 +295,7 @@ class BagTabViewmodel extends GetxController {
       }
     }
     listCart.refresh();
+
+    await handleLoadUpdateCart(cartId: id, idSize: idSize, idColor: idColor);
   }
 }

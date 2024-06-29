@@ -117,6 +117,11 @@ class SettingView extends StatelessWidget {
                 value: user.email,
               ),
               const SizedBox(height: 20),
+              containerInfo(
+                title: 'Phương thức đăng nhập',
+                value: user.login_type.toUpperCase(),
+              ),
+              const SizedBox(height: 20),
               inputContainer(
                 controller: _fullnameController,
                 textHind: 'Họ và tên',

@@ -78,6 +78,7 @@ class FiltersScreen extends StatelessWidget {
                             keyboardType: TextInputType.number,
                             onTapOutside: (event) =>
                                 FocusManager.instance.primaryFocus?.unfocus(),
+                            onTap: () => _filtersViewModel.onTapEditer(),
                             decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8.0),
@@ -114,6 +115,7 @@ class FiltersScreen extends StatelessWidget {
                             keyboardType: TextInputType.number,
                             onTapOutside: (event) =>
                                 FocusManager.instance.primaryFocus?.unfocus(),
+                            onTap: () => _filtersViewModel.onTapEditer(),
                             decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8.0),
@@ -299,19 +301,7 @@ class FiltersScreen extends StatelessWidget {
                 Expanded(
                   child: ButtonPrimary(
                     title: 'Áp dụng',
-                    event: () {
-                      // int? minPrice = _minPriceController.text.isNotEmpty
-                      //     ? int.parse(_minPriceController.text)
-                      //     : null;
-                      // int? maxPrice = _maxPriceController.text.isNotEmpty
-                      //     ? int.parse(_maxPriceController.text)
-                      //     : null;
-
-                      _filtersViewModel.handleLoadFilter(
-                          // minPrice,
-                          // maxPrice,
-                          );
-                    },
+                    event: () => _filtersViewModel.handleLoadFilter(),
                   ),
                 ),
               ],

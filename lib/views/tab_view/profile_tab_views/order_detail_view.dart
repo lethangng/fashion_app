@@ -328,7 +328,7 @@ class OrderDetailView extends StatelessWidget {
                                 if (_cancelElaluatesConroller.text.isEmpty) {
                                   Get.snackbar(
                                     'Thông báo',
-                                    'Vui lòng nhập lý do',
+                                    'Vui lòng nhập lý do hủy đơn',
                                     colorText: Colors.white,
                                     backgroundColor: Colors.black87,
                                   );

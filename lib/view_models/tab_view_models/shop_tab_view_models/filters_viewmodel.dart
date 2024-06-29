@@ -396,6 +396,13 @@ class FiltersViewmodel extends GetxController {
     listBrand.refresh();
   }
 
+  void onTapEditer() {
+    for (var item in listPrice) {
+      item.isSelect = false;
+    }
+    listPrice.refresh();
+  }
+
   Future<void> handleLoadData() async {
     setLoadRes(ApiResponse.loading());
     listColors.clear();
@@ -413,6 +420,35 @@ class FiltersViewmodel extends GetxController {
   }
 
   Future<void> handleLoadFilter() async {
+    int? minPrice = minPriceController.text.isNotEmpty
+        ? int.parse(minPriceController.text)
+        : null;
+    int? maxPrice = maxPriceController.text.isNotEmpty
+        ? int.parse(maxPriceController.text)
+        : null;
+
+    if (minPrice != null || maxPrice != null) {
+      Get.snackbar(
+        'Thông báo',
+        'Vui lòng nhập giá tối thiểu và giá tối đa',
+        // icon: const Icon(Icons.check, color: Colors.green),
+        colorText: Colors.white,
+        backgroundColor: Colors.black87,
+      );
+      return;
+    }
+
+    if (minPrice != null && maxPrice != null && minPrice < maxPrice) {
+      Get.snackbar(
+        'Thông báo',
+        'Vui lòng nhập giá tối thiểu nhỏ hơn giá tối đa',
+        // icon: const Icon(Icons.check, color: Colors.green),
+        colorText: Colors.white,
+        backgroundColor: Colors.black87,
+      );
+      return;
+    }
+
     listData.clear();
     Get.back();
     setLoadDataRes(ApiResponse.loading());

@@ -314,7 +314,7 @@ class ProductDetailScreen extends StatelessWidget {
                           child: SizedBox(
                             height: _productDetailViewModel.isShow.value
                                 ? null
-                                : Get.height * 0.4,
+                                : Get.height * 0.3,
                             child: Html(
                               // anchorKey: staticAnchorKey,
                               data: productDetail.desc,

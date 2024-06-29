@@ -47,7 +47,6 @@ class ProfileTabView extends StatelessWidget {
                 children: [
                   AvatarContainer(
                     image: _userController.userRes.value.data?.image,
-                    // image: _ userController.userRes.value.data?.image,
                     radius: 64,
                     replaceImage: 'assets/images/avatar-image.jpg',
                   ),

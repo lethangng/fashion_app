@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -6,6 +8,7 @@ import 'package:get/get.dart';
 
 import '../../models/home_models/cart.dart';
 import '../../models/shop_models/filters.dart';
+import '../../services/response/api_status.dart';
 import '../../utils/color_app.dart';
 import '../../utils/helper.dart';
 import '../../view_models/tab_view_models/bag_tab_view_models/bag_tab_viewmodel.dart';
@@ -303,13 +306,13 @@ class ProductBagContainer extends StatelessWidget {
       listColor.refresh();
     }
 
-    void handleSubmit() {
-      _bagTabViewModel.handleSelect(
+    Future<void> handleSubmit() async {
+      await _bagTabViewModel.handleSelect(
         id: idProduct,
         idColor: idColor,
         idSize: idSize,
       );
-      Get.back();
+      return Get.back();
     }
 
     await Get.bottomSheet(
@@ -464,10 +467,23 @@ class ProductBagContainer extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            ButtonPrimary(
-              title: 'Đồng ý',
-              isUpperCase: true,
-              event: () => handleSubmit(),
+            Obx(
+              () {
+                if (_bagTabViewModel.updateCartRes.value.status ==
+                    Status.loading) {
+                  return const SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(color: ColorApp.primary),
+                  );
+                }
+
+                return ButtonPrimary(
+                  title: 'Đồng ý',
+                  isUpperCase: true,
+                  event: () => handleSubmit(),
+                );
+              },
             ),
             const SizedBox(height: 30),
           ],

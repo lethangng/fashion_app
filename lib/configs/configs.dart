@@ -12,6 +12,7 @@ class Configs {
   static String addFavoriteProduct = '/favorite/add';
   static String addCart = '/cart/add';
   static String deleteCart = '/cart/delete';
+  static String updateCart = '/cart/update';
   static String addAddress = '/delivery-address/add';
   static String addOrder = '/order/add';
   static String updateInfo = '/user/update-info';
