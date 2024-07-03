@@ -64,6 +64,7 @@ class PayController extends GetxController {
 
   Future<void> _fetchDataAddOrder(RequestData req) async {
     try {
+      setAddOrderRes(ApiResponse.loading());
       await _accessServerRepository.postData(req);
 
       setAddOrderRes(ApiResponse.completed(true));
