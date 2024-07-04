@@ -66,11 +66,14 @@ class FavoriteTabViewmodel extends GetxController {
     await _fetchData(resquestData);
   }
 
-  Future<void> _fetchDataDeleteFavorite(RequestData req) async {
+  Future<void> _fetchDataDeleteFavorite(RequestData req, int productId) async {
     try {
       setDeleteFavoriteRes(ApiResponse.loading());
       Map<String, dynamic> map = await _accessServerRepository.postData(req);
       // isFavorite.value = !isFavorite.value;
+
+      listFavorite.removeWhere((favorite) => favorite.id == productId);
+      listFavorite.refresh();
 
       setDeleteFavoriteRes(ApiResponse.completed(true));
       Get.snackbar(
@@ -80,7 +83,7 @@ class FavoriteTabViewmodel extends GetxController {
         colorText: Colors.white,
         backgroundColor: Colors.black87,
       );
-      await onRefresh();
+      // await onRefresh();
     } catch (e, s) {
       s.printError();
       setDeleteFavoriteRes(ApiResponse.error(e.toString()));
@@ -98,7 +101,7 @@ class FavoriteTabViewmodel extends GetxController {
       data: Helper.toMapString(data),
     );
 
-    await _fetchDataDeleteFavorite(resquestData);
+    await _fetchDataDeleteFavorite(resquestData, productId);
   }
 
   Future<void> onRefresh() async {

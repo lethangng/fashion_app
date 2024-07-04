@@ -8,6 +8,7 @@ import '../../../services/response/api_status.dart';
 import '../../../utils/color_app.dart';
 import '../../../utils/helper.dart';
 import '../../../view_models/tab_view_models/bag_tab_view_models/bag_tab_viewmodel.dart';
+import '../../widgets/button_primary.dart';
 import '../../widgets/discount_code_item.dart';
 import '../../widgets/loadmore.dart';
 import '../../widgets/product_bag_container.dart';
@@ -86,9 +87,19 @@ class BagTabView extends StatelessWidget {
           const SizedBox(height: 16),
           GestureDetector(
             onTap: () {
-              _bagTabViewModel.onRefreshCoupon();
-              onShowSelectDiscountCode();
-              discountCodeController.clear();
+              if (_bagTabViewModel.listCoupon.isNotEmpty) {
+                _bagTabViewModel.onRefreshCoupon();
+                onShowSelectDiscountCode();
+                discountCodeController.clear();
+              } else {
+                Get.snackbar(
+                  'Thông báo',
+                  'Chưa có mã giảm giá nào!',
+                  colorText: Colors.white,
+                  // icon: const Icon(Icons.check, color: Colors.green),
+                  backgroundColor: Colors.black87,
+                );
+              }
             },
             child: Row(
               children: [
@@ -205,30 +216,23 @@ class BagTabView extends StatelessWidget {
           ),
 
           const SizedBox(height: 16),
-          SizedBox(
-            width: double.infinity,
-            child: OutlinedButton(
-              onPressed: () => Get.toNamed(Routes.pay),
-              style: OutlinedButton.styleFrom(
-                side: const BorderSide(
-                  width: 0,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                foregroundColor: Colors.white,
-                backgroundColor: const Color(0xFFDB3022),
-                padding: const EdgeInsets.symmetric(vertical: 15),
-              ),
-              child: const Text(
-                'Mua hàng',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
+          ButtonPrimary(
+            title: 'Mua hàng',
+            event: () {
+              if (_bagTabViewModel.listCart.isNotEmpty) {
+                Get.toNamed(Routes.pay);
+              } else {
+                Get.snackbar(
+                  'Thông báo',
+                  'Vui lòng thêm sản phẩm vào giỏ hàng',
+                  colorText: Colors.white,
+                  // icon: const Icon(Icons.check, color: Colors.green),
+                  backgroundColor: Colors.black87,
+                );
+              }
+            },
           ),
+
           const SizedBox(height: 16),
         ],
       ),

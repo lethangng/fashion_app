@@ -81,7 +81,7 @@ class PayController extends GetxController {
         'Thông báo',
         'Vui lòng chọn địa chỉ giao hàng.',
         colorText: Colors.white,
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.black87,
       );
       return;
     }

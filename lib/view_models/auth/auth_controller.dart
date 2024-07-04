@@ -23,8 +23,8 @@ class AuthController {
   }
 
   Future<void> _fetchData(RequestData req) async {
-    setLoginRes(ApiResponse.loading());
     try {
+      // setLoginRes(ApiResponse.loading());
       final Map<String, dynamic> data =
           await _accessServerRepository.postData(req);
 
@@ -64,6 +64,7 @@ class AuthController {
     required String password,
   }) async {
     try {
+      setLoginRes(ApiResponse.loading());
       await AuthService.loginWithPassword(email: email, password: password);
       printInfo(info: AuthService.user!.toString());
 
@@ -79,6 +80,7 @@ class AuthController {
 
   Future<void> authenticationWithGoogle() async {
     try {
+      setLoginRes(ApiResponse.loading());
       await AuthService.signInWithGoogle();
       printInfo(info: AuthService.user!.toString());
 
@@ -93,6 +95,7 @@ class AuthController {
 
   Future<void> authenticationWithFacebook() async {
     try {
+      setLoginRes(ApiResponse.loading());
       await AuthService.signInWithFacebook();
       printInfo(info: AuthService.user!.toString());
 

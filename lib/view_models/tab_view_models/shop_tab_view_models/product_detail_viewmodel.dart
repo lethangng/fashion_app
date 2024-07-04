@@ -215,7 +215,7 @@ class ProductDetailViewmodel extends GetxController {
       Get.snackbar(
         'Thông báo',
         '${map['msg']}',
-        // icon: const Icon(Icons.check, color: Colors.green),
+        icon: const Icon(Icons.check, color: Colors.green),
         colorText: Colors.white,
         backgroundColor: Colors.black87,
       );

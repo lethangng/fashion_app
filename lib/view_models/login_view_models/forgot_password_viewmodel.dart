@@ -38,6 +38,7 @@ class ForgotPasswordViewModel extends GetxController {
     } catch (e, s) {
       s.printError();
       formError.value.email = e.toString();
+      formError.refresh();
       setResetPasswordRes(ApiResponse.completed(null));
     }
   }

@@ -66,6 +66,7 @@ class ChangePasswordViewModel extends GetxController {
     } catch (e, s) {
       s.printError();
       formError.value.oldPassword = e.toString();
+      formError.refresh();
       setChangePasswordRes(ApiResponse.completed(null));
     }
   }

@@ -47,20 +47,24 @@ class AddressController extends GetxController {
     deleteAddressRes.value = res;
   }
 
-  Future<void> _fetchDataDeleteAddress(RequestData req) async {
+  Future<void> _fetchDataDeleteAddress(RequestData req, int itemId) async {
     try {
       setDeleteAddressRes(ApiResponse.loading());
       await _accessServerRepository.postData(req);
       setDeleteAddressRes(ApiResponse.completed(true));
 
+      listData.removeWhere((item) => item.id == itemId);
+      listData.refresh();
+
       Get.snackbar(
         'Thông báo',
         'Xóa địa chỉ giao hàng thành công!',
         colorText: Colors.white,
-        backgroundColor: Colors.black45,
+        icon: const Icon(Icons.check, color: Colors.green),
+        backgroundColor: Colors.black87,
       );
 
-      await onRefresh();
+      // await onRefresh();
     } catch (e, s) {
       s.printError();
       setDeleteAddressRes(ApiResponse.error(e.toString()));
@@ -77,7 +81,7 @@ class AddressController extends GetxController {
       data: Helper.toMapString(data),
     );
 
-    await _fetchDataDeleteAddress(resquestData);
+    await _fetchDataDeleteAddress(resquestData, address.id);
   }
 
   Future<void> _fetchDataUpdateAddredd(RequestData req) async {
@@ -90,7 +94,8 @@ class AddressController extends GetxController {
         'Thông báo',
         '${map['msg']}',
         colorText: Colors.white,
-        backgroundColor: Colors.black45,
+        icon: const Icon(Icons.check, color: Colors.green),
+        backgroundColor: Colors.black87,
       );
 
       await onRefresh();
@@ -162,9 +167,9 @@ class AddressController extends GetxController {
       Get.snackbar(
         'Thông báo',
         '${map['msg']}',
-        // icon: const Icon(Icons.check, color: Colors.green),
+        icon: const Icon(Icons.check, color: Colors.green),
         colorText: Colors.white,
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.black87,
       );
       await onRefresh();
     } catch (e, s) {

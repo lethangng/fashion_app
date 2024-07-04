@@ -95,6 +95,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                     title: 'Tiếp tục',
                     event: () => _forgotPasswordViewModel
                         .validate(_emailController.text),
+                    isUpperCase: true,
                   );
                 },
               ),

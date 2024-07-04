@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
+// import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -73,6 +73,7 @@ class BagTabViewmodel extends GetxController {
 
   Future<void> _fetchData(RequestData req) async {
     try {
+      setCartRes(ApiResponse.loading());
       // setCartRes(ApiResponse.loading());
       final List res = await _accessServerRepository.getData(req);
       List<Cart> data = res.map((item) => Cart.fromMap(item)).toList();
@@ -150,23 +151,28 @@ class BagTabViewmodel extends GetxController {
     await _fetchDataUpdateCart(resquestData);
   }
 
-  Future<void> _fetchDataDeteleCart(RequestData req) async {
+  Future<void> _fetchDataDeteleCart(RequestData req, int cartId) async {
     try {
-      setDeleteCartRes(ApiResponse.loading());
-      final Map<String, dynamic> map =
-          await _accessServerRepository.postData(req);
+      // setDeleteCartRes(ApiResponse.loading());
+      // final Map<String, dynamic> map =
+      //     await _accessServerRepository.postData(req);
+
+      await _accessServerRepository.postData(req);
+
+      listCart.removeWhere((cart) => cart.id == cartId);
+      listCart.refresh();
 
       setDeleteCartRes(ApiResponse.completed(true));
 
-      Get.snackbar(
-        'Thông báo',
-        '${map['msg']}',
-        // icon: const Icon(Icons.check, color: Colors.green),
-        colorText: Colors.white,
-        backgroundColor: Colors.black,
-      );
+      // Get.snackbar(
+      //   'Thông báo',
+      //   '${map['msg']}',
+      //   // icon: const Icon(Icons.check, color: Colors.green),
+      //   colorText: Colors.white,
+      //   backgroundColor: Colors.black,
+      // );
 
-      await onRefresh();
+      // await onRefresh();
     } catch (e, s) {
       s.printError();
       setDeleteCartRes(ApiResponse.error(e.toString()));
@@ -183,7 +189,7 @@ class BagTabViewmodel extends GetxController {
       data: Helper.toMapString(data),
     );
 
-    await _fetchDataDeteleCart(resquestData);
+    await _fetchDataDeteleCart(resquestData, cartId);
   }
 
   Future<void> _fetchDataCoupon(RequestData req) async {

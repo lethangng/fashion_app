@@ -51,11 +51,12 @@ class RegisterViewModel extends GetxController {
         backgroundColor: Colors.black87,
       );
 
-      // Tới màn hình Home
+      // Tới màn hình Login
       Get.offAllNamed(Routes.login);
     } catch (e, s) {
       s.printError();
       formError.value.email = e.toString();
+      formError.refresh();
       setRegisterRes(ApiResponse.completed(null));
     }
   }
