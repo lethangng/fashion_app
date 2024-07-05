@@ -87,19 +87,9 @@ class BagTabView extends StatelessWidget {
           const SizedBox(height: 16),
           GestureDetector(
             onTap: () {
-              if (_bagTabViewModel.listCoupon.isNotEmpty) {
-                _bagTabViewModel.onRefreshCoupon();
-                onShowSelectDiscountCode();
-                discountCodeController.clear();
-              } else {
-                Get.snackbar(
-                  'Thông báo',
-                  'Chưa có mã giảm giá nào!',
-                  colorText: Colors.white,
-                  // icon: const Icon(Icons.check, color: Colors.green),
-                  backgroundColor: Colors.black87,
-                );
-              }
+              _bagTabViewModel.onRefreshCoupon();
+              onShowSelectDiscountCode();
+              discountCodeController.clear();
             },
             child: Row(
               children: [

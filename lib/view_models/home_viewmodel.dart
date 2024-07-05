@@ -28,7 +28,7 @@ class HomeController extends GetxController {
 
   Future<void> _fetchDataProductNewest(RequestData req) async {
     try {
-      setProductNewestRes(ApiResponse.loading());
+      // setProductNewestRes(ApiResponse.loading());
       final List res = await _accessServerRepository.getData(req);
       List<Product> data = res.map((item) => Product.fromMap(item)).toList();
 
@@ -61,7 +61,7 @@ class HomeController extends GetxController {
 
   Future<void> _fetchDataProductSale(RequestData req) async {
     try {
-      setProductSaleRes(ApiResponse.loading());
+      // setProductSaleRes(ApiResponse.loading());
       final List res = await _accessServerRepository.getData(req);
       List<Product> data = res.map((item) => Product.fromMap(item)).toList();
 

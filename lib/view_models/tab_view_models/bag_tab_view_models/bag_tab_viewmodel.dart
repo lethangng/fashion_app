@@ -73,7 +73,7 @@ class BagTabViewmodel extends GetxController {
 
   Future<void> _fetchData(RequestData req) async {
     try {
-      setCartRes(ApiResponse.loading());
+      // setCartRes(ApiResponse.loading());
       // setCartRes(ApiResponse.loading());
       final List res = await _accessServerRepository.getData(req);
       List<Cart> data = res.map((item) => Cart.fromMap(item)).toList();
@@ -161,6 +161,7 @@ class BagTabViewmodel extends GetxController {
 
       listCart.removeWhere((cart) => cart.id == cartId);
       listCart.refresh();
+      handleTotalPrice();
 
       setDeleteCartRes(ApiResponse.completed(true));
 
